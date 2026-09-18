@@ -1,0 +1,21 @@
+{
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.aromaPrinciple": "[sine][blue]……有墨的味道。很旧的墨，还有很多故事没讲完。[/blue][/sine]",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.banter.alive.endTurnPing": "再想想。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.banter.dead.endTurnPing": "先搁笔了。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.cardsModifierDescription": "万界如林的卡牌现在会出现在奖励和商店中。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.cardsModifierTitle": "万界如林卡牌",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.defeatMessage": "故事……还没讲完。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.description": "“林”的身份一直是一个谜。\n有关于她的故事有很多，或许会有真的。\n\n[gold]鬼气[/gold]：她的第二资源，如墨般在牌组间流转。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.eventDeathPrevention": "我还不能在这里结束。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.flavor": "万界如林，落笔成真。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.goldMonologue": "这些金币，也算故事的一部分吧。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.possessiveAdjective": "她的",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.pronounObject": "她",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.pronounPossessive": "她的",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.pronounSubject": "她",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.selectMessage": "墨色漫开，故事开始了。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.title": "万界如林",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.titleObject": "万界如林",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.unlockText": "用[pink]{Prerequisite}[/pink]进行一局游戏来解锁这个角色。",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.victoryMessage": "这一卷，写完了。"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "WanJieRuLin",
+  "name": "万界如林",
+  "pck_name": "WanJieRuLin",
+  "author": "wangx",
+  "description": "万界如林角色模组：以鬼气为力量的墨绘者。“林”的身份一直是一个谜，有关于她的故事有很多，或许会有真的。鬼气：战斗开始时获得，每回合增长，用于支付带有鬼气费用的牌。",
+  "version": "0.1.0",
+  "has_pck": true,
+  "has_dll": true,
+  "affects_gameplay": true,
+  "min_game_version": "0.111.0",
+  "dependencies": [
+    {
+      "id": "STS2-RitsuLib",
+      "version": "0.6.2"
+    }
+  ]
+}

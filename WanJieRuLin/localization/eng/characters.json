@@ -1,0 +1,21 @@
+{
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.aromaPrinciple": "[sine][blue]...Smells like ink. Old ink, with too many stories left untold.[/blue][/sine]",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.banter.alive.endTurnPing": "Let me think.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.banter.dead.endTurnPing": "Setting down the brush.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.cardsModifierDescription": "Wan Jie Ru Lin cards can now appear in rewards and shops.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.cardsModifierTitle": "Wan Jie Ru Lin Cards",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.defeatMessage": "The story... is not finished yet.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.description": "The identity of \"Lin\" has always been a mystery.\nThere are many stories about her - perhaps some of them are true.\n\n[gold]Ghost Qi[/gold]: her second resource, flowing through the deck like ink.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.eventDeathPrevention": "I cannot end here.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.flavor": "A thousand realms become a forest; the brush falls, and it is real.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.goldMonologue": "Even these coins are part of the story.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.possessiveAdjective": "her",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.pronounObject": "her",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.pronounPossessive": "her",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.pronounSubject": "she",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.selectMessage": "The ink spreads, and the story begins.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.title": "Wan Jie Ru Lin",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.titleObject": "Wan Jie Ru Lin",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.unlockText": "Complete a run as [pink]{Prerequisite}[/pink] to unlock this character.",
+  "WAN_JIE_RU_LIN_CHARACTER_WAN_JIE_RU_LIN_CHARACTER.victoryMessage": "This scroll is written to the end."
+}

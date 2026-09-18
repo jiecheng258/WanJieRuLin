@@ -1,0 +1,17 @@
+{
+  "WAN_JIE_RU_LIN_RELIC_BEI_LEI_MAO.description": "战斗开始时获得一张随机[gold]技能牌[/gold]，该牌可以免费打出一次，随后[gold]消耗[/gold]。",
+  "WAN_JIE_RU_LIN_RELIC_BEI_LEI_MAO.flavor": "戴上它，灵感来得很突然。",
+  "WAN_JIE_RU_LIN_RELIC_BEI_LEI_MAO.title": "贝雷帽",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.description": "[gold]鬼气[/gold]：每场战斗开始时获得 [blue]1[/blue] 点鬼气，每回合开始时获得 [blue]1[/blue] 点鬼气。",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.flavor": "亡者落笔，墨即是魂。",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.title": "鬼墨",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.description": "[gold]鬼气[/gold]：每场战斗开始时获得 [blue]3[/blue] 点鬼气，每回合开始时获得 [blue]1[/blue] 点鬼气。",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.flavor": "以金丝缚住游魂，墨迹再无干涸之日。",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.title": "金丝鬼墨",
+  "WAN_JIE_RU_LIN_RELIC_TIAN_SHI_SAN.description": "每消耗 [blue]4[/blue] 点[gold]鬼气[/gold]，获得 [blue]1[/blue] 点[gold]能量[/gold]。\n每消耗 [blue]4[/blue] 点[gold]能量[/gold]，获得 [blue]1[/blue] 点[gold]鬼气[/gold]。",
+  "WAN_JIE_RU_LIN_RELIC_TIAN_SHI_SAN.flavor": "道人遗物，撑开时阴阳两界皆不得近身。",
+  "WAN_JIE_RU_LIN_RELIC_TIAN_SHI_SAN.title": "天师伞",
+  "WAN_JIE_RU_LIN_RELIC_YI_BA_XIAO_JIAN.description": "战斗开始时随机获得一把剑的效果。",
+  "WAN_JIE_RU_LIN_RELIC_YI_BA_XIAO_JIAN.flavor": "小，但很锋利。",
+  "WAN_JIE_RU_LIN_RELIC_YI_BA_XIAO_JIAN.title": "一把小剑"
+}

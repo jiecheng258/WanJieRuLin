@@ -1,0 +1,17 @@
+{
+  "WAN_JIE_RU_LIN_RELIC_BEI_LEI_MAO.description": "At the start of combat, gain a random [gold]Skill[/gold]. It can be played for free once, then [gold]Exhausts[/gold].",
+  "WAN_JIE_RU_LIN_RELIC_BEI_LEI_MAO.flavor": "Put it on, and inspiration strikes out of nowhere.",
+  "WAN_JIE_RU_LIN_RELIC_BEI_LEI_MAO.title": "Beret",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.description": "[gold]Ghost Qi[/gold]: at the start of each combat gain [blue]1[/blue] Ghost Qi; at the start of each turn gain [blue]1[/blue] Ghost Qi.",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.flavor": "The dead dip the brush; the ink is the soul.",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.title": "Ghost Ink",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.description": "[gold]Ghost Qi[/gold]: at the start of each combat gain [blue]3[/blue] Ghost Qi; at the start of each turn gain [blue]1[/blue] Ghost Qi.",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.flavor": "Bind a wandering soul with golden thread, and the ink shall never dry.",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.title": "Golden Silk Ghost Ink",
+  "WAN_JIE_RU_LIN_RELIC_TIAN_SHI_SAN.description": "Every [blue]4[/blue] [gold]Ghost Qi[/gold] spent grants [blue]1[/blue] [gold]Energy[/gold].\nEvery [blue]4[/blue] [gold]Energy[/gold] spent grants [blue]1[/blue] [gold]Ghost Qi[/gold].",
+  "WAN_JIE_RU_LIN_RELIC_TIAN_SHI_SAN.flavor": "A relic of the Daoist master; opened, it keeps both worlds at bay.",
+  "WAN_JIE_RU_LIN_RELIC_TIAN_SHI_SAN.title": "Celestial Master's Umbrella",
+  "WAN_JIE_RU_LIN_RELIC_YI_BA_XIAO_JIAN.description": "At the start of combat, gain the effect of a random sword.",
+  "WAN_JIE_RU_LIN_RELIC_YI_BA_XIAO_JIAN.flavor": "Small, but sharp.",
+  "WAN_JIE_RU_LIN_RELIC_YI_BA_XIAO_JIAN.title": "A Small Sword"
+}
