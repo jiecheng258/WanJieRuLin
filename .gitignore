@@ -12,3 +12,6 @@ local.props
 *.tmp
 *.log
 
+# 工具临时文件
+.tools/_*.txt
+.tools/_*.py
