@@ -1,0 +1,23 @@
+chore: 收录 .tools 工具链，补齐打包与审计脚本
+
+把原本散落在会话临时目录的工具脚本收进工程，让仓库自包含：
+
+新增 .tools/
+  打包    package.py         从游戏 mods/ 与工程源码生成 install/source zip
+  审计    audit.py           综合审计
+          audit_hazards.py   必崩写法黑名单（含 --self-test 自检）
+          audit_placeholders.py  文案占位符 / 先古选项 / 升级文案残留
+          audit_ghostqi.py   鬼气费用动词与数值
+  生成    gen_loc.py         本地化文件生成
+          gen_art.py         卡图程序化生成
+          gen_select_bg.py   角色选择背景生成
+          inject_cost_var.py 费用变量注入
+          extract_design.py  设计文档抽取
+          balance_analyze.py 数值基线对比
+          append_log.py      版本记录追加
+          verify_skills.py   技能文件校验
+  文档    install_guide.md   安装 + 逐轮版本记录 + 开发者避坑
+          balance_notes.md   原版数值基线 + 平衡改动 + 已丢弃削弱项
+          release_notes.md   发布说明
+
+同时清理：删除历史调试输出（数百个 peek*/build*/patch_probe* 等临时 txt）。
