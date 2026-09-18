@@ -2,8 +2,8 @@
 """
 WanJieRuLin 打包脚本
 生成:
-  WanJieRuLin-v0.1.1-install.zip   游戏 mods/ 即用包 (DLL + json + pck + 安装说明)
-  WanJieRuLin-v0.1.1-source.zip    源码包 (工程全部源文件)
+  WanJieRuLin-v0.1.2-install.zip   游戏 mods/ 即用包 (DLL + json + pck + 安装说明)
+  WanJieRuLin-v0.1.2-source.zip    源码包 (工程全部源文件)
 
 用法:
   python package.py            # 打包
@@ -15,7 +15,7 @@ import shutil
 import hashlib
 import zipfile
 
-VERSION = "v0.1.1"
+VERSION = "v0.1.2"
 
 REPO = r"C:\Users\wangx\Documents\Default Project\WanJieRuLin"
 GAME_MODS = r"C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods"
