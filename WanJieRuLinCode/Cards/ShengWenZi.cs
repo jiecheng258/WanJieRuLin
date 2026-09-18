@@ -30,7 +30,7 @@ public sealed class ShengWenZi : WanJieRuLinCardModel
     [
         // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
         GhostQiCostVarOf(1),
-        new DamageVar(6m, ValueProp.Move),
+        new DamageVar(10m, ValueProp.Move),
         ModCardVars.Power<VulnerablePower>(VulnerableAmount),
         ModCardVars.Power<WeakPower>(WeakAmount)
     ];
