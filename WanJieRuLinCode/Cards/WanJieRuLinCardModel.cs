@@ -155,6 +155,37 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate, ICardPlayStateCont
     /// <summary>当前鬼气。</summary>
     protected int MyGhostQi => Owner is { } p ? GhostQi.Get(p) : 0;
 
+    // ---- 墨之相相位判定（阈值与 InkPhasePower 保持一致）----
+
+    /// <summary>墨淡：鬼气不高于 <see cref="InkPhaseThinMax"/>。</summary>
+    protected bool IsThinInk => MyGhostQi <= InkPhaseThinMax;
+
+    /// <summary>墨浓：鬼气不低于 <see cref="InkPhaseDenseMin"/>。</summary>
+    protected bool IsDenseInk => MyGhostQi >= InkPhaseDenseMin;
+
+    /// <summary>墨极浓：鬼气不低于 <see cref="InkPhaseDeepMin"/>。</summary>
+    protected bool IsDeepestInk => MyGhostQi >= InkPhaseDeepMin;
+
+    /// <summary>墨匀：鬼气落在均衡区间（3–7）。</summary>
+    protected bool IsEvenInk => MyGhostQi >= InkEvenMin && MyGhostQi <= InkEvenMax;
+
+    /// <summary>鬼气不高于 n。</summary>
+    protected bool GhostQiAtMost(int n) => MyGhostQi <= n;
+
+    /// <summary>鬼气不低于 n。</summary>
+    protected bool GhostQiAtLeast(int n) => MyGhostQi >= n;
+
+    /// <summary>鬼气恰好为 n。</summary>
+    protected bool GhostQiEquals(int n) => MyGhostQi == n;
+
+    // 相位阈值常量：与 Powers/InkPhasePower.cs 的取值必须一致。
+    // 设为 public，方便能力（如 HalfInkPower）复用同一套阈值，避免两处写死漂移。
+    public const int InkPhaseThinMax = 2;
+    public const int InkPhaseDenseMin = 8;
+    public const int InkPhaseDeepMin = 14;
+    public const int InkEvenMin = 3;
+    public const int InkEvenMax = 7;
+
     /// <summary>给自己加鬼气。</summary>
     protected Task GainGhostQi(int amount) =>
         Owner is { } p ? GhostQi.Gain(p, amount) : Task.CompletedTask;
@@ -162,6 +193,41 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate, ICardPlayStateCont
     /// <summary>给自己扣鬼气（不视为"支付费用"，用于卡牌副作用）。</summary>
     protected Task LoseGhostQi(int amount) =>
         Owner is { } p ? GhostQi.Lose(p, amount) : Task.CompletedTask;
+
+    /// <summary>失去全部鬼气，返回实际失去量。</summary>
+    protected Task<int> ClearGhostQi() =>
+        Owner is { } p ? GhostQi.SpendAll(p) : Task.FromResult(0);
+
+    /// <summary>把鬼气直接设为某个值。</summary>
+    protected Task SetGhostQi(int amount) =>
+        Owner is { } p ? GhostQi.Set(p, amount) : Task.CompletedTask;
+
+    /// <summary>已知要失去的量，直接扣（用于「失去所有鬼气」后按量结算）。</summary>
+    protected Task LoseAllGhostQiTracked(int amount) => LoseGhostQi(amount);
+
+    // ---- 伤害助手 ----
+
+    /// <summary>对单个目标造成伤害（可多段）。</summary>
+    protected Task DealDamage(PlayerChoiceContext ctx, Creature target, decimal amount, int hitCount = 1)
+    {
+        var cmd = DamageCmd.Attack(amount).FromCard(this, null);
+        return cmd.Targeting(target).WithHitCount(hitCount).Execute(ctx);
+    }
+
+    /// <summary>对全体敌人造成伤害（可多段）。</summary>
+    protected Task DealDamageToAll(PlayerChoiceContext ctx, decimal amount, int hitCount = 1)
+    {
+        if (CombatState is null)
+        {
+            return Task.CompletedTask;
+        }
+
+        return DamageCmd.Attack(amount)
+            .FromCard(this, null)
+            .TargetingAllOpponents(CombatState)
+            .WithHitCount(hitCount)
+            .Execute(ctx);
+    }
 
     /// <summary>给自己加能量。</summary>
     protected Task GainEnergy(decimal amount) =>

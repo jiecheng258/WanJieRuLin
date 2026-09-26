@@ -2,12 +2,15 @@
 """
 WanJieRuLin 打包脚本
 生成:
-  WanJieRuLin-v0.1.2-install.zip   游戏 mods/ 即用包 (DLL + json + pck + 安装说明)
-  WanJieRuLin-v0.1.2-source.zip    源码包 (工程全部源文件)
+  WanJieRuLin-<VERSION>-install.zip   游戏 mods/ 即用包 (DLL + json + pck + 安装说明)
+  WanJieRuLin-<VERSION>-source.zip    源码包 (工程全部源文件)
 
 用法:
   python package.py            # 打包
   python package.py --check    # 只校验, 不写文件
+
+★ 升级版本时**只需改下面的 VERSION 常量**（连同 WanJieRuLin.json 的 version 一起改）。
+  输出文件按版本号命名，**旧版本的 zip 不会被删除或覆盖**，可以随时回滚对照。
 """
 import os
 import sys
@@ -15,7 +18,7 @@ import shutil
 import hashlib
 import zipfile
 
-VERSION = "v0.1.2"
+VERSION = "v0.2.1"
 
 REPO = r"C:\Users\wangx\Documents\Default Project\WanJieRuLin"
 GAME_MODS = r"C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods"
@@ -30,10 +33,17 @@ SRC_FILES = [
     "export_presets.cfg", "local.props.template", "project.godot",
 ]
 # 源码包包含的顶层目录
-SRC_DIRS = ["WanJieRuLin", "WanJieRuLinCode"]
+# ★ .tools 也要打进去：它是文案真相源（gen_loc.py）与全部审计脚本所在处，
+#   发行说明承诺「含构建脚本」。（2026-09-27 修正：此前只遍历前两个目录，
+#   导致 .tools 完全没进包。）
+SRC_DIRS = ["WanJieRuLin", "WanJieRuLinCode", ".tools"]
 # 源码包里要排除的扩展名
 SRC_EXCLUDE_EXT = {".uid", ".import", ".md5", ".tmp", ".log"}
-SRC_EXCLUDE_DIR = {".git", ".godot", ".import", "obj", "bin", ".tools", ".vs"}
+# ★ .tools 必须包含（2026-09-27 修正）：
+#   它是「文案唯一真相源 gen_loc.py」+ 全部审计脚本（含 audit_infinite.py）所在处，
+#   发行说明里承诺了「含构建脚本」，此前却被排除，名不副实。
+#   只排除其中的 __pycache__。
+SRC_EXCLUDE_DIR = {".git", ".godot", ".import", "obj", "bin", ".vs", "__pycache__"}
 
 
 def md5(path):

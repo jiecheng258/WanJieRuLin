@@ -33,7 +33,12 @@ public sealed class GuiMo : WanJieRuLinRelic
     // 说明：鬼气资源本身是 PersistencePolicy.Combat，正常情况下框架在换战斗时
     // 就会回到 defaultAmount；这里是显式兜底，顺序上「重置成 1」不会和框架冲突
     // （即使框架在本钩子之后再重置一次，结果仍然是 1）。
-    public override Task BeforeCombatStart() => ResetGhostQiToCombatStart();
+    public override Task BeforeCombatStart()
+    {
+        // 每场战斗重新挂一次「墨之相」。
+        ResetInkPhaseFlag();
+        return ResetGhostQiToCombatStart();
+    }
 
     // 每回合开始：持续供给，构成鬼气经济的基础。
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
@@ -42,6 +47,9 @@ public sealed class GuiMo : WanJieRuLinRelic
         {
             return;
         }
+
+        // 角色的固有机制「墨之相」在这里挂上（BeforeCombatStart 拿不到上下文）。
+        await EnsureInkPhase(choiceContext, player);
 
         Flash();
         await GainGhostQi(TurnStartGhostQi);

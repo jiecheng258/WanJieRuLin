@@ -1,5 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
@@ -39,17 +40,37 @@ public static class WanJieRuLinAncientOptions
     /// </summary>
     public static void Register()
     {
-        var rule = ModAncientOptionRule.Single(
+        // 规则一：「墨染江山」—— 加一张先古卡。
+        var moRanRule = ModAncientOptionRule.Single(
             optionFactory: BuildMoRanOption,
             condition: null,
             priority: 0,
             skipDuplicateTextKeys: true);
 
+        // 规则二：「金丝鬼墨」—— 把起始遗物鬼墨换成它的升级形态。
+        //
+        // ★ 为什么要有这条：
+        //   JinSiGuiMo 原先注册进了遗物池、稀有度是 RelicRarity.Starter，
+        //   但**全工程没有任何地方发放它**（既不是 RegisterCharacterStarterRelic，
+        //   也没有事件/先古引用）。而 Starter 稀有度通常不会出现在奖励池里，
+        //   所以它实际上是玩家永远拿不到的废内容。
+        //   这里给它一条正经获取途径，同时它「鬼墨的升级形态」的定位也就成立了。
+        //
+        // condition 保证：只有身上真的有「鬼墨」时才出现这个选项
+        //   （万一先古在别的时机触发、或玩家已换过，就不会给出一个空选项）。
+        var jinSiRule = ModAncientOptionRule.Single(
+            optionFactory: BuildJinSiGuiMoOption,
+            condition: ancient => HasGhostQiRelic(ancient.Owner),
+            priority: 1,
+            skipDuplicateTextKeys: true);
+
         // Neow —— 序幕先古。
-        ModAncientOptionRegistry.Register<Neow>(Entry.ModId, rule);
+        ModAncientOptionRegistry.Register<Neow>(Entry.ModId, moRanRule);
+        ModAncientOptionRegistry.Register<Neow>(Entry.ModId, jinSiRule);
 
         // Darv —— 达佛。
-        ModAncientOptionRegistry.Register<Darv>(Entry.ModId, rule);
+        ModAncientOptionRegistry.Register<Darv>(Entry.ModId, moRanRule);
+        ModAncientOptionRegistry.Register<Darv>(Entry.ModId, jinSiRule);
     }
 
     /// <summary>
@@ -212,6 +233,97 @@ public static class WanJieRuLinAncientOptions
             //   → `StateChanged` 触发 → `EventRoom.OnEventStateChanged` → `MarkPreFinished` + 存档
             //   → `NEventRoom.SetOptions` 看到 IsFinished → 生成 PROCEED 按钮
             //   → 玩家点「继续」→ `NEventRoom.Proceed()` → `NMapScreen.Open(false)` → 回地图。
+            ancient.StartPreFinished();
+        }
+    }
+
+    // ==================================================================
+    // 规则二：「金丝鬼墨」—— 起始遗物的升级形态
+    // ==================================================================
+
+    /// <summary>
+    /// 「金丝鬼墨」选项的文案键。
+    /// ⚠️ 同样**不允许出现任何 {占位符}** —— 事件界面拿不到遗物的 DynamicVars。
+    /// </summary>
+    private const string JinSiOptionTextKey = "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO_OPTION";
+
+    /// <summary>
+    /// 判断玩家身上是否还带着未升级的「鬼墨」。
+    ///
+    /// ★ 包一层 try/catch 是必要的防御：`Player.GetRelic&lt;T&gt;()` 在**没有该遗物**
+    ///   时的行为没有文档保证（可能返回 null，也可能抛）。而这个判断会被
+    ///   `ModAncientOptionRegistry.ShouldApply` 在**每个先古事件**上调用 ——
+    ///   一旦抛出就会连累整个先古事件的选项生成。
+    ///   典型触发场景：玩家上一处先古已经换成了「金丝鬼墨」，到下一处先古时
+    ///   身上就没有「鬼墨」了。
+    /// </summary>
+    private static bool HasGhostQiRelic(Player? player)
+    {
+        if (player is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            return player.GetRelic<Relics.GuiMo>() is not null;
+        }
+        catch (Exception ex)
+        {
+            Entry.Logger.Warn("[JinSiGuiMo] 查询鬼墨遗物时抛异常，按「没有」处理：" + ex.Message);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 构造「金丝鬼墨」选项：把身上的「鬼墨」换成「金丝鬼墨」。
+    /// </summary>
+    private static EventOption BuildJinSiGuiMoOption(AncientEventModel ancient)
+    {
+        return new EventOption(
+            ancient,
+            onChosen: () => GrantJinSiGuiMo(ancient),
+            title: new LocString(LocTable, JinSiOptionTextKey + ".title"),
+            description: new LocString(LocTable, JinSiOptionTextKey + ".description"),
+            textKey: JinSiOptionTextKey,
+            hoverTips: []);
+    }
+
+    /// <summary>
+    /// 用 <c>RelicCmd.Replace</c> 把玩家身上的「鬼墨」替换成「金丝鬼墨」。
+    ///
+    /// 为什么用 Replace 而不是「先 Remove 再 Obtain」：
+    /// - `RelicCmd.Replace(RelicModel original, RelicModel replace)` 是原版自带的
+    ///   原子操作（签名由探针 21 从 sts2.dll 反射确认），一次调用完成替换，
+    ///   不用自己处理「移除失败但获得了新的」这种中间态。
+    /// - `original` 必须是玩家**实际持有**的实例（用 `Player.GetRelic&lt;T&gt;()` 取），
+    ///   不能传 `ModelDb` 的规范实例 —— 规范实例不在玩家的遗物列表里。
+    /// - `replace` 传 `ModelDb.Relic&lt;JinSiGuiMo&gt;()` 的规范实例即可，
+    ///   与 `RelicCmd.Obtain` 的用法一致（Obtain 内部会处理可变副本与归属）。
+    ///
+    /// ⚠️ 与「墨染江山」一样，无论成败都必须推进事件，否则会软锁。
+    ///    （onChosen 由 TaskHelper.RunSafely 调用，异常会被吞掉，
+    ///      玩家只会看到「点了没反应」。）
+    /// </summary>
+    private static async Task GrantJinSiGuiMo(AncientEventModel ancient)
+    {
+        try
+        {
+            if (ancient.Owner is not { } player)
+            {
+                Entry.Logger.Warn("[JinSiGuiMo] 事件没有 Owner，无法替换遗物；仍推进事件以免软锁。");
+                return;
+            }
+
+            if (player.GetRelic<Relics.GuiMo>() is not { } owned)
+            {
+                Entry.Logger.Warn("[JinSiGuiMo] 玩家身上没有鬼墨，跳过替换；仍推进事件以免软锁。");
+                return;
+            }
+
+            await RelicCmd.Replace(owned, ModelDb.Relic<Relics.JinSiGuiMo>());        }
+        finally
+        {
             ancient.StartPreFinished();
         }
     }

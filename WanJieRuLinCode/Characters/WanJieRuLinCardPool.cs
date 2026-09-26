@@ -42,7 +42,26 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.Jian),              // 剑！
         typeof(Cards.PingXingShiJie),    // 平行世界
         typeof(Cards.ShiTong),           // 尸瞳
-        typeof(Cards.WoBuWanLe)          // 我不玩了
+        typeof(Cards.WoBuWanLe),         // 我不玩了
+
+        // ---- 第三批：墨之相三流派新增 ----
+        typeof(Cards.XiBi),              // 洗笔
+        typeof(Cards.LiuBai),            // 留白
+        typeof(Cards.DanMiao),           // 淡描
+        typeof(Cards.ChengXin),          // 澄心
+        typeof(Cards.SuLian),            // 素练
+        typeof(Cards.LianFeng),          // 敛锋
+        typeof(Cards.CangFeng),          // 藏锋
+        typeof(Cards.YunMo),             // 匀墨
+        typeof(Cards.NongDanXiangSheng), // 浓淡相生
+        typeof(Cards.NingMo),            // 凝墨
+        typeof(Cards.JingShui),          // 静水
+        typeof(Cards.PoYan),             // 破砚
+        typeof(Cards.ChengMo),           // 澄墨
+        typeof(Cards.KongMing),          // 空明
+        typeof(Cards.ShuYing),           // 疏影
+        typeof(Cards.GuiYi),             // 归一
+        typeof(Cards.HuanQi)             // 换气
     ];
 
     /// <summary>随机挑一张技能牌的类型；卡池为空时返回 null。</summary>

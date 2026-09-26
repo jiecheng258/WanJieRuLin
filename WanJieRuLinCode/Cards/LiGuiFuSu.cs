@@ -19,13 +19,25 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiGuiFuSu : WanJieRuLinCardModel
 {
+    /// <summary>每回合开始时额外获得的鬼气。</summary>
+    private const int GhostQiPerTurn = 2;
+
     public LiGuiFuSu() : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<EnergyToGhostQiPower>(choiceContext, 1m);
+        var power = await ApplySelfAndGet<EnergyToGhostQiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            // 文案写「每回合」→ 永久。
+            power.Configure(EnergyToGhostQiPower.Permanent);
+
+            // 光把能量换成鬼气是等价交换（1 鬼气 ≈ 1 能量），没有净收益；
+            // 补一份每回合的额外鬼气，这张 3 费稀有才有存在意义。
+            power.GhostQiPerTurn = GhostQiPerTurn;
+        }
     }
 
     protected override void OnUpgrade()

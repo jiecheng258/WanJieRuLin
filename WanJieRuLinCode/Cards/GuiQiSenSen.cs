@@ -18,6 +18,9 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GuiQiSenSen : WanJieRuLinCardModel
 {
+    /// <summary>每回合开始时额外抽的牌数。</summary>
+    private const int DrawPerTurn = 1;
+
     public GuiQiSenSen() : base(3, CardType.Power, CardRarity.Event, TargetType.Self)
     {
     }
@@ -29,7 +32,15 @@ public sealed class GuiQiSenSen : WanJieRuLinCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<EnergyToGhostQiPower>(choiceContext, 1m);
+        var power = await ApplySelfAndGet<EnergyToGhostQiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            // 文案写「你接下来的回合」→ 永久。
+            power.Configure(EnergyToGhostQiPower.Permanent);
+
+            // 与「厉鬼复苏」同一份能力，用抽牌作为额外产出以示区分。
+            power.DrawPerTurn = DrawPerTurn;
+        }
     }
 
     protected override void OnUpgrade()

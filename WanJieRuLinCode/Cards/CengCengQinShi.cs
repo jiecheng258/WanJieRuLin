@@ -2,7 +2,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using WanJieRuLin.Characters;
@@ -10,41 +9,39 @@ using WanJieRuLin.Characters;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 层层侵蚀 —— 技能牌 3 鬼气：获得 15 点格挡。若打出此牌后鬼气值为 0，获得 2 点鬼气。
-/// 升级后获得 20 点格挡。
+/// 层层侵蚀 —— 技能牌 1 能量：获得 2 点鬼气，抽 1 张牌。
+///
+/// ★ 反无限（R6）—— 旧写法是 **0 费**、且打出后若鬼气归零会「返还 2 点鬼气」，
+///   等于**免费产鬼气**。0 费产气是最典型的无限燃料：它本身不花任何代价，
+///   于是任何「鬼气 → 资源」的兑换器都能被它无限喂饱。
+///
+///   收紧：**0 费 → 1 费**。产气必须花能量，燃料就不免费了。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class CengCengQinShi : WanJieRuLinCardModel
 {
-    private const int GhostQiCost = 3;
-    private const int RefundGhostQi = 2;
+    private const int QiGain = 2;
 
-    public CengCengQinShi() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public CengCengQinShi() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
-        SetGhostQiCost(GhostQiCost);
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
-        GhostQiCostVarOf(3),
-        new BlockVar(15m, ValueProp.Move),
-        GhostQiGainVarOf(RefundGhostQi)
+        GhostQiGainVarOf(QiGain),
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-
-        // 消耗 3 点鬼气后若恰好归零，返还 2 点。
-        if (MyGhostQi == 0)
-        {
-            await GainGhostQi(RefundGhostQi);
-        }
+        await GainGhostQi(DynamicVars.GetIntOrDefault("GhostQiGain", QiGain));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(5m);
+        // ★ 质变：双升级 —— 鬼气 +1 **且** 抽牌 +1。
+        DynamicVars["GhostQiGain"].UpgradeValueBy(1);
+        DynamicVars.Cards.UpgradeValueBy(1);
     }
 }

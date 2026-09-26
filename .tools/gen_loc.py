@@ -112,8 +112,8 @@ CARDS = {
                    'Light Slash', 'Enemy loses {StrengthLoss:diff()} [gold]Strength[/gold].\n[gold]Exhaust[/gold].'),
 'BiMoQingXie': ('笔墨倾泻', '对所有敌人造成 {Damage:diff()}点伤害，共 X 次（X 为你消耗的[gold]能量[/gold]）。\n获得 X 点[gold]覆甲[/gold]（X 为能量与[gold]鬼气[/gold]之和）。',
                 'Ink Torrent', 'Deal {Damage:diff()} damage to ALL enemies X times, where X is the [gold]Energy[/gold] spent.\nGain X [gold]Plating[/gold], where X is Energy plus [gold]Ghost Qi[/gold].'),
-'ShenShiDuoShi': ('审时度势', '每耗费 [blue]1[/blue]点鬼气，获得 [blue]1[/blue]点[gold]能量[/gold]。\n抽 {Cards:diff()}张牌。',
-                  'Read the Room', 'For each [blue]1[/blue] Ghost Qi spent, gain [blue]1[/blue] [gold]Energy[/gold].\nDraw {Cards:diff()} card(s).'),
+'ShenShiDuoShi': ('审时度势', '耗费所有[gold]鬼气[/gold]。每耗费 {QiPerEnergy:diff()}点鬼气，获得 [blue]1[/blue]点[gold]能量[/gold]。\n[gold]消耗[/gold]。',
+                   'Read the Room', 'Spend all [gold]Ghost Qi[/gold]. For every {QiPerEnergy:diff()} Ghost Qi spent, gain [blue]1[/blue] [gold]Energy[/gold].\n[gold]Exhaust[/gold].'),
 'ChiXuQinRao': ('持续侵扰', '造成 {Damage:diff()}点伤害。\n给予 {Vulnerable:diff()}层[gold]易伤[/gold]和 {Weak:diff()}层[gold]虚弱[/gold]。',
                 'Persistent Harassment', 'Deal {Damage:diff()} damage.\nApply {Vulnerable:diff()} [gold]Vulnerable[/gold] and {Weak:diff()} [gold]Weak[/gold].'),
 'XiaoHuo': ('消火', '获得 {Block:diff()}点格挡。\n给予自身 {Weak:diff()}层[gold]虚弱[/gold]。',
@@ -148,8 +148,8 @@ CARDS = {
                'Grind the Ink', 'Can only be played while you have more than [blue]3[/blue] [gold]Ghost Qi[/gold].\nDeal {Damage:diff()} damage.'),
 'PiaoMiaoJianJue': ('飘渺剑诀', '造成 {Damage:diff()}点伤害。\n随机获得一把剑：\n[gold]金剑[/gold]：回合开始时获得 [blue]3[/blue]点[gold]活力[/gold]。\n[gold]木剑[/gold]：回合开始时回复 [blue]1[/blue]点生命。\n[gold]水剑[/gold]：回合开始时，弃牌堆中一张攻击牌获得[gold]消耗[/gold]与单回合[gold]保留[/gold]。\n[gold]火剑[/gold]：回合开始时获得 [blue]1[/blue]点[gold]临时力量[/gold]。\n[gold]土剑[/gold]：回合开始时获得 [blue]1[/blue]点[gold]覆甲[/gold]。\n[gold]消耗[/gold]。',
                     'Ethereal Sword Art', 'Deal {Damage:diff()} damage.\nGain a random sword:\n[gold]Metal Sword[/gold]: gain [blue]3[/blue] [gold]Vigor[/gold] at the start of each turn.\n[gold]Wood Sword[/gold]: heal [blue]1[/blue] HP at the start of each turn.\n[gold]Water Sword[/gold]: at the start of each turn, an Attack in your discard pile gains [gold]Exhaust[/gold] and single-turn [gold]Retain[/gold].\n[gold]Fire Sword[/gold]: gain [blue]1[/blue] [gold]Temporary Strength[/gold] at the start of each turn.\n[gold]Earth Sword[/gold]: gain [blue]1[/blue] [gold]Plating[/gold] at the start of each turn.\n[gold]Exhaust[/gold].'),
-'CengCengQinShi': ('层层侵蚀', '获得 {Block:diff()}点格挡。\n若打出此牌后你的[gold]鬼气[/gold]为 [blue]0[/blue]，获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。',
-                   'Layered Erosion', 'Gain {Block:diff()} Block.\nIf you have [blue]0[/blue] [gold]Ghost Qi[/gold] after playing this, gain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].'),
+'CengCengQinShi': ('层层侵蚀', '获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。\n抽 {Cards:diff()}张牌。',
+                    'Layered Erosion', 'Gain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].\nDraw {Cards:diff()} card(s).'),
 'WoRuoWeiGui': ('我若为鬼', '下回合获得的[gold]能量[/gold]全部转为[gold]鬼气[/gold]。\n下回合抽 {Cards:diff()}张牌。\n[gold]消耗[/gold]。',
                 'If I Were a Ghost', 'Next turn, all [gold]Energy[/gold] you would gain is converted into [gold]Ghost Qi[/gold].\nNext turn, draw {Cards:diff()} card(s).\n[gold]Exhaust[/gold].'),
 'WoRuoWeiShen': ('我若为神', '下回合获得的[gold]鬼气[/gold]全部转为[gold]能量[/gold]。\n下回合可以免费打出 {FreeCards:diff()}张牌。\n[gold]消耗[/gold]。',
@@ -170,8 +170,8 @@ CARDS = {
 # ---- 稀有 ----
 'DianLongXingTai': ('电龙形态', '回合开始时，获得 [blue]10[/blue]点[gold]活力[/gold]和 [blue]3[/blue]点[gold]临时力量[/gold]。\n[gold]虚无[/gold]。',
                     'Lightning Dragon Form', 'At the start of each turn, gain [blue]10[/blue] [gold]Vigor[/gold] and [blue]3[/blue] [gold]Temporary Strength[/gold].\n[gold]Ethereal[/gold].'),
-'LiGuiFuSu': ('厉鬼复苏', '每回合获得的[gold]能量[/gold]全部转为同等数值的[gold]鬼气[/gold]。\n消耗掉所有[gold]能量牌[/gold]。\n每回合开始时发现一张耗费[gold]鬼气[/gold]的牌，它可以免费打出一次。',
-              'Vengeful Ghost Revival', 'All [gold]Energy[/gold] you gain each turn is converted into that much [gold]Ghost Qi[/gold].\n[gold]Exhaust[/gold] all [gold]Energy cards[/gold].\nAt the start of each turn, discover a card that costs [gold]Ghost Qi[/gold]; it can be played for free once.'),
+'LiGuiFuSu': ('厉鬼复苏', '你接下来获得的[gold]能量[/gold]全部转为同等数值的[gold]鬼气[/gold]。\n每回合开始时额外获得 [blue]2[/blue]点[gold]鬼气[/gold]。',
+              'Vengeful Ghost Revival', 'All [gold]Energy[/gold] you would gain is converted into that much [gold]Ghost Qi[/gold].\nAt the start of each turn, gain [blue]2[/blue] extra [gold]Ghost Qi[/gold].'),
 'GuangMingYuYan': ('光明预言', '每消耗 [blue]1[/blue]点[gold]鬼气[/gold]，失去 {HpPerGhostQi:diff()}点生命，并对随机敌人造成同等数值的伤害。',
                    'Prophecy of Light', 'Whenever you spend [blue]1[/blue] [gold]Ghost Qi[/gold], lose {HpPerGhostQi:diff()} HP and deal that much damage to a random enemy.'),
 'GuiYu': ('鬼域', '每回合第 [blue]1[/blue]张[gold]攻击牌[/gold]伤害翻倍。\n每回合第 [blue]3[/blue]张牌本回合费用变为 [blue]0[/blue]。',
@@ -188,8 +188,8 @@ CARDS = {
           'Arrogance', 'Deal {Damage:diff()} damage.\nThis turn, for each [blue]1[/blue] damage you deal, gain [blue]1[/blue] [gold]Ghost Qi[/gold].'),
 'ShiTong': ('尸瞳', '本回合每打出 [blue]1[/blue]张牌，获得 {GhostQiPerCard:diff()}点[gold]鬼气[/gold]。',
             'Corpse Eye', 'This turn, for every card you play, gain {GhostQiPerCard:diff()} [gold]Ghost Qi[/gold].'),
-'PingXingShiJie': ('平行世界', '选择任意张手牌置入弃牌堆。\n抽等量的牌，再额外抽 {BonusDraw:diff()}张（X 为你以此法弃掉的牌数）。\n获得 {Energy}点[gold]能量[/gold]。',
-                   'Parallel World', 'Choose any number of cards in your hand and put them into your discard pile.\nDraw that many cards, plus {BonusDraw:diff()} more, where X is the number of cards discarded this way.\nGain {Energy} Energy.'),
+'PingXingShiJie': ('平行世界', '弃掉任意张手牌（X）。\n抽 X+{BonusDraw:diff()} 张牌。',
+                    'Parallel World', 'Discard any number of cards (X).\nDraw X+{BonusDraw:diff()} card(s).'),
 'AoJiao': ('傲娇', '抽 {Cards:diff()}张牌。\n获得等于这些牌伤害总和的格挡。\n[gold]消耗[/gold]。',
            'Tsundere', 'Draw {Cards:diff()} cards.\nGain Block equal to the total damage of those cards.\n[gold]Exhaust[/gold].'),
 'Jian': ('剑！', '接下来 {Turns:diff()} 个回合，每回合开始获得 {SwordsPerTurn:diff()}把剑的效果。\n[gold]消耗[/gold]。',
@@ -200,12 +200,89 @@ CARDS = {
 # ---- 先古 / 事件 ----
 'MoRanJiangShan': ('墨染江山', '本回合获得 X+{Bonus:diff()}点[gold]临时力量[/gold]和 X+{Bonus:diff()}点[gold]临时敏捷[/gold]（X 为你耗费的鬼气）。\n[gold]保留[/gold]。',
                    'Ink-Stained Realm', 'Gain X+{Bonus:diff()} [gold]Temporary Strength[/gold] and X+{Bonus:diff()} [gold]Temporary Dexterity[/gold] this turn, where X is the Ghost Qi spent.\n[gold]Retain[/gold].'),
-'GuiQiSenSen': ('鬼气森森', '你接下来的回合不再获得[gold]能量[/gold]，改为获得同等数值的[gold]鬼气[/gold]。\n所有[gold]能量牌[/gold]耗能变为 [blue]0[/blue] 并获得[gold]消耗[/gold]。',
-               'Ghost Qi Abounds', 'On future turns you no longer gain [gold]Energy[/gold]; instead you gain that much [gold]Ghost Qi[/gold].\nAll [gold]Energy cards[/gold] cost [blue]0[/blue] and gain [gold]Exhaust[/gold].'),
+'GuiQiSenSen': ('鬼气森森', '你接下来的回合不再获得[gold]能量[/gold]，改为获得同等数值的[gold]鬼气[/gold]。\n每回合开始时额外抽 [blue]1[/blue]张牌。',
+               'Ghost Qi Abounds', 'On future turns you no longer gain [gold]Energy[/gold]; instead you gain that much [gold]Ghost Qi[/gold].\nAt the start of each turn, draw [blue]1[/blue] extra card.'),
 
 # ---- 衍生物 ----
 'YinSenSen': ('阴森森', '造成 {Damage:diff()}点伤害，共 {Repeat:diff()} 次。',
               'Shade of Shade', 'Deal {Damage:diff()} damage {Repeat:diff()} times.'),
+
+# ===== [AUTO] 第三批：37 张新卡（墨之相三流派）=====
+'DanMo': ('淡墨', '造成 {Damage:diff()}点伤害。若你的[gold]鬼气[/gold]不高于 [blue]2[/blue]，额外造成 [blue]4[/blue]点伤害。',
+          'Thin Ink', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, deal [blue]4[/blue] more.'),
+'SuMo': ('宿墨', '造成 {Damage:diff()}点伤害。\n获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。',
+         'Aged Ink', 'Deal {Damage:diff()} damage.\nGain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].'),
+'HuiHao': ('挥毫', '造成 {Damage:diff()}点伤害。若你的[gold]鬼气[/gold]不低于 [blue]8[/blue]，额外造成 [blue]6[/blue]点伤害。',
+           'Wield the Brush', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]8[/blue] or more, deal [blue]6[/blue] more.'),
+'XiBi': ('洗笔', '失去所有[gold]鬼气[/gold]。\n每失去 [blue]1[/blue]点，获得 {BlockPerQi:diff()}点[gold]格挡[/gold]。',
+         'Rinse the Brush', 'Lose all [gold]Ghost Qi[/gold].\nGain {BlockPerQi:diff()} Block for each point lost.'),
+'LiuBai': ('留白', '抽 {Cards:diff()}张牌。若你的[gold]鬼气[/gold]不高于 [blue]2[/blue]，再抽 [blue]1[/blue]张。',
+           'Blank Space', 'Draw {Cards:diff()} cards. If your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, draw [blue]1[/blue] more.'),
+'YanMoInk': ('研墨', '获得 {Block:diff()}点[gold]格挡[/gold]。\n获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。',
+             'Grind the Ink', 'Gain {Block:diff()} Block.\nGain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].'),
+'DanMiao': ('淡描', '获得 {Block:diff()}点[gold]格挡[/gold]。若你的[gold]鬼气[/gold]不高于 [blue]2[/blue]，改为获得 [blue]10[/blue]点。',
+            'Light Outline', 'Gain {Block:diff()} Block. If your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, gain [blue]10[/blue] instead.'),
+'BanYan': ('半砚', '每回合结束时，若你的[gold]鬼气[/gold]在 [blue]3[/blue] 到 [blue]7[/blue] 之间，获得 {BlockPerTurn:diff()}点[gold]格挡[/gold]。',
+           'Half Inkstone', 'At the end of each turn, if your [gold]Ghost Qi[/gold] is between [blue]3[/blue] and [blue]7[/blue], gain {BlockPerTurn:diff()} Block.'),
+'TiaoDeng': ('挑灯', '造成 {Damage:diff()}点伤害。若你的[gold]鬼气[/gold]不高于 [blue]2[/blue]，抽 {Cards:diff()}张牌。',
+             'Trim the Lamp', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, draw {Cards:diff()} cards.'),
+'PoMo': ('泼墨', '造成 {Damage:diff()}点伤害，共 [blue]2[/blue] 次。\n获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。',
+         'Splash Ink', 'Deal {Damage:diff()} damage [blue]2[/blue] times.\nGain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].'),
+'GanBi': ('干笔', '造成 {Damage:diff()}点伤害。\n失去 [blue]3[/blue]点[gold]鬼气[/gold]。若因此鬼气不高于 [blue]2[/blue]，额外造成 [blue]5[/blue]点伤害。',
+          'Dry Brush', 'Deal {Damage:diff()} damage.\nLose [blue]3[/blue] [gold]Ghost Qi[/gold]. If that leaves you at [blue]2[/blue] or less, deal [blue]5[/blue] more.'),
+'MoLong': ('墨龙', '造成 {Damage:diff()}点伤害。若你的[gold]鬼气[/gold]不低于 [blue]10[/blue]，改为造成 [blue]24[/blue]点伤害。',
+           'Ink Dragon', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]10[/blue] or more, deal [blue]24[/blue] instead.'),
+'KuFeng': ('枯锋', '[gold]鬼气[/gold]不高于 [blue]3[/blue] 时才能打出。\n造成 {Damage:diff()}点伤害。',
+           'Withered Edge', 'Can only be played if your [gold]Ghost Qi[/gold] is [blue]3[/blue] or less.\nDeal {Damage:diff()} damage.'),
+'DuanXu': ('断续', '造成 {Damage:diff()}点伤害，共 {Repeat:diff()} 次。\n每命中 [blue]1[/blue] 次，失去 [blue]1[/blue]点[gold]鬼气[/gold]。',
+           'Broken Line', 'Deal {Damage:diff()} damage {Repeat:diff()} times.\nLose [blue]1[/blue] [gold]Ghost Qi[/gold] per hit.'),
+'ChengXin': ('澄心', '失去 {GhostQiLoss:diff()}点[gold]鬼气[/gold]。\n抽 {Cards:diff()}张牌。',
+             'Clear Mind', 'Lose {GhostQiLoss:diff()} [gold]Ghost Qi[/gold].\nDraw {Cards:diff()} cards.'),
+'SuLian': ('素练', '获得 {Block:diff()}点[gold]格挡[/gold]。若你的[gold]鬼气[/gold]在 [blue]3[/blue] 到 [blue]7[/blue] 之间，改为获得 [blue]14[/blue]点。',
+           'Plain Silk', 'Gain {Block:diff()} Block. If your [gold]Ghost Qi[/gold] is between [blue]3[/blue] and [blue]7[/blue], gain [blue]14[/blue] instead.'),
+'LianFeng': ('敛锋', '[gold]鬼气[/gold]不高于 [blue]2[/blue] 时才能打出。\n获得 {Block:diff()}点[gold]格挡[/gold]，抽 {Cards:diff()}张牌。',
+             'Sheathe the Edge', 'Can only be played if your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less.\nGain {Block:diff()} Block and draw {Cards:diff()} cards.'),
+'CangFeng': ('藏锋', '抽 {Cards:diff()}张牌。',
+             'Hide the Edge', 'Draw {Cards:diff()} cards.\nGain [blue]1[/blue] Energy.'),
+'YunMo': ('匀墨', '将你的[gold]鬼气[/gold]设为 [blue]5[/blue]。\n抽 {Cards:diff()}张牌。',
+          'Even the Ink', 'Set your [gold]Ghost Qi[/gold] to [blue]5[/blue].\nDraw {Cards:diff()} cards.'),
+'NongDanXiangSheng': ('浓淡相生', '若你的[gold]鬼气[/gold]不低于 [blue]8[/blue]：失去 {Swing:diff()}点鬼气并抽 [blue]2[/blue]张牌；否则：获得 {Swing:diff()}点鬼气并抽 [blue]1[/blue]张牌。',
+                      'Dense and Thin', 'If your [gold]Ghost Qi[/gold] is [blue]8[/blue] or more: lose {Swing:diff()} Ghost Qi and draw [blue]2[/blue] cards. Otherwise: gain {Swing:diff()} Ghost Qi and draw [blue]1[/blue] card.'),
+'NingMo': ('凝墨', '获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。\n下回合开始时，获得 {NextTurn:diff()}点[gold]鬼气[/gold]。',
+           'Thickening Ink', 'Gain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].\nAt the start of next turn, gain {NextTurn:diff()} [gold]Ghost Qi[/gold].'),
+'JingShui': ('静水', '获得 {Block:diff()}点[gold]格挡[/gold]。\n本回合内你无法获得[gold]鬼气[/gold]。',
+             'Still Water', 'Gain {Block:diff()} Block.\nYou cannot gain [gold]Ghost Qi[/gold] this turn.'),
+'PoYan': ('破砚', '失去所有[gold]鬼气[/gold]。\n每失去 {QiPerEnergy:diff()}点，获得 [blue]1[/blue]点[gold]能量[/gold]；抽 [blue]1[/blue]张牌。\n[gold]消耗[/gold]。',
+          'Broken Inkstone', 'Lose all [gold]Ghost Qi[/gold].\nFor every [blue]3[/blue] lost, gain {EnergyPer:diff()} Energy and draw [blue]1[/blue] card.'),
+'GuiQiXunHuan': ('鬼气循环', '每回合结束时：若你的[gold]鬼气[/gold]不低于 [blue]8[/blue]，失去 {AmountPerTurn:diff()}点；若不高于 [blue]2[/blue]，获得 {AmountPerTurn:diff()}点。',
+                 'Ghost Qi Cycle', 'At the end of each turn: if your [gold]Ghost Qi[/gold] is [blue]8[/blue] or more, lose {AmountPerTurn:diff()}; if [blue]2[/blue] or less, gain {AmountPerTurn:diff()}.'),
+'NongDanYouXin': ('浓淡由心', '每当你获得[gold]鬼气[/gold]，获得 [blue]2[/blue]点[gold]格挡[/gold]；每当你失去[gold]鬼气[/gold]，抽 [blue]1[/blue]张牌。\n每回合最多触发 {MaxTriggersPerTurn:diff()} 次。',
+                  'Ink at Will', 'Whenever you gain [gold]Ghost Qi[/gold], gain [blue]2[/blue] Block; whenever you lose [gold]Ghost Qi[/gold], draw [blue]1[/blue] card.\nUp to {MaxTriggersPerTurn:diff()} times per turn.'),
+'BaoWu': ('薄雾', '回合开始时，若你的[gold]鬼气[/gold]不高于 [blue]2[/blue]，获得 {EnergyPerTurn:diff()}点[gold]能量[/gold]。',
+          'Mist', 'At the start of each turn, if your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, gain {EnergyPerTurn:diff()} Energy.'),
+'MoHaiFanTeng': ('墨海翻腾', '造成 {Damage:diff()}点伤害，共 [blue]2[/blue] 次。若你的[gold]鬼气[/gold]不低于 [blue]10[/blue]，改为 [blue]4[/blue] 次。',
+                 'Ink Sea Surges', 'Deal {Damage:diff()} damage [blue]2[/blue] times. If your [gold]Ghost Qi[/gold] is [blue]10[/blue] or more, [blue]4[/blue] times instead.'),
+'SuXinYiJian': ('素心一剑', '[gold]鬼气[/gold]为 [blue]0[/blue] 时才能打出。\n造成 {Damage:diff()}点伤害，抽 {Cards:diff()}张牌。\n[gold]消耗[/gold]。',
+                'Pure Heart Strike', 'Can only be played while you have [blue]0[/blue] [gold]Ghost Qi[/gold].\nDeal {Damage:diff()} damage and draw {Cards:diff()} cards.\n[gold]Exhaust[/gold].'),
+'XiJinQianHua': ('洗尽铅华', '失去所有[gold]鬼气[/gold]。\n造成 {Damage:diff()}点伤害，每失去 [blue]1[/blue]点鬼气此伤害 +[blue]2[/blue]。',
+                 'Wash Away the Mask', 'Lose all [gold]Ghost Qi[/gold].\nDeal {Damage:diff()} damage, plus [blue]2[/blue] per Ghost Qi lost.'),
+'YiHuaKaiTian': ('一画开天', '造成 {Damage:diff()}点伤害。若你的[gold]鬼气[/gold]不低于 [blue]12[/blue]，改为造成 [blue]45[/blue]点伤害。\n[gold]消耗[/gold]。',
+                 'One Stroke Splits the Sky', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]12[/blue] or more, deal [blue]45[/blue] instead.\n[gold]Exhaust[/gold].'),
+'ChengMo': ('澄墨', '失去所有[gold]鬼气[/gold]。\n每失去 {QiPerCard:diff()}点，抽 [blue]1[/blue]张牌。\n[gold]消耗[/gold]。',
+            'Settled Ink', 'Lose all [gold]Ghost Qi[/gold].\nFor every {PerQi:diff()} lost, draw [blue]1[/blue] card and gain [blue]1[/blue] Energy.'),
+'KongMing': ('空明', '[gold]鬼气[/gold]不高于 [blue]2[/blue] 时才能打出。\n抽 {Cards:diff()}张牌，获得 [blue]2[/blue]点[gold]能量[/gold]。\n[gold]消耗[/gold]。',
+             'Empty Clarity', 'Can only be played if your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less.\nDraw {Cards:diff()} cards and gain [blue]2[/blue] Energy.\n[gold]Exhaust[/gold].'),
+'ShuYing': ('疏影', '获得等于你当前[gold]鬼气[/gold] {PerQi:diff()} 倍的[gold]格挡[/gold]（最多 {Cap:diff()} 点）。',
+            'Sparse Shadow', 'Gain Block equal to {PerQi:diff()} times your current [gold]Ghost Qi[/gold] (max {Cap:diff()}).'),
+'GuiYi': ('归一', '将你的[gold]鬼气[/gold]设为 [blue]5[/blue]。\n获得 {Block:diff()}点[gold]格挡[/gold]。\n[gold]消耗[/gold]。',
+          'Return to One', 'Set your [gold]Ghost Qi[/gold] to [blue]5[/blue].\nGain {Block:diff()} Block.\n[gold]Exhaust[/gold].'),
+'HuanQi': ('换气', '将你的[gold]鬼气[/gold]变为 {Mirror:diff()} 减去当前值。\n抽 {Cards:diff()}张牌。',
+          'Swap the Breath', 'Change your [gold]Ghost Qi[/gold] to {Mirror:diff()} minus its current value.\nDraw {Cards:diff()} cards.'),
+'MoYunTianCheng': ('墨韵天成', '每回合结束时，若你的[gold]鬼气[/gold]在 [blue]3[/blue] 到 [blue]7[/blue] 之间，抽 {DrawPerTurn:diff()}张牌并获得 {EnergyPerTurn:diff()}点[gold]能量[/gold]。',
+                   'Ink Rhythm', 'At the end of each turn, if your [gold]Ghost Qi[/gold] is between [blue]3[/blue] and [blue]7[/blue], draw {DrawPerTurn:diff()} cards and gain {EnergyPerTurn:diff()} Energy.'),
+'NongMoZhongCai': ('浓墨重彩', '每当你获得[gold]鬼气[/gold]，获得等量的[gold]格挡[/gold]（每回合最多 {MaxBlockPerTurn:diff()}点）。',
+                   'Heavy Ink', 'Whenever you gain [gold]Ghost Qi[/gold], gain that much Block (up to {MaxBlockPerTurn:diff()} per turn).'),
+    # ===== [AUTO] END =====
 }
 
 # ---------------------------------------------------------------- 能力
@@ -226,14 +303,10 @@ POWERS = {
     '每造成 {Threshold}点伤害，获得 [blue]1[/blue]点[gold]鬼气[/gold]。',
     'Haunting Shadows',
     'Every time you deal {Threshold} damage, gain [blue]1[/blue] [gold]Ghost Qi[/gold].'),
-'TunShiPower': ('吞噬',
-    '每获得 [blue]1[/blue]点[gold]鬼气[/gold]，抽 [blue]1[/blue]张牌。',
-    'Devour',
-    'Whenever you gain [blue]1[/blue] [gold]Ghost Qi[/gold], draw [blue]1[/blue] card.'),
-'HuaShenPower': ('化神',
-    '每消耗 [blue]1[/blue]点[gold]鬼气[/gold]，抽 [blue]1[/blue]张牌并获得 [blue]1[/blue]点[gold]能量[/gold]。',
-    'Ascend to Godhood',
-    'Whenever you spend [blue]1[/blue] [gold]Ghost Qi[/gold], draw [blue]1[/blue] card and gain [blue]1[/blue] Energy.'),
+'TunShiPower': ('吞噬', '每回合最多触发 [blue]2[/blue] 次：获得[gold]鬼气[/gold]时，抽 [blue]1[/blue]张牌。',
+                 'Devour', 'Up to [blue]2[/blue] times per turn: whenever you gain [gold]Ghost Qi[/gold], draw [blue]1[/blue] card.'),
+'HuaShenPower': ('化神', '每回合最多触发 [blue]2[/blue] 次：消耗[gold]鬼气[/gold]时，抽 [blue]1[/blue]张牌并获得 [blue]1[/blue]点[gold]能量[/gold]。',
+                  'Ascend to Godhood', 'Up to [blue]2[/blue] times per turn: whenever you spend [gold]Ghost Qi[/gold], draw [blue]1[/blue] card and gain [blue]1[/blue] [gold]Energy[/gold].'),
 'YinYangGeHunXiaoPower': ('阴阳割昏晓',
     '每打出 [blue]1[/blue]张[gold]攻击牌[/gold]，抽 {Amount}张牌。\n每打出 [blue]1[/blue]张[gold]技能牌[/gold]，[gold]消耗[/gold] [blue]1[/blue]张手牌。',
     'Yin and Yang Part the Twilight',
@@ -295,6 +368,46 @@ POWERS = {
 'TuJianPower': ('土剑',
     '回合开始时获得 [blue]1[/blue]点[gold]覆甲[/gold]。',
     'Earth Sword', 'At the start of each turn, gain [blue]1[/blue] [gold]Plating[/gold].'),
+
+# ---- 角色固有机制：墨之相 ----
+# 由起始遗物（鬼墨 / 金丝鬼墨）在每场战斗首个回合挂上，整场常驻。
+# 这段文案是玩家理解「鬼气不是越多越好」的唯一入口，所以三条相位必须写全。
+'InkPhasePower': ('墨之相',
+    '根据你当前的[gold]鬼气[/gold]，你处于以下相位之一：\n'
+    '[gold]墨淡[/gold]（鬼气不高于 {ThinMax}）：每回合开始时抽 [blue]1[/blue]张牌。\n'
+    '[gold]墨匀[/gold]（鬼气 {DenseMin} 以下）：没有额外效果。\n'
+    '[gold]墨浓[/gold]（鬼气不低于 {DenseMin}）：你造成的攻击伤害减少 {DensePenalty} 点。\n'
+    '[gold]墨极浓[/gold]（鬼气不低于 {DeepMin}）：你造成的攻击伤害减少 {DeepPenalty} 点。',
+    'Ink Phase',
+    'Depending on your current [gold]Ghost Qi[/gold], you are in one of these phases:\n'
+    '[gold]Thin Ink[/gold] ({ThinMax} or less): draw [blue]1[/blue] extra card at the start of each turn.\n'
+    '[gold]Even Ink[/gold] (below {DenseMin}): no additional effect.\n'
+    '[gold]Dense Ink[/gold] ({DenseMin} or more): you deal {DensePenalty} less Attack damage.\n'
+    '[gold]Deepest Ink[/gold] ({DeepMin} or more): you deal {DeepPenalty} less Attack damage.'),
+
+# ===== [AUTO] 墨之相相关能力 =====
+'HalfInkPower': ('半砚',
+    '每回合结束时，若你的[gold]鬼气[/gold]在 [blue]3[/blue] 到 [blue]7[/blue] 之间，获得[gold]格挡[/gold]。',
+    'Half Inkstone', 'At the end of each turn, if your [gold]Ghost Qi[/gold] is between [blue]3[/blue] and [blue]7[/blue], gain Block.'),
+'MistPower': ('薄雾',
+    '回合开始时，若你的[gold]鬼气[/gold]不高于 [blue]2[/blue]，获得[gold]能量[/gold]。',
+    'Mist', 'At the start of each turn, if your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, gain Energy.'),
+'InkCyclePower': ('鬼气循环',
+    '每回合结束时：若你的[gold]鬼气[/gold]不低于 [blue]8[/blue]，失去鬼气；若不高于 [blue]2[/blue]，获得鬼气。',
+    'Ghost Qi Cycle', 'At the end of each turn: if your [gold]Ghost Qi[/gold] is [blue]8[/blue] or more, lose Ghost Qi; if [blue]2[/blue] or less, gain Ghost Qi.'),
+'InkBalancePower': ('浓淡由心',
+    '每当你获得[gold]鬼气[/gold]，获得 [blue]2[/blue]点[gold]格挡[/gold]；每当你失去[gold]鬼气[/gold]，抽 [blue]1[/blue]张牌。每回合最多触发 [blue]3[/blue] 次。',
+    'Ink at Will', 'Whenever you gain [gold]Ghost Qi[/gold], gain [blue]2[/blue] Block; whenever you lose [gold]Ghost Qi[/gold], draw [blue]1[/blue] card. Up to [blue]3[/blue] times per turn.'),
+'InkRhythmPower': ('墨韵天成',
+    '每回合结束时，若你的[gold]鬼气[/gold]在 [blue]3[/blue] 到 [blue]7[/blue] 之间，抽 [blue]2[/blue]张牌并获得 [blue]2[/blue]点[gold]能量[/gold]。',
+    'Ink Rhythm', 'At the end of each turn, if your [gold]Ghost Qi[/gold] is between [blue]3[/blue] and [blue]7[/blue], draw [blue]2[/blue] cards and gain [blue]2[/blue] Energy.'),
+'RichInkPower': ('浓墨重彩',
+    '每当你获得[gold]鬼气[/gold]，获得等量的[gold]格挡[/gold]（每回合最多 [blue]12[/blue]点）。',
+    'Heavy Ink', 'Whenever you gain [gold]Ghost Qi[/gold], gain that much Block (up to [blue]12[/blue] per turn).'),
+'StillWaterPower': ('静水',
+    '本回合内你无法获得[gold]鬼气[/gold]。',
+    'Still Water', 'You cannot gain [gold]Ghost Qi[/gold] this turn.'),
+    # ===== [AUTO] END =====
 }
 
 # 临时能力包装（多个来源共用一条文本 + 一张图）。
@@ -539,6 +652,17 @@ def build_cards(zh):
         'Add "Ink-Stained Realm" to your deck.\n'
         'Spend all [gold]Ghost Qi[/gold]; gain X+3 [gold]Temporary Strength[/gold] and X+3 [gold]Temporary Dexterity[/gold] this turn, where X is the Ghost Qi spent.\n'
         '[gold]Retain[/gold].')
+
+    # 先古事件里注入的「金丝鬼墨」选项文案（规则二：升级起始遗物）。
+    # 同样**不允许出现任何 {占位符}** —— 事件界面拿不到遗物的 DynamicVars。
+    # 键名与 C# 侧 WanJieRuLinAncientOptions.JinSiOptionTextKey 必须一字不差。
+    d['WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO_OPTION.title'] = '金丝鬼墨' if zh else 'Gold-Thread Ink'
+    d['WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO_OPTION.description'] = (
+        '将你的「鬼墨」换为「金丝鬼墨」。\n'
+        '金丝鬼墨：每场战斗开始时额外获得 2 点[gold]鬼气[/gold]，并保留每回合获得 1 点[gold]鬼气[/gold]。'
+        if zh else
+        'Replace your "Ink Stone" with "Gold-Thread Ink".\n'
+        'Gold-Thread Ink: gain 2 extra [gold]Ghost Qi[/gold] at the start of each combat, and keep gaining 1 [gold]Ghost Qi[/gold] each turn.')
     return d
 
 

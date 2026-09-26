@@ -1,6 +1,8 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using STS2RitsuLib.Scaffolding.Content;
+using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Relics;
 
@@ -9,6 +11,9 @@ namespace WanJieRuLin.Relics;
 /// </summary>
 public abstract class WanJieRuLinRelic : ModRelicTemplate
 {
+    /// <summary>本场战斗是否已经挂过「墨之相」。</summary>
+    private bool _inkPhaseApplied;
+
     public override RelicAssetProfile AssetProfile => new(
         IconPath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png",
         IconOutlinePath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png",
@@ -31,4 +36,37 @@ public abstract class WanJieRuLinRelic : ModRelicTemplate
         Owner is { } player
             ? GhostQi.Set(player, ModResources.GhostQiCombatStartAmount)
             : Task.CompletedTask;
+
+    /// <summary>
+    /// 进入新战斗时调用，重置「墨之相」的施加标记。
+    /// </summary>
+    protected void ResetInkPhaseFlag() => _inkPhaseApplied = false;
+
+    /// <summary>
+    /// 确保「墨之相」（<see cref="InkPhasePower"/>）已经挂在自己身上。
+    ///
+    /// 为什么不在 <see cref="BeforeCombatStart"/> 里挂：那个钩子**没有
+    /// <see cref="PlayerChoiceContext"/>**，而 <c>PowerCmd.Apply</c> 必须要一个上下文。
+    /// 所以放到第一个回合的 <c>AfterPlayerTurnStart</c>（那时上下文齐全，
+    /// 且早于玩家出牌，惩罚/增益当回合就能生效）。
+    ///
+    /// 为什么用标记而不是「查有没有这个能力」：起始遗物（鬼墨 / 金丝鬼墨）互斥，
+    /// 正常情况下只会有一个在生效；标记只是防止同一场战斗里被重复施加。
+    /// </summary>
+    protected async Task EnsureInkPhase(PlayerChoiceContext ctx, Player player)
+    {
+        if (_inkPhaseApplied)
+        {
+            return;
+        }
+
+        _inkPhaseApplied = true;
+
+        if (Owner != player)
+        {
+            return;
+        }
+
+        await PowerCmd.Apply<InkPhasePower>(ctx, player.Creature, 1m, player.Creature, null);
+    }
 }

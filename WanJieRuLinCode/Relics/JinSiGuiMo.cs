@@ -35,6 +35,7 @@ public sealed class JinSiGuiMo : WanJieRuLinRelic
     public override Task BeforeCombatStart()
     {
         _combatStartApplied = false;
+        ResetInkPhaseFlag();
         return Task.CompletedTask;
     }
 
@@ -44,6 +45,9 @@ public sealed class JinSiGuiMo : WanJieRuLinRelic
         {
             return;
         }
+
+        // 角色的固有机制「墨之相」在这里挂上（BeforeCombatStart 拿不到上下文）。
+        await EnsureInkPhase(choiceContext, player);
 
         // 开局爆发放在「本场战斗的第一个回合开始」而不是 BeforeCombatStart：
         // 鬼气资源自身是 PersistencePolicy.Combat，框架可能在本遗物的
