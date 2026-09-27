@@ -41,6 +41,9 @@ public sealed class YouYouDianLong : WanJieRuLinCardModel
         ModCardVars.Power<VulnerablePower>(BaseVulnerable)
     ];
 
+    /// <summary>★ v0.3 补上硬条件 —— 三流派互斥的根基：与 L 流「鬼气 = 0 / ≤2」的牌**不可能同时满足**。</summary>
+    protected override bool? PlayCondition => GhostQiAtLeast(10);
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (Owner is not { } player || cardPlay.Target is not { } target)

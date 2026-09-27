@@ -37,6 +37,9 @@ public sealed class AoMan : WanJieRuLinCardModel
         new DamageVar(BaseDamage, ValueProp.Move)
     ];
 
+    /// <summary>★ v0.3 补上硬条件 —— 三流派互斥的根基：与 L 流「鬼气 = 0 / ≤2」的牌**不可能同时满足**。</summary>
+    protected override bool? PlayCondition => GhostQiAtLeast(14);
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
