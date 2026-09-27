@@ -121,11 +121,20 @@ def main():
             z.write(guide, "WanJieRuLin/安装说明.md")
     print("  %s  %d B" % (install_zip, os.path.getsize(install_zip)))
 
-    source_zip = os.path.join(OUT_DIR, "WanJieRuLin-%s-source.zip" % VERSION)
-    with zipfile.ZipFile(source_zip, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        for ap, rel in src:
-            z.write(ap, "WanJieRuLin/" + rel)
-    print("  %s  %d B" % (source_zip, os.path.getsize(source_zip)))
+    # ★ source 包改为「按需生成」（2026-09-28）：
+    #   源码就在 git 里，任一版本都能由对应 tag 重建
+    #   （`git checkout <tag>` → 跑 package.py），
+    #   所以每版都产一个 27–29 MB 的 source.zip 纯属冗余。
+    #   需要时设环境变量 WJRL_SOURCE_ZIP=1 恢复生成。
+    _want_source = os.environ.get("WJRL_SOURCE_ZIP") == "1"
+    if _want_source:
+        source_zip = os.path.join(OUT_DIR, "WanJieRuLin-%s-source.zip" % VERSION)
+        with zipfile.ZipFile(source_zip, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+            for ap, rel in src:
+                z.write(ap, "WanJieRuLin/" + rel)
+        print("  %s  %d B" % (source_zip, os.path.getsize(source_zip)))
+    else:
+        print("  （已跳过 source 包；需要时设 WJRL_SOURCE_ZIP=1）")
 
     # ---- 复检 ----
     print("\n--- 复检 install.zip ---")
@@ -134,11 +143,12 @@ def main():
             d = z.read(i.filename)
             print("  %-40s %9d B  md5=%s" % (
                 i.filename, len(d), hashlib.md5(d).hexdigest()[:12]))
-    print("\n--- 复检 source.zip ---")
-    with zipfile.ZipFile(source_zip) as z:
-        print("  条目数 %d" % len(z.namelist()))
-        bad = z.testzip()
-        print("  完整性: %s" % ("OK" if bad is None else "损坏 " + bad))
+    if _want_source:
+        print("\n--- 复检 source.zip ---")
+        with zipfile.ZipFile(source_zip) as z:
+            print("  条目数 %d" % len(z.namelist()))
+            bad = z.testzip()
+            print("  完整性: %s" % ("OK" if bad is None else "损坏 " + bad))
     return 0
 
 
