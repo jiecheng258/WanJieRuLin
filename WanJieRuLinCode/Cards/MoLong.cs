@@ -30,7 +30,9 @@ public sealed class MoLong : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DealDamage(choiceContext, cardPlay.Target, GhostQiAtLeast(10) ? 24m : DynamicVars.Damage.BaseValue);
+        // ★ 阈值奖励随升级缩放（原为硬编码 24：升级基础值后高鬼气反而更亏）。
+        await DealDamage(choiceContext, cardPlay.Target,
+            GhostQiAtLeast(10) ? DynamicVars.Damage.BaseValue + 8m : DynamicVars.Damage.BaseValue);
     }
 
     protected override void OnUpgrade()
