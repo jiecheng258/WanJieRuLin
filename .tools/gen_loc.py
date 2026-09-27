@@ -663,6 +663,17 @@ def build_cards(zh):
         if zh else
         'Replace your "Ink Stone" with "Gold-Thread Ink".\n'
         'Gold-Thread Ink: gain 2 extra [gold]Ghost Qi[/gold] at the start of each combat, and keep gaining 1 [gold]Ghost Qi[/gold] each turn.')
+    # ★ v0.3：全量重做的卡牌文案覆盖（唯一真相源 card_loc_v03.py）
+    try:
+        import card_loc_v03 as _cl
+        _ov = _cl.ZH if zh else _cl.EN
+        _pfx = 'WAN_JIE_RU_LIN_CARD_'
+        for _cls, _desc in _ov.items():
+            _k = _pfx + re.sub(r'(?<!^)(?=[A-Z])', '_', _cls).upper() + '.description'
+            d[_k] = _desc
+    except Exception as _e:
+        print('  !! card_loc_v03 覆盖失败:', _e)
+
     return d
 
 
