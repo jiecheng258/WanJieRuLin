@@ -664,13 +664,19 @@ def build_cards(zh):
         'Replace your "Ink Stone" with "Gold-Thread Ink".\n'
         'Gold-Thread Ink: gain 2 extra [gold]Ghost Qi[/gold] at the start of each combat, and keep gaining 1 [gold]Ghost Qi[/gold] each turn.')
     # ★ v0.3：全量重做的卡牌文案覆盖（唯一真相源 card_loc_v03.py）
+    #
+    # ⚠️ 必须**同时覆盖 description 与 smartDescription**（2026-09-28 修）：
+    #   卡面渲染会同时用到这两个键，只改一个会出现
+    #   ① 新旧两段自相矛盾的文案同屏；② 两段结尾都是「[gold]消耗[/gold]」
+    #   → 玩家看到「消耗消耗消耗」（再叠加关键字徽章一次）。
     try:
         import card_loc_v03 as _cl
         _ov = _cl.ZH if zh else _cl.EN
         _pfx = 'WAN_JIE_RU_LIN_CARD_'
         for _cls, _desc in _ov.items():
-            _k = _pfx + re.sub(r'(?<!^)(?=[A-Z])', '_', _cls).upper() + '.description'
-            d[_k] = _desc
+            _base = _pfx + re.sub(r'(?<!^)(?=[A-Z])', '_', _cls).upper()
+            d[_base + '.description'] = _desc
+            d[_base + '.smartDescription'] = _desc
     except Exception as _e:
         print('  !! card_loc_v03 覆盖失败:', _e)
 
