@@ -251,3 +251,35 @@ else:
     print('  起手卡 %d 种、共 %d 张：' % (len(_starter), _total))
     for _cls, _ch, _n in _starter:
         print('    %-16s x%d  -> %s' % (_cls, _n, _ch))
+
+
+# ============================================================================
+# ★ 关键字重复声明检查（2026-09-28 追加）
+#
+# 「消耗」是 Exhaust 关键字的官方译名。卡牌一旦声明 CanonicalKeywords 含 Exhaust，
+# 游戏会**自动渲染一行「消耗。」**；文案里再手写 "[gold]消耗[/gold]。" 就会显示两行。
+# ============================================================================
+print()
+print('=== 关键字重复声明 ===')
+_kw_bad = []
+for _f in sorted(os.listdir(CARDS_DIR)):
+    if not _f.endswith('.cs'):
+        continue
+    _cls = _f[:-3]
+    _t = io.open(os.path.join(CARDS_DIR, _f), encoding='utf-8').read()
+    if 'CardKeyword.Exhaust' not in _t:
+        continue
+    for _loc in ('zhs', 'eng'):
+        _p = os.path.join(ROOT, 'localization', _loc, 'cards.json')
+        _d = json.load(io.open(_p, encoding='utf-8'))
+        _key = 'WAN_JIE_RU_LIN_CARD_' + re.sub(r'(?<!^)(?=[A-Z])', '_', _cls).upper() + '.description'
+        _v = _d.get(_key, '')
+        if '[gold]消耗[/gold]' in _v or '[gold]Exhaust[/gold]' in _v:
+            _kw_bad.append('%s(%s)' % (_cls, _loc))
+
+if _kw_bad:
+    print('  !! 文案重复声明了 [消耗] 关键字（卡面会显示两行）:')
+    for _x in _kw_bad:
+        print('     -', _x)
+else:
+    print('  通过：无卡牌重复声明 [消耗]。')
