@@ -321,7 +321,20 @@ public static class WanJieRuLinAncientOptions
                 return;
             }
 
-            await RelicCmd.Replace(owned, ModelDb.Relic<Relics.JinSiGuiMo>());        }
+            // ★ 修复（2026-09-28）：原写法 `RelicCmd.Replace(owned, ModelDb.Relic<JinSiGuiMo>())`
+            //   直接传**规范（canonical / 不可变）实例** → 线上崩：
+            //     CanonicalModelException: Canonical model of type JinSiGuiMo used in incorrect place.
+            //       at AbstractModel.AssertMutable()
+            //       at RelicCmd.Replace(RelicModel original, RelicModel replace)
+            //   即 RelicCmd.Replace **要求 replace 是可变的**，与下面原注释的说法相反。
+            //   （onChosen 由 TaskHelper.RunSafely 调用，异常被吞 → 玩家只看到「点了没反应」，
+            //     并且事件未推进 → 整局卡死、后续战斗不发牌。）
+            //
+            //   正确姿势与卡片造牌一致：**ToMutable() → 设 Owner → 交给框架**。
+            var replacement = ModelDb.Relic<Relics.JinSiGuiMo>().ToMutable();
+            replacement.Owner = player;
+            await RelicCmd.Replace(owned, replacement);
+        }
         finally
         {
             ancient.StartPreFinished();
