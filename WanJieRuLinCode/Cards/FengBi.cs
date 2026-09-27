@@ -8,18 +8,20 @@ using STS2RitsuLib.Interop.AutoRegistration;
 using WanJieRuLin.Characters;
 using STS2RitsuLib.Cards.DynamicVars;
 
+using WanJieRuLin.Powers;
+
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 封笔 —— 技能牌 1 能量：获得 12 点格挡，自身获得 2 层虚弱。升级后自身只获得 1 层虚弱。
-/// 以自伤换高格挡的防守牌。
+/// 封笔 —— 技能牌 1 能量：获得 9 点格挡，**本回合你无法获得鬼气**。升级后 13 点格挡。
+/// ★ v0.3：改为 L 流（蜕鬼）的身份牌 ——「封笔」= 封住鬼气来源，
+///   把鬼气**冻在低位**，让「鬼气 ≤2」的条件牌（淡墨/淡描/留白/蜕鬼）稳定生效。
+///   原本的「自伤换格挡」与流派无关，且 12 格挡 + 自身虚弱在数值上偏强。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class FengBi : WanJieRuLinCardModel
 {
-    private const int WeakAmount = 2;
-
-    public FengBi() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+        public FengBi() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 
@@ -27,18 +29,17 @@ public sealed class FengBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(12m, ValueProp.Move),
-        ModCardVars.Int("Weak", WeakAmount)
+        new BlockVar(9m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        await ApplySelf<WeakPower>(choiceContext, DynamicVars.GetIntOrDefault("Weak", WeakAmount));
+        await ApplySelf<StillWaterPower>(choiceContext, 1m);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Weak"].UpgradeValueBy(-1);
+        DynamicVars.Block.UpgradeValueBy(4m);
     }
 }

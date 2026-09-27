@@ -100,8 +100,8 @@ CARDS = {
         'Paint', 'For each [blue]1[/blue] Ghost Qi spent, gain [blue]1[/blue] [gold]Temporary Strength[/gold] and [blue]1[/blue] [gold]Temporary Dexterity[/gold] this turn.'),
 
 # ---- 普通 ----
-'FengBi': ('封笔', '获得 {Block:diff()}点格挡。\n给予自身 {Weak:diff()}层[gold]虚弱[/gold]。',
-           'Seal the Brush', 'Gain {Block:diff()} Block.\nApply {Weak:diff()} [gold]Weak[/gold] to yourself.'),
+'FengBi': ('封笔', '获得 {Block:diff()}点格挡。\n本回合你无法获得[gold]鬼气[/gold]。',
+           'Seal the Brush', 'Gain {Block:diff()} Block.\nYou cannot gain [gold]Ghost Qi[/gold] this turn.'),
 'QinShi': ('侵蚀', '造成 {Damage:diff()}点伤害。\n给予 {Vulnerable:diff()}层[gold]易伤[/gold]。',
            'Corrode', 'Deal {Damage:diff()} damage.\nApply {Vulnerable:diff()} [gold]Vulnerable[/gold].'),
 'MoDian': ('墨点', '获得 {Block:diff()}点格挡。\n获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。',
@@ -212,7 +212,7 @@ CARDS = {
           'Thin Ink', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]2[/blue] or less, deal [blue]4[/blue] more.'),
 'SuMo': ('宿墨', '造成 {Damage:diff()}点伤害。\n获得 {GhostQiGain:diff()}点[gold]鬼气[/gold]。',
          'Aged Ink', 'Deal {Damage:diff()} damage.\nGain {GhostQiGain:diff()} [gold]Ghost Qi[/gold].'),
-'HuiHao': ('挥毫', '造成 {Damage:diff()}点伤害。若你的[gold]鬼气[/gold]不低于 [blue]8[/blue]，额外造成 [blue]6[/blue]点伤害。',
+'HuiHao': ('挥毫', '造成 {Damage:diff()}点伤害。你的[gold]鬼气[/gold]每有 [blue]5[/blue]点，此伤害 +[blue]2[/blue]。',
            'Wield the Brush', 'Deal {Damage:diff()} damage. If your [gold]Ghost Qi[/gold] is [blue]8[/blue] or more, deal [blue]6[/blue] more.'),
 'XiBi': ('洗笔', '失去所有[gold]鬼气[/gold]。\n每失去 [blue]1[/blue]点，获得 {BlockPerQi:diff()}点[gold]格挡[/gold]。',
          'Rinse the Brush', 'Lose all [gold]Ghost Qi[/gold].\nGain {BlockPerQi:diff()} Block for each point lost.'),

@@ -13,7 +13,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 挥毫 —— Attack牌 2费
+/// 挥毫 —— 攻击牌 2 能量：造成 14 点伤害，鬼气每有 5 点此伤害 +2。
+/// ★ v0.3：从「墨浓阈值 +6」改成**连续梯度** ——
+///   阈值牌是流派专属，梯度牌是过渡件：三条流派都能用，但都不顶尖（设计稿「过渡牌」）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuiHao : WanJieRuLinCardModel
@@ -30,7 +32,7 @@ public sealed class HuiHao : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + (IsDenseInk ? 6m : 0m));
+        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + (MyGhostQi / 5) * 2m);
     }
 
     protected override void OnUpgrade()
