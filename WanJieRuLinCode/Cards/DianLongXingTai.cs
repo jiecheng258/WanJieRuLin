@@ -24,6 +24,8 @@ public sealed class DianLongXingTai : WanJieRuLinCardModel
     {
     }
 
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Ethereal];
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await ApplySelf<DianLongFormPower>(choiceContext, 1m);

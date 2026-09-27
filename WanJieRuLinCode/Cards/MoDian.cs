@@ -30,6 +30,8 @@ public sealed class MoDian : WanJieRuLinCardModel
         ModCardVars.Int("GhostQiGain", 2)
     ];
 
+    public override bool GainsBlock => true;
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);

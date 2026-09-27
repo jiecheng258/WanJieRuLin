@@ -29,6 +29,8 @@ public sealed class DaMengYiChang : WanJieRuLinCardModel
         ModCardVars.Cards(1)
     ];
 
+    public override bool GainsBlock => true;
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);

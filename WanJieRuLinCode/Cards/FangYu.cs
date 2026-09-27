@@ -29,6 +29,8 @@ public sealed class FangYu : WanJieRuLinCardModel
         new BlockVar(5m, ValueProp.Move)
     ];
 
+    public override bool GainsBlock => true;
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
