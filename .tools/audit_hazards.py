@@ -39,6 +39,21 @@ RULES = [
         re.compile(r'\bnew\s+Random\s*\(\s*\)'),
         '建议改用 Random.Shared（线程安全）。非致命。',
     ),
+    (
+        '把 ModelDb 规范实例直接交给命令（漏了 ToMutable）',
+        re.compile(
+            r'\b\w*Cmd\s*\.\s*\w+\s*\([^;]*'
+            r'ModelDb\s*\.\s*\w+\s*<[^>]+>\s*\(\s*\)\s*\)'),
+        '★ ModelDb.X<T>() 返回**规范（canonical / 不可变）**实例。\n'
+        '        不少命令内部会 AssertMutable()，命中即抛 CanonicalModelException。\n'
+        '        而 onChosen / TaskHelper.RunSafely 会把异常吞掉 →\n'
+        '        玩家只看到「点了没反应」，且事件不推进 → **整局卡死、后续战斗不发牌**。\n'
+        '        修法（与造牌一致）：**ToMutable() → 设 Owner → 交给框架**。\n'
+        '        实测案例 2026-09-28：金丝鬼墨 GrantJinSiGuiMo 里的\n'
+        '          `RelicCmd.Replace(owned, ModelDb.Relic<JinSiGuiMo>())` —— 直接传规范实例必崩。\n'
+        '        例外：`RunState.CreateCard(canonical, player)` 内部已 ToMutable + 登记，\n'
+        '        不属于本条（它没有 Cmd. 前缀，不会被本正则命中）。',
+    ),
 ]
 
 # ★ 规范实例直接克隆：ModelDb.Card<T>() / Activator.CreateInstance(...) 等拿到的
