@@ -691,6 +691,26 @@ def write(path, obj):
     print('  wrote %-46s %4d keys' % (os.path.relpath(path, ROOT), len(obj)))
 
 
+# ============================================================================
+# 卡牌关键字悬停说明（覆盖原版同名键，见下方 write）
+#
+# 原版 EXHAUST.description 是「在战斗结束前移除。」—— 太笼统，
+# 玩家读不出「本场只能用一次」这层意思。这里改写得更直白。
+# ★ 只改 description（悬停才显示），**不改 title**（title 会印在所有卡的卡面上）。
+# ============================================================================
+CARD_KEYWORDS_ZH = {
+    'EXHAUST.description':
+        '打出后进入[gold]消耗堆[/gold]，本场战斗[gold]不会再回到抽牌堆[/gold]。'
+        '[gold]也就是说，这张牌一场只能用一次。[/gold]',
+}
+CARD_KEYWORDS_EN = {
+    'EXHAUST.description':
+        'After being played, this card goes to your [gold]Exhaust pile[/gold] and '
+        '[gold]never returns to your draw pile[/gold] this combat. '
+        '[gold]In other words, you can only use it once per combat.[/gold]',
+}
+
+
 for lang in ('zhs', 'eng'):
     zh = (lang == 'zhs')
     base = os.path.join(ROOT, lang)
@@ -733,5 +753,9 @@ for lang in ('zhs', 'eng'):
     # 鬼气的悬停提示必须落在 base 表 static_hover_tips 里（按文件名合并）。
     write(os.path.join(base, 'static_hover_tips.json'),
           dict(sorted((STATIC_HOVER_TIPS_ZH if zh else STATIC_HOVER_TIPS_EN).items())))
+
+    # 卡牌关键字的悬停说明（按文件名合并 → 可覆盖原版同名键）
+    write(os.path.join(base, 'card_keywords.json'),
+          dict(sorted((CARD_KEYWORDS_ZH if zh else CARD_KEYWORDS_EN).items())))
 
 print('done')
