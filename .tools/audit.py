@@ -270,7 +270,7 @@ for _f in sorted(os.listdir(CARDS_DIR)):
     if 'CardKeyword.Exhaust' not in _t:
         continue
     for _loc in ('zhs', 'eng'):
-        _p = os.path.join(ROOT, 'localization', _loc, 'cards.json')
+        _p = os.path.join(LOC, _loc, 'cards.json')
         _d = json.load(io.open(_p, encoding='utf-8'))
         _key = 'WAN_JIE_RU_LIN_CARD_' + re.sub(r'(?<!^)(?=[A-Z])', '_', _cls).upper() + '.description'
         _v = _d.get(_key, '')
