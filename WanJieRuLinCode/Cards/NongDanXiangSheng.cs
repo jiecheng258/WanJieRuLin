@@ -32,7 +32,7 @@ public sealed class NongDanXiangSheng : WanJieRuLinCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (IsEvenInk || MyGhostQi >= 6)
+        if (MyGhostQi >= 6)
         {
             await LoseGhostQi(DynamicVars.GetIntOrDefault("QiSwing", 4));
             await Draw(choiceContext, DynamicVars.Cards.IntValue);

@@ -14,8 +14,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 本回合内，你每次获得鬼气时改为获得 2 倍。抽 1 张牌。[消耗]
-/// 升级后抽 2 张。★ R8：单回合增幅，不产可循环资源。
+/// 抽 3 张牌，获得这些牌面板伤害合计的[gold]格挡[/gold]。[消耗]
+/// ★ 恢复原设计：v0.3 重写时误简化成「只抽 1 张」，丢了核心的「抽到多少伤害就叠多少甲」。
+/// 升级 ★ 质变：抽 3→4 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class AoJiao : WanJieRuLinCardModel
@@ -26,14 +27,35 @@ public sealed class AoJiao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Cards(1)
+        ModCardVars.Cards(3)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        if (Owner is not { } player)
+        {
+            return;
+        }
+        var count = DynamicVars.Cards.IntValue;
+        var drawn = (await CardPileCmd.Draw(choiceContext, count, player)).ToList();
+        var total = 0m;
+        foreach (var card in drawn)
+        {
+            if (card.Type != CardType.Attack)
+            {
+                continue;
+            }
+            if (card.DynamicVars.TryGetValue("Damage", out var dmg))
+            {
+                total += dmg.BaseValue;
+            }
+        }
+        if (total > 0m)
+        {
+            await GainBlock(choiceContext, total);
+        }
     }
 
     protected override void OnUpgrade()
