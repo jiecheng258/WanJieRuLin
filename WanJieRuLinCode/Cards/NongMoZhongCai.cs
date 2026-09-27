@@ -1,8 +1,9 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -13,12 +14,13 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 浓墨重彩 —— Power牌 3费
+/// 每回合最多获得 12 点此牌格挡：你获得鬼气时，获得等量的格挡。升级后上限 18。
+/// ★ H 流引擎：产气即叠甲。有每回合上限。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class NongMoZhongCai : WanJieRuLinCardModel
 {
-    public NongMoZhongCai() : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
+    public NongMoZhongCai() : base(3, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
@@ -38,5 +40,5 @@ public sealed class NongMoZhongCai : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MaxBlockPerTurn"].UpgradeValueBy(4);    }
+        DynamicVars["MaxBlockPerTurn"].UpgradeValueBy(6);    }
 }

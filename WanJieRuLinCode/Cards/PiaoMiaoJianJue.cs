@@ -1,33 +1,33 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using WanJieRuLin.Characters;
+using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 飘渺剑诀 —— 攻击牌 2 能量 2 鬼气：造成 6 点伤害，随机获得一把剑。
-/// 消耗。升级后能量变为 1。
+/// 耗费 2 点鬼气。造成 6 点伤害，随机获得一把剑。[消耗]
+/// 升级 ★ 质变：能量费 2→1（原版经典的降费升级）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class PiaoMiaoJianJue : WanJieRuLinCardModel
 {
-    private const int BaseEnergyCost = 2;
-    private const int GhostQiCost = 2;
-
-    public PiaoMiaoJianJue() : base(BaseEnergyCost, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public PiaoMiaoJianJue() : base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
-        SetGhostQiCost(GhostQiCost);
+        SetGhostQiCost(2);
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
-        GhostQiCostVarOf(2),
+        ModCardVars.Int("GhostQiCost", 2),
         new DamageVar(6m, ValueProp.Move)
     ];
 
@@ -35,21 +35,14 @@ public sealed class PiaoMiaoJianJue : WanJieRuLinCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (Owner is not { } player || cardPlay.Target is not { } target)
-        {
-            return;
-        }
-
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
-            .Targeting(target)
+            .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-
-        await Swords.GrantRandom(choiceContext, player.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
-    }
+        EnergyCost.UpgradeBy(-1);    }
 }

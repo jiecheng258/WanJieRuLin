@@ -1,8 +1,9 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -13,7 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 归一 —— Skill牌 2费
+/// 将你的鬼气设为 5，获得 15 点格挡。[消耗] 升级后 20 点。
+/// ★ 设为绝对值，不产生增量。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GuiYi : WanJieRuLinCardModel
@@ -22,13 +24,13 @@ public sealed class GuiYi : WanJieRuLinCardModel
     {
     }
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(15m, ValueProp.Move),
-        ModCardVars.Int("SetTo", 5)
+        ModCardVars.Int("SetTo", 5),
+        new BlockVar(15m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

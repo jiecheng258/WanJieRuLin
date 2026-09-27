@@ -1,7 +1,10 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -11,49 +14,32 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 傲慢 —— 攻击牌 2 鬼气：造成 8 点伤害。
-/// 本回合内，你每次造成伤害都获得等量鬼气。升级后造成 12 点伤害。
-///
-/// 数值说明（对齐原版）：
-/// 鬼气在本模组里约等于 1 点能量（「审时度势」就是 1 鬼气换 1 能量），
-/// 所以 2 鬼气 ≈ 2 能量；原版 2 费单体伤害约 15-18，本卡的真身是
-/// 「本回合伤害转鬼气」这个能力，所以直伤给到 8（2 鬼气里的一半是能力费）。
+/// 鬼气不低于 14 时才能打出（「墨极浓」专属）。抽 2 张牌。[消耗]
+/// 升级后抽 3 张。★ H 流极限条件牌。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class AoMan : WanJieRuLinCardModel
 {
-    private const int GhostQiCost = 2;
-    private const int BaseDamage = 8;
-
     public AoMan() : base(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
-        SetGhostQiCost(GhostQiCost);
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
-        GhostQiCostVarOf(GhostQiCost),
-        new DamageVar(BaseDamage, ValueProp.Move)
+        ModCardVars.Cards(2)
     ];
 
-    /// <summary>★ v0.3 补上硬条件 —— 三流派互斥的根基：与 L 流「鬼气 = 0 / ≤2」的牌**不可能同时满足**。</summary>
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
     protected override bool? PlayCondition => GhostQiAtLeast(14);
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-
         await ApplySelf<AoManPower>(choiceContext, 1m);
-
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);
-    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

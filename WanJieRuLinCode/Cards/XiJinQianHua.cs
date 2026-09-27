@@ -1,8 +1,9 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -13,7 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 洗尽铅华 —— Attack牌 1费
+/// 失去所有鬼气。造成 8 点伤害，每失去 3 点鬼气此伤害 +5。
+/// 升级质变：每 2 点即可换一次。★ 单向清空，不给资源。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class XiJinQianHua : WanJieRuLinCardModel
@@ -24,18 +26,24 @@ public sealed class XiJinQianHua : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move),
-        ModCardVars.Int("PerQi", 2)
+        new DamageVar(8m, ValueProp.Move),
+        ModCardVars.Int("QiPerBonus", 3),
+        ModCardVars.Int("BonusPer", 5)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
         var spent = await ClearGhostQi();
-        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + spent * DynamicVars.GetIntOrDefault("PerQi", 2));
+        var per = Math.Max(1, DynamicVars.GetIntOrDefault("QiPerBonus", 3));
+        var bonus = (spent / per) * DynamicVars.GetIntOrDefault("BonusPer", 5);
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + bonus)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["QiPerBonus"].UpgradeValueBy(-1);    }
 }

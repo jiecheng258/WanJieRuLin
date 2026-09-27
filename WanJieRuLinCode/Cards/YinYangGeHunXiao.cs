@@ -1,17 +1,21 @@
+using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using WanJieRuLin.Characters;
-using WanJieRuLin.Powers;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
+using WanJieRuLin.Characters;
+using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 阴阳割昏晓 —— 能力牌 2 能量、2 鬼气：
-/// 每打出 1 张攻击牌抽 1 张牌；每打出 1 张技能牌随机消耗 1 张手牌。
-/// 升级后：每张攻击牌抽 2 张牌，技能牌改为「指定」消耗。
+/// 耗费 2 点鬼气。打出攻击牌时抽 1 张；打出技能牌时获得 1 点格挡。
+/// 升级质变：每次抽 1→2 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YinYangGeHunXiao : WanJieRuLinCardModel
@@ -23,25 +27,20 @@ public sealed class YinYangGeHunXiao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
-        GhostQiCostVarOf(2),
-        ModCardVars.Int("DrawPerAttack", 1),
-        ModCardVars.Int("ChooseExhaust", 0)
+        ModCardVars.Int("GhostQiCost", 2),
+        ModCardVars.Int("DrawPerAttack", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var power = await ApplySelfAndGet<YinYangGeHunXiaoPower>(choiceContext, 1);
+        var power = await ApplySelfAndGet<YinYangGeHunXiaoPower>(choiceContext, 1m);
         if (power is not null)
         {
             power.DrawPerAttack = DynamicVars.GetIntOrDefault("DrawPerAttack", 1);
-            power.CanChooseExhaust = DynamicVars.GetIntOrDefault("ChooseExhaust", 0) > 0;
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["DrawPerAttack"].UpgradeValueBy(1);
-        DynamicVars["ChooseExhaust"].UpgradeValueBy(1);
-    }
+        DynamicVars["DrawPerAttack"].UpgradeValueBy(1);    }
 }

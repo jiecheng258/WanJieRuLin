@@ -1,8 +1,9 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -13,7 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 疏影 —— Skill牌 1费
+/// 获得等于当前鬼气 2 倍的格挡（最多 15 点）。升级后上限 22 点。
+/// ★ 单次结算，无增量循环。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShuYing : WanJieRuLinCardModel
@@ -30,15 +32,12 @@ public sealed class ShuYing : WanJieRuLinCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        var raw = MyGhostQi * DynamicVars.GetIntOrDefault("PerQi", 2);
         var cap = DynamicVars.GetIntOrDefault("Cap", 15);
-        var amount = Math.Min(MyGhostQi * DynamicVars.GetIntOrDefault("PerQi", 2), cap);
-        if (amount > 0)
-        {
-            await GainBlock(choiceContext, amount);
-        }
+        await GainBlock(choiceContext, Math.Min(raw, cap));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Cap"].UpgradeValueBy(5);    }
+        DynamicVars["Cap"].UpgradeValueBy(7);    }
 }

@@ -1,8 +1,11 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using WanJieRuLin.Characters;
@@ -11,26 +14,16 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 尸瞳 —— 技能牌 3 鬼气：本回合每打出一张牌，获得 1 点鬼气。升级后鬼气消耗为 2。
+/// 鬼气在 3 到 7 之间时才能打出。
+/// ★ M 流专属硬条件牌 —— 与 H（≥8）、L（≤2）**都**互斥。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShiTong : WanJieRuLinCardModel
 {
-    private const int GhostQiCost = 3;
-
     public ShiTong() : base(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
-        SetGhostQiCost(GhostQiCost);
     }
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
-        GhostQiCostVarOf(3),
-        ModCardVars.Int("GhostQiPerCard", 1)
-    ];
-
-    /// <summary>★ v0.3 补上硬条件 —— 三流派互斥的根基：与 L 流「鬼气 = 0 / ≤2」的牌**不可能同时满足**。</summary>
     protected override bool? PlayCondition => GhostQiAtLeast(3) && GhostQiAtMost(7);
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -40,7 +33,5 @@ public sealed class ShiTong : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        // 鬼气消耗 3 → 2。
-        SetGhostQiCost(GhostQiCost - 1);
     }
 }

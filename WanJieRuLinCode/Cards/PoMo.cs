@@ -1,8 +1,9 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -13,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 泼墨 —— Attack牌 1费
+/// 造成 5 点伤害，共 2 次，获得 3 点鬼气。升级后鬼气 4 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class PoMo : WanJieRuLinCardModel
@@ -24,15 +25,20 @@ public sealed class PoMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move),
-        ModCardVars.Int("GhostQiGain", 4)
+        new DamageVar(5m, ValueProp.Move),
+        ModCardVars.Repeat(2),
+        ModCardVars.Int("GhostQiGain", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue, 2);
-        await GainGhostQi(DynamicVars.GetIntOrDefault("GhostQiGain", 4));
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .WithHitCount(DynamicVars.Repeat.IntValue)
+            .Execute(choiceContext);
+        await GainGhostQi(DynamicVars.GetIntOrDefault("GhostQiGain", 3));
     }
 
     protected override void OnUpgrade()

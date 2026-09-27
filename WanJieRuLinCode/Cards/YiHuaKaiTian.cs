@@ -1,8 +1,9 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -13,7 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 一画开天 —— Attack牌 3费
+/// 造成 30 点伤害；鬼气不低于 12 时额外 +15。[消耗]
+/// ★ H 流收尾牌 ——「墨极浓」专属。与 L 流的「鬼气 = 0」不可能同时满足。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YiHuaKaiTian : WanJieRuLinCardModel
@@ -22,17 +24,21 @@ public sealed class YiHuaKaiTian : WanJieRuLinCardModel
     {
     }
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(30m, ValueProp.Move)
+        new DamageVar(30m, ValueProp.Move),
+        ModCardVars.Int("HighBonus", 15)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DealDamage(choiceContext, cardPlay.Target, GhostQiAtLeast(12) ? 45m : DynamicVars.Damage.BaseValue);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (GhostQiAtLeast(12) ? DynamicVars.GetIntOrDefault("HighBonus", 15) : 0m))
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
