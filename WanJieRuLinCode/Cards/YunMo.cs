@@ -1,6 +1,5 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -13,7 +12,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 匀墨 —— Skill牌 2费
+/// 将你的鬼气设为 5，抽 1 张牌。升级后抽 2 张。
+/// ★「设为」是绝对值，刷不出增量。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YunMo : WanJieRuLinCardModel
@@ -24,8 +24,8 @@ public sealed class YunMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Cards(2),
-        ModCardVars.Int("SetTo", 5)
+        ModCardVars.Int("SetTo", 5),
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

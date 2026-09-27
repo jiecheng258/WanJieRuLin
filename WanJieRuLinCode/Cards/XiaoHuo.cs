@@ -7,12 +7,12 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using WanJieRuLin.Characters;
+using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 消火 —— 技能牌 1 点鬼气：获得 10 点格挡，给予自身 2 层虚弱。升级后给予自身 1 层虚弱。
-/// 与封笔同源，但改为消耗鬼气而非能量。
+/// 获得 4 点格挡。升级后 7 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class XiaoHuo : WanJieRuLinCardModel
@@ -22,24 +22,17 @@ public sealed class XiaoHuo : WanJieRuLinCardModel
         SetGhostQiCost(1);
     }
 
-    public override bool GainsBlock => true;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        // 鬼气费用（卡面用 {GhostQiCost:secondaryResourceIcons()} 渲染成图标+数字）。
-        GhostQiCostVarOf(1),
-        new BlockVar(10m, ValueProp.Move),
-        ModCardVars.Int("Weak", 2)
+        new BlockVar(4m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        await ApplySelf<WeakPower>(choiceContext, DynamicVars.GetIntOrDefault("Weak", 2));
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Weak"].UpgradeValueBy(-1);
-    }
+        DynamicVars.Block.UpgradeValueBy(3m);    }
 }

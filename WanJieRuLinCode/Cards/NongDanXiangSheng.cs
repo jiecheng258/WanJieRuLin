@@ -1,6 +1,5 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -13,7 +12,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 浓淡相生 —— Skill牌 1费
+/// 鬼气 ≥6：失去 4 点鬼气并抽 2 张；否则获得 4 点鬼气并抽 1 张。
+/// ★ 失去侧**不给能量**（R3），不构成往返循环。升级质变：两侧抽牌同时 +1。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class NongDanXiangSheng : WanJieRuLinCardModel
@@ -24,25 +24,25 @@ public sealed class NongDanXiangSheng : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Swing", 5)
+        ModCardVars.Cards(2),
+        ModCardVars.Int("QiSwing", 4)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var swing = DynamicVars.GetIntOrDefault("Swing", 5);
-        if (IsDenseInk)
+        if (IsEvenInk || MyGhostQi >= 6)
         {
-            await LoseGhostQi(swing);
-            await Draw(choiceContext, 2);
+            await LoseGhostQi(DynamicVars.GetIntOrDefault("QiSwing", 4));
+            await Draw(choiceContext, DynamicVars.Cards.IntValue);
         }
         else
         {
-            await GainGhostQi(swing);
-            await Draw(choiceContext, 1);
+            await GainGhostQi(DynamicVars.GetIntOrDefault("QiSwing", 4));
+            await Draw(choiceContext, Math.Max(1, DynamicVars.Cards.IntValue - 1));
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Swing"].UpgradeValueBy(2);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

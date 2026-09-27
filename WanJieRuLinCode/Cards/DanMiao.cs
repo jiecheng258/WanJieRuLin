@@ -1,6 +1,5 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -13,7 +12,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 淡描 —— Skill牌 1费
+/// 获得 6 点格挡；鬼气不高于 2 时，额外 4 点。升级后基础 9 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DanMiao : WanJieRuLinCardModel
@@ -24,12 +23,13 @@ public sealed class DanMiao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(6m, ValueProp.Move)
+        new BlockVar(6m, ValueProp.Move),
+        ModCardVars.Int("ThinBonus", 4)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, IsThinInk ? 10m : DynamicVars.Block.BaseValue);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue + (IsThinInk ? DynamicVars.GetIntOrDefault("ThinBonus", 4) : 0m));
     }
 
     protected override void OnUpgrade()

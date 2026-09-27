@@ -7,44 +7,37 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using WanJieRuLin.Characters;
+using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 电龙护法 —— 技能牌 1 能量：本回合获得 6 点格挡，下回合获得 3 点格挡。
-/// 升级后本回合 9 点，下回合 6 点。
+/// 获得 8 点格挡；下回合开始时再获得 3 点格挡。升级后 12 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianLongHuFa : WanJieRuLinCardModel
 {
-    private const string NextTurnBlockVar = "NextTurnBlock";
-    private const int BlockNow = 6;
-    private const int BlockNextTurn = 3;
-
     public DianLongHuFa() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(BlockNow, ValueProp.Move),
-        ModCardVars.Block(NextTurnBlockVar, BlockNextTurn)
+        new BlockVar(8m, ValueProp.Move),
+        ModCardVars.Int("NextTurnBlock", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-
-        var nextTurn = DynamicVars.GetIntOrDefault(NextTurnBlockVar, BlockNextTurn);
-        if (nextTurn > 0)
+        var nb = DynamicVars.GetIntOrDefault("NextTurnBlock", 3);
+        if (nb > 0)
         {
-            await ApplySelf<BlockNextTurnPower>(choiceContext, nextTurn);
+            await ApplySelf<BlockNextTurnPower>(choiceContext, nb);
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);
-        DynamicVars[NextTurnBlockVar].UpgradeValueBy(3m);
-    }
+        DynamicVars.Block.UpgradeValueBy(4m);    }
 }

@@ -1,6 +1,5 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -13,7 +12,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 素练 —— Skill牌 1费
+/// 获得 8 点格挡；鬼气在 3–7 之间时，额外 5 点。升级后基础 12 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class SuLian : WanJieRuLinCardModel
@@ -24,12 +23,13 @@ public sealed class SuLian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(9m, ValueProp.Move)
+        new BlockVar(8m, ValueProp.Move),
+        ModCardVars.Int("EvenBonus", 5)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, IsEvenInk ? 14m : DynamicVars.Block.BaseValue);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue + (IsEvenInk ? DynamicVars.GetIntOrDefault("EvenBonus", 5) : 0m));
     }
 
     protected override void OnUpgrade()

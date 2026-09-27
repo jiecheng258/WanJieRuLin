@@ -1,6 +1,5 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -13,7 +12,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 换气 —— Skill牌 1费
+/// 将鬼气变为 10 减去当前值，抽 1 张牌。升级后抽 2 张。
+/// ★ 镜像不产净资源。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuanQi : WanJieRuLinCardModel
@@ -24,14 +24,13 @@ public sealed class HuanQi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Cards(2),
-        ModCardVars.Int("Mirror", 20)
+        ModCardVars.Int("Mirror", 10),
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var mirror = DynamicVars.GetIntOrDefault("Mirror", 20);
-        await SetGhostQi(Math.Max(0, mirror - MyGhostQi));
+        await SetGhostQi(Math.Max(0, DynamicVars.GetIntOrDefault("Mirror", 10) - MyGhostQi));
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 

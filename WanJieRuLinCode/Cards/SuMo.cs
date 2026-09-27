@@ -1,6 +1,5 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -13,7 +12,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 宿墨 —— Attack牌 1费
+/// 造成 7 点伤害，获得 2 点鬼气。升级后鬼气 3 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class SuMo : WanJieRuLinCardModel
@@ -31,7 +30,10 @@ public sealed class SuMo : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
         await GainGhostQi(DynamicVars.GetIntOrDefault("GhostQiGain", 2));
     }
 
