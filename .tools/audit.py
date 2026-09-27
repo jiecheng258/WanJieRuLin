@@ -221,3 +221,33 @@ for cls, v in sorted(relics.items()):
         print('  Relics/%s  <- %s' % (cls, '基类' if v['abstract'] else '工具类'))
 print()
 print('审计完成')
+
+
+# ============================================================================
+# ★ 起手卡组检查（2026-09-28 追加）
+#
+# 背景：重写卡牌时把 [RegisterCharacterStarterCard] 丢了，
+#       线上表现是「第一层一张牌都没有」——而其余审计全都发现不了。
+#       这是个**静默**故障：卡牌本身注册正常、能抽到、能在图鉴里看到，
+#       只有「起手牌」不见了。
+# ============================================================================
+print()
+print('=== 起手卡组 ===')
+CARDS_DIR = os.path.join(CODE, 'Cards')
+_starter = []
+for _f in sorted(os.listdir(CARDS_DIR)):
+    if not _f.endswith('.cs'):
+        continue
+    _t = io.open(os.path.join(CARDS_DIR, _f), encoding='utf-8').read()
+    _m = re.search(r'\[RegisterCharacterStarterCard\(typeof\((\w+)\),\s*(\d+)\)\]', _t)
+    if _m:
+        _starter.append((_f[:-3], _m.group(1), int(_m.group(2))))
+
+if not _starter:
+    print('  !! 起手卡组为空 —— 角色会一张初始牌都没有！')
+    print('     检查卡牌类上是否漏了 [RegisterCharacterStarterCard(typeof(<角色>), N)]。')
+else:
+    _total = sum(x[2] for x in _starter)
+    print('  起手卡 %d 种、共 %d 张：' % (len(_starter), _total))
+    for _cls, _ch, _n in _starter:
+        print('    %-16s x%d  -> %s' % (_cls, _n, _ch))

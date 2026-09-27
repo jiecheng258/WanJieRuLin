@@ -17,6 +17,7 @@ namespace WanJieRuLin.Cards;
 /// 耗费 1 点鬼气。获得 4 点格挡，抽 1 张牌。
 /// ★ 原为「0 费 / X 鬼气」—— 起手牌不该一次清空全部鬼气，改成固定 1 点。升级 ★ 质变：抽牌 1→2。
 /// </summary>
+[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 2)]
 [RegisterArchaicToothTranscendence(typeof(MoRanJiangShan))]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class Hui : WanJieRuLinCardModel

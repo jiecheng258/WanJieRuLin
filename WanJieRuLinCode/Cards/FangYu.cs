@@ -16,6 +16,7 @@ namespace WanJieRuLin.Cards;
 /// <summary>
 /// 获得 5 点格挡。升级后 8 点。
 /// </summary>
+[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class FangYu : WanJieRuLinCardModel
 {
