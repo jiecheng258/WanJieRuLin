@@ -73,6 +73,59 @@ def collect_source(repo):
     return sorted(out, key=lambda x: x[1])
 
 
+# ============================================================================
+# ⑤ 自动归档（用户约定 2026-09-28：历史版本进 GitHub dist 分支，本地只留最新）
+# ============================================================================
+def archive_to_dist(install_zip):
+    """把安装包推到 GitHub dist 分支；本地旧包送回收站。"""
+    import shutil
+    import subprocess
+    import tempfile
+    GIT = r'C:\Users\wangx\.workbuddy\binaries\PortableGit\versions\1.2.0\cmd\git.exe'
+    WORK = r'C:\Users\wangx\WorkBuddy\_scratch\sts2-mod\dist-archive'
+    URL = 'git@github.com:jiecheng258/WanJieRuLin.git'
+    env = dict(os.environ)
+    env['GIT_SSH_COMMAND'] = ('ssh -o ProxyCommand=none -o ConnectTimeout=20 '
+                              '-o StrictHostKeyChecking=accept-new')
+
+    def run(args, cwd=None):
+        r = subprocess.run(args, cwd=cwd, env=env, capture_output=True)
+        return r.returncode, (r.stdout + r.stderr).decode('utf-8', 'replace')
+
+    if not os.path.isfile(GIT):
+        print('  !! 找不到 git，跳过归档'); return
+    shutil.rmtree(WORK, ignore_errors=True)
+    os.makedirs(WORK, exist_ok=True)
+    rc, out = run([GIT, 'clone', '--branch', 'dist', '--single-branch',
+                   '--depth', '1', URL, '.'], cwd=WORK)
+    if rc != 0:
+        print('  !! dist 归档失败（克隆）:', out[-200:]); return
+
+    shutil.copy2(install_zip, os.path.join(WORK, os.path.basename(install_zip)))
+    run([GIT, 'config', 'user.email', 'jiecheng258@users.noreply.github.com'])
+    run([GIT, 'config', 'user.name', 'jiecheng258'])
+    run([GIT, 'add', '-A'])
+    rc, out = run([GIT, 'commit', '-m', 'archive: ' + os.path.basename(install_zip)])
+    if rc == 0:
+        rc, out = run([GIT, 'push', 'origin', 'dist'])
+        print('  归档到 GitHub dist 分支:',
+              '成功' if rc == 0 else '失败 ' + out[-160:])
+    else:
+        print('  （dist 无变化，跳过 push）')
+    shutil.rmtree(WORK, ignore_errors=True)
+
+    # 本地只留最新：其他版本的 install.zip 送回收站
+    import glob as _glob
+    for old in _glob.glob(os.path.join(OUT_DIR, 'WanJieRuLin-v*-install.zip')):
+        if VERSION not in os.path.basename(old):
+            try:
+                os.remove(old)      # safe-delete shim → 回收站
+                print('  本地已移除旧包:', os.path.basename(old))
+            except Exception as e:
+                print('  !! 移除失败', os.path.basename(old), e)
+
+
+
 def main():
     check_only = "--check" in sys.argv
 
@@ -135,6 +188,11 @@ def main():
         print("  %s  %d B" % (source_zip, os.path.getsize(source_zip)))
     else:
         print("  （已跳过 source 包；需要时设 WJRL_SOURCE_ZIP=1）")
+
+    # ---- 5. 自动归档 + 本地只留最新 ----
+
+    archive_to_dist(install_zip)
+
 
     # ---- 复检 ----
     print("\n--- 复检 install.zip ---")
