@@ -24,14 +24,20 @@ public sealed class ShiTong : WanJieRuLinCardModel
     {
     }
 
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        ModCardVars.Cards(0)
+    ];
+
     protected override bool? PlayCondition => GhostQiAtLeast(3) && GhostQiAtMost(7);
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await ApplySelf<ShiTongPower>(choiceContext, 1m);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

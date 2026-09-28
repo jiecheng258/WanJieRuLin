@@ -31,5 +31,5 @@ public sealed class TunShi : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-    }
+        EnergyCost.UpgradeBy(-1);    }
 }

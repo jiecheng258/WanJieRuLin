@@ -41,5 +41,5 @@ public sealed class MoRanJiangShan : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-    }
+        DynamicVars["BonusStat"].UpgradeValueBy(3);    }
 }

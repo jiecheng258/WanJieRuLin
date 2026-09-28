@@ -4,7 +4,7 @@
   "pck_name": "WanJieRuLin",
   "author": "wangx",
   "description": "万界如林角色模组：以鬼气为力量的墨绘者。“林”的身份一直是一个谜，有关于她的故事有很多，或许会有真的。鬼气：战斗开始时获得，每回合增长，用于支付带有鬼气费用的牌。墨之相：鬼气越高，攻击伤害越低（墨浓 −2 / 墨极浓 −5），但鬼气越低每回合抽牌越多 —— 攒气与清气是两条互斥的路线。",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,

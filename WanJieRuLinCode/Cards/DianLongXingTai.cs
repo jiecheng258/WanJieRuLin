@@ -31,5 +31,5 @@ public sealed class DianLongXingTai : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-    }
+        EnergyCost.UpgradeBy(-1);    }
 }
