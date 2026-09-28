@@ -17,6 +17,7 @@ namespace WanJieRuLin.Cards;
 /// 耗费所有鬼气。本回合获得 X+3 点临时力量与 X+3 点临时敏捷（X 为耗费的鬼气）。
 /// [gold]保留[/gold]。★ 先古牌：不抽牌不产能量，纯增幅。
 /// </summary>
+[RegisterDustyTomeCard(typeof(WanJieRuLinCharacter))]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoRanJiangShan : WanJieRuLinCardModel
 {
