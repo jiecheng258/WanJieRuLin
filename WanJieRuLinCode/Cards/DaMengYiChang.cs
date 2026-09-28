@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 9 点格挡；下回合开始时抽 1 张牌。升级后 13 点格挡。
+/// 获得 8 点格挡；下回合开始时抽 1 张牌。升级后 12 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaMengYiChang : WanJieRuLinCardModel
@@ -25,7 +25,7 @@ public sealed class DaMengYiChang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(9m, ValueProp.Move),
+        new BlockVar(8m, ValueProp.Move),
         ModCardVars.Cards(1)
     ];
 

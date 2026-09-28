@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ L 流收尾牌。**鬼气为 0 时才能打出**。造成 10 点伤害，共 2 次。
-/// ★ 升级质变：次数 2→3。
+/// ★ L 流收尾牌。**鬼气为 0 时才能打出**。造成 8 点伤害，共 2 次。
+/// ★ 升级质变：次数 2→3。（原 10 伤害 ×2 按原版尺子偏高，下修到 8）
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class TuiGui : WanJieRuLinCardModel
@@ -26,7 +26,7 @@ public sealed class TuiGui : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(10m, ValueProp.Move),
+        new DamageVar(8m, ValueProp.Move),
         ModCardVars.Repeat(2)
     ];
 

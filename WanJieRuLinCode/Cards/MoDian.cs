@@ -14,23 +14,22 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 12 点格挡，获得 2 点鬼气。升级后 15 点格挡。
-/// ★ 数值按现有保留（设计稿误写为 1 费 4 格挡，属无意义削弱）。
+/// 获得 8 点格挡，获得 2 点鬼气。升级后 11 点格挡。
+/// ★ 原为 2 费 12 格挡 —— 按原版尺子（2 费技能 ≈ 11）属于虚高且费太重，
+///    现下修为 1 费 8 格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoDian : WanJieRuLinCardModel
 {
-    public MoDian() : base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public MoDian() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(12m, ValueProp.Move),
+        new BlockVar(8m, ValueProp.Move),
         ModCardVars.Int("GhostQiGain", 2)
     ];
-
-    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

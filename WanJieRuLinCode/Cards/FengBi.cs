@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 9 点格挡，本回合你无法获得鬼气。升级后 13 点。
+/// 获得 8 点格挡，本回合你无法获得鬼气。升级后 12 点。
 /// ★ L 流身份牌：把鬼气冻在低位，让「鬼气 ≤2」的条件牌稳定生效。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -26,7 +26,7 @@ public sealed class FengBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(9m, ValueProp.Move)
+        new BlockVar(8m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

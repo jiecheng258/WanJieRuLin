@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 8 点伤害；鬼气不高于 2 时，额外造成 4 点。升级后基础 11 点。
+/// 造成 7 点伤害；鬼气不高于 2 时，额外造成 4 点。升级后基础 10 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DanMo : WanJieRuLinCardModel
@@ -25,7 +25,7 @@ public sealed class DanMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8m, ValueProp.Move),
+        new DamageVar(7m, ValueProp.Move),
         ModCardVars.Int("ThinBonus", 4)
     ];
 

@@ -16,7 +16,6 @@ namespace WanJieRuLin.Cards;
 /// <summary>
 /// 获得 5 点格挡。升级后 8 点。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class FangYu : WanJieRuLinCardModel
 {
@@ -28,8 +27,6 @@ public sealed class FangYu : WanJieRuLinCardModel
     [
         new BlockVar(5m, ValueProp.Move)
     ];
-
-    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

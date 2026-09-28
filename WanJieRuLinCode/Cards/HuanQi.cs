@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 将鬼气变为 10 减去当前值，抽 1 张牌。升级后抽 2 张。
-/// ★ 镜像不产净资源。
+/// ★ 镜像不产净资源 —— 高鬼气变低、低鬼气变高，但总量守恒。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuanQi : WanJieRuLinCardModel

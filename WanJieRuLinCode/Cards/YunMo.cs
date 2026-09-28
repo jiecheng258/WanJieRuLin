@@ -15,12 +15,12 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 将你的鬼气设为 5，抽 1 张牌。升级后抽 2 张。
-/// ★「设为」是绝对值，刷不出增量。
+/// ★「设为」是绝对值，刷不出增量。（原为 2 费，按原版尺子偏重，下修为 1 费）
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YunMo : WanJieRuLinCardModel
 {
-    public YunMo() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public YunMo() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

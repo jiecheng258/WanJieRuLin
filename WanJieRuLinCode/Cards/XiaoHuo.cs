@@ -29,8 +29,6 @@ public sealed class XiaoHuo : WanJieRuLinCardModel
         new BlockVar(4m, ValueProp.Move)
     ];
 
-    public override bool GainsBlock => true;
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);

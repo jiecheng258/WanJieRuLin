@@ -14,19 +14,20 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 给予 1 层易伤、2 层虚弱；造成 14 点伤害。升级后 18 点。
+/// 给予 1 层易伤、2 层虚弱；造成 10 点伤害。升级后 14 点。
+/// ★ 原为 2 费 14 伤害 —— 按原版尺子（2 费攻击 ≈ 8–13）偏高，现下修为 1 费 10。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChiXuQinRao : WanJieRuLinCardModel
 {
-    public ChiXuQinRao() : base(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public ChiXuQinRao() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
         SetGhostQiCost(1);
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move),
+        new DamageVar(10m, ValueProp.Move),
         ModCardVars.Int("Vulnerable", 1),
         ModCardVars.Int("Weak", 2)
     ];

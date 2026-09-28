@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 5 点格挡，获得 3 点鬼气。升级后鬼气 4 点。
+/// 获得 6 点格挡，获得 3 点鬼气。升级后鬼气 4 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YanMoInk : WanJieRuLinCardModel
@@ -25,7 +25,7 @@ public sealed class YanMoInk : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move),
+        new BlockVar(6m, ValueProp.Move),
         ModCardVars.Int("GhostQiGain", 3)
     ];
 

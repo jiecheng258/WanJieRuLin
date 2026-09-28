@@ -14,28 +14,34 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 14 点伤害，鬼气每有 5 点此伤害 +2。
-/// ★ 过渡牌：从「墨浓阈值 +6」改成**连续梯度**，三流派都能用、都不顶尖。
+/// ★ **连笔**（v0.4 新机制）：本回合内，你每打出一张牌，本回合伤害 +2（最多 4 层）。
+/// 升级后上限 6 层。
+/// ★ 逼玩家「一口气把牌打完」，与「留牌过回合」形成取舍。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuiHao : WanJieRuLinCardModel
 {
-    public HuiHao() : base(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public HuiHao() : base(1, CardType.Power, CardRarity.Common, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move)
+        ModCardVars.Int("BonusPerStep", 2),
+        ModCardVars.Int("MaxSteps", 4)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + (MyGhostQi / 5) * 2m);
+        var power = await ApplySelfAndGet<LianBiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            power.BonusPerStep = DynamicVars.GetIntOrDefault("BonusPerStep", 2);
+            power.MaxSteps = DynamicVars.GetIntOrDefault("MaxSteps", 4);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5m);    }
+        DynamicVars["MaxSteps"].UpgradeValueBy(2);    }
 }
