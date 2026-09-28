@@ -26,7 +26,7 @@ public sealed class DaMengYiChang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move),
+        new BlockVar(14m, ValueProp.Move),
         ModCardVars.Cards(1),
         ModCardVars.Int("BloodCost", 2)
     ];
@@ -40,7 +40,7 @@ public sealed class DaMengYiChang : WanJieRuLinCardModel
             await CreatureCmd.Damage(choiceContext, self.Creature,
                 DynamicVars.GetIntOrDefault("BloodCost", 2), ValueProp.Move, self.Creature, null, null);
         }
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue + 6m);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
         await ApplySelf<DrawCardsNextTurnPower>(choiceContext, DynamicVars.Cards.IntValue);
     }
 

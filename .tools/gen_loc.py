@@ -670,13 +670,17 @@ def build_cards(zh):
     #   ① 新旧两段自相矛盾的文案同屏；② 两段结尾都是「[gold]消耗[/gold]」
     #   → 玩家看到「消耗消耗消耗」（再叠加关键字徽章一次）。
     try:
-        import card_loc_v03 as _cl
+        import card_loc_v04 as _cl
         _ov = _cl.ZH if zh else _cl.EN
         _pfx = 'WAN_JIE_RU_LIN_CARD_'
         for _cls, _desc in _ov.items():
             _base = _pfx + re.sub(r'(?<!^)(?=[A-Z])', '_', _cls).upper()
             d[_base + '.description'] = _desc
             d[_base + '.smartDescription'] = _desc
+            # 新卡的标题（旧卡在 gen_loc 的原始表里已有）
+            _t = (_cl.TITLES_ZH if zh else _cl.TITLES_EN).get(_cls)
+            if _t:
+                d[_base + '.title'] = _t
     except Exception as _e:
         print('  !! card_loc_v03 覆盖失败:', _e)
 
@@ -710,6 +714,24 @@ CARD_KEYWORDS_EN = {
         '[gold]In other words, you can only use it once per combat.[/gold]',
 }
 
+
+
+# ---- v0.4 新机制能力（连笔 / 伏笔 / 相位天气）----
+POWERS['LianBiPower'] = (
+    '连笔',
+    '[gold]连笔[/gold]：本回合内，你每打出一张牌，本回合伤害 +{BonusPerStep}（最多 {MaxSteps} 层）。',
+    'Chain Brush',
+    '[gold]Chain Brush[/gold]: this turn, each card you play adds +{BonusPerStep} damage this turn (up to {MaxSteps} stacks).')
+POWERS['FuBiPower'] = (
+    '伏笔',
+    '[gold]伏笔[/gold]：{Turns} 回合后，对所有敌人造成 {Damage}点伤害。',
+    'Foreshadow',
+    '[gold]Foreshadow[/gold]: after {Turns} turns, deal {Damage} damage to ALL enemies.')
+POWERS['TianQiPower'] = (
+    '相位天气',
+    '[gold]相位天气[/gold]：每回合开始时随机降下一种墨相（格挡 / 鬼气 / 能量），强度 {Amount}。',
+    'Phase Weather',
+    '[gold]Phase Weather[/gold]: at the start of each turn, a random omen falls (Block / Ghost Qi / Energy), strength {Amount}.')
 
 for lang in ('zhs', 'eng'):
     zh = (lang == 'zhs')
