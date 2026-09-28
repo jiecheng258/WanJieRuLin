@@ -13,12 +13,58 @@ height = 128
 fill_from = Vector2(0, 0)
 fill_to = Vector2(0, 1)
 
+[sub_resource type="Animation" id="Animation_spin_orb"]
+resource_name = "spin_orb"
+length = 20.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Layers/Layer1:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 360.0]
+}
+
+[sub_resource type="Animation" id="Animation_spin_ring"]
+resource_name = "spin_ring"
+length = 14.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Layers/RotationLayers/Layer2:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 14),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -360.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v04"]
+_data = {
+&"spin_orb": SubResource("Animation_spin_orb"),
+&"spin_ring": SubResource("Animation_spin_ring")
+}
+
 [node name="WanJieRuLinEnergyCounter" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 128.0
 metadata/_edit_lock_ = true
+
+[node name="Spin" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_v04")
+}
+autoplay = "spin_orb"
 
 [node name="EnergyVfxBack" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -40,6 +86,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(64, 64)
 texture = ExtResource("1_energy")
 expand_mode = 1
 
@@ -59,6 +106,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(64, 64)
 texture = SubResource("GradientTexture2D_ring")
 expand_mode = 1
 stretch_mode = 1
