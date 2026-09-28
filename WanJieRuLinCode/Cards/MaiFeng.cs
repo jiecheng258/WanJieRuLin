@@ -14,30 +14,33 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气不高于 2 时才能打出。获得 8 点格挡，抽 1 张牌。升级后 11 点格挡。
+/// ★ **伏笔**（v0.4 新机制）：2 回合后，对所有敌人造成 14 点伤害。
+/// 升级后 20 点伤害。★ 把「现在」换成「以后」——远期布局的回报。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class LianFeng : WanJieRuLinCardModel
+public sealed class MaiFeng : WanJieRuLinCardModel
 {
-    public LianFeng() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public MaiFeng() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move),
-        ModCardVars.Cards(1)
+        ModCardVars.Int("Damage", 14),
+        ModCardVars.Int("Turns", 2)
     ];
-
-    protected override bool? PlayCondition => GhostQiAtMost(2);
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        var power = await ApplySelfAndGet<FuBiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            power.Damage = DynamicVars.GetIntOrDefault("Damage", 14);
+            power.TurnsLeft = DynamicVars.GetIntOrDefault("Turns", 2);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);    }
+        DynamicVars["Damage"].UpgradeValueBy(6);    }
 }

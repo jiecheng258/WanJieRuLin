@@ -15,13 +15,12 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 你接下来获得的能量全部转为鬼气（永久）。每回合开始时额外获得 2 点鬼气。
-/// 升级后额外 3 点。
-/// ★ 补充：光把能量换成鬼气是等价交换，没有净收益，所以配一份额外产出。
+/// 升级后 3 点。★ 光把能量换成鬼气是等价交换，所以配一份额外产出。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiGuiFuSu : WanJieRuLinCardModel
 {
-    public LiGuiFuSu() : base(3, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+    public LiGuiFuSu() : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
     }
 

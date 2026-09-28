@@ -18,6 +18,7 @@ namespace WanJieRuLin.Cards;
 /// ★ 角色专属初始牌，也是「古老牙齿」转化为墨染江山的来源。
 /// 升级 ★ 质变：抽牌 1→2。
 /// </summary>
+[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 2)]
 [RegisterArchaicToothTranscendence(typeof(MoRanJiangShan))]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class Hui : WanJieRuLinCardModel

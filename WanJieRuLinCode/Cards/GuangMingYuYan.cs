@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 每回合最多触发 1 次：失去生命时，每失去 2 点生命获得 1 点鬼气。
-/// 升级后上限 2 次。★ 反无限（R5）。
+/// 升级后上限 2 次。★ 反无限（R5），且与「血墨」自伤牌天然联动。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GuangMingYuYan : WanJieRuLinCardModel

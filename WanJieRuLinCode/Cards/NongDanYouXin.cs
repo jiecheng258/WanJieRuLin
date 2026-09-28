@@ -14,8 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 每回合最多触发 2 次：获得鬼气时获得 3 点格挡；失去鬼气时抽 1 张牌。
-/// 升级后上限 3 次。
+/// 每回合最多触发 2 次：获得鬼气时获得 3 点格挡；失去鬼气时抽 1 张牌。升级后上限 3 次。
 /// ★ 反无限（R5）：原为无上限触发，与产气牌直接构成无限。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

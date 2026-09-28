@@ -14,19 +14,19 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 每回合最多获得 12 点此牌格挡：你获得鬼气时，获得等量的格挡。升级后上限 18。
+/// 每回合最多获得 10 点此牌格挡：你获得鬼气时，获得等量的格挡。升级后上限 15。
 /// ★ H 流引擎：产气即叠甲。有每回合上限。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class NongMoZhongCai : WanJieRuLinCardModel
 {
-    public NongMoZhongCai() : base(3, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+    public NongMoZhongCai() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("MaxBlockPerTurn", 12)
+        ModCardVars.Int("MaxBlockPerTurn", 10)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -34,11 +34,11 @@ public sealed class NongMoZhongCai : WanJieRuLinCardModel
         var power = await ApplySelfAndGet<RichInkPower>(choiceContext, 1m);
         if (power is not null)
         {
-            power.MaxBlockPerTurn = DynamicVars.GetIntOrDefault("MaxBlockPerTurn", 12);
+            power.MaxBlockPerTurn = DynamicVars.GetIntOrDefault("MaxBlockPerTurn", 10);
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MaxBlockPerTurn"].UpgradeValueBy(6);    }
+        DynamicVars["MaxBlockPerTurn"].UpgradeValueBy(5);    }
 }

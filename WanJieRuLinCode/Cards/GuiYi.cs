@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 将你的鬼气设为 5，获得 15 点格挡。[消耗] 升级后 20 点。
+/// 将你的鬼气设为 5，获得 13 点格挡。[消耗] 升级后 18 点。
 /// ★ 设为绝对值，不产生增量。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -27,7 +27,7 @@ public sealed class GuiYi : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Int("SetTo", 5),
-        new BlockVar(15m, ValueProp.Move)
+        new BlockVar(13m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 8 点格挡；下回合开始时再获得 3 点格挡。升级后 12 点格挡。
+/// 获得 7 点格挡；下回合开始时再获得 3 点格挡。升级后 11 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianLongHuFa : WanJieRuLinCardModel
@@ -25,18 +25,14 @@ public sealed class DianLongHuFa : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move),
+        new BlockVar(7m, ValueProp.Move),
         ModCardVars.Int("NextTurnBlock", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-        var nb = DynamicVars.GetIntOrDefault("NextTurnBlock", 3);
-        if (nb > 0)
-        {
-            await ApplySelf<BlockNextTurnPower>(choiceContext, nb);
-        }
+        await ApplySelf<BlockNextTurnPower>(choiceContext, DynamicVars.GetIntOrDefault("NextTurnBlock", 3));
     }
 
     protected override void OnUpgrade()

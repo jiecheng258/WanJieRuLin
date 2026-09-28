@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 30 点伤害；鬼气不低于 12 时额外 +15。[消耗]
+/// 造成 22 点伤害；鬼气不低于 12 时额外 +12。[消耗]
 /// ★ H 流收尾牌 ——「墨极浓」专属。与 L 流的「鬼气 = 0」不可能同时满足。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -26,8 +26,8 @@ public sealed class YiHuaKaiTian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(30m, ValueProp.Move),
-        ModCardVars.Int("HighBonus", 15)
+        new DamageVar(22m, ValueProp.Move),
+        ModCardVars.Int("HighBonus", 12)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
@@ -35,7 +35,7 @@ public sealed class YiHuaKaiTian : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (GhostQiAtLeast(12) ? DynamicVars.GetIntOrDefault("HighBonus", 15) : 0m))
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (GhostQiAtLeast(12) ? DynamicVars.GetIntOrDefault("HighBonus", 12) : 0m))
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
@@ -43,5 +43,5 @@ public sealed class YiHuaKaiTian : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(8m);    }
+        DynamicVars.Damage.UpgradeValueBy(7m);    }
 }

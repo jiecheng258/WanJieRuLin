@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **连笔**（v0.4 新机制）：本回合内，你每打出一张牌，本回合伤害 +2（最多 4 层）。
-/// 升级后上限 6 层。
+/// ★ **连笔**（v0.4 新机制）：本回合内，你每打出一张牌，本回合伤害 +2
+/// （最多 4 层）。升级后上限 6 层。
 /// ★ 逼玩家「一口气把牌打完」，与「留牌过回合」形成取舍。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

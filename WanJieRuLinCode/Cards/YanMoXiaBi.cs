@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气不低于 4 时才能打出。造成 12 点伤害。升级后 16 点。
+/// 鬼气不低于 4 时才能打出。造成 10 点伤害。升级后 14 点。
 /// ★ H 流硬条件牌（与 L 流的「鬼气 ≤2」不可能同时满足）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -26,7 +26,7 @@ public sealed class YanMoXiaBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(12m, ValueProp.Move)
+        new DamageVar(10m, ValueProp.Move)
     ];
 
     protected override bool? PlayCondition => GhostQiAtLeast(4);

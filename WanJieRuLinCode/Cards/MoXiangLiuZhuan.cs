@@ -14,29 +14,31 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 失去 4 点鬼气，抽 3 张牌。升级后抽 4 张。
-/// ★ 失去侧**不给能量**（R3），不构成往返循环。
+/// ★ **相位天气**极意：每回合开始时随机降下一种墨相，强度 8。升级后 12。
+/// ★ 长期收益期望高于同费引擎，代价是完全不可控。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class ChengXin : WanJieRuLinCardModel
+public sealed class MoXiangLiuZhuan : WanJieRuLinCardModel
 {
-    public ChengXin() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public MoXiangLiuZhuan() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("GhostQiLoss", 4),
-        ModCardVars.Cards(3)
+        ModCardVars.Int("Amount", 8)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await LoseGhostQi(DynamicVars.GetIntOrDefault("GhostQiLoss", 4));
-        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        var power = await ApplySelfAndGet<TianQiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            power.Amount = DynamicVars.GetIntOrDefault("Amount", 8);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Cards.UpgradeValueBy(1);    }
+        DynamicVars["Amount"].UpgradeValueBy(4);    }
 }

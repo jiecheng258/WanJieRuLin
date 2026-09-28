@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 给予 1 层易伤、2 层虚弱；造成 10 点伤害。升级后 14 点。
-/// ★ 原为 2 费 14 伤害 —— 按原版尺子（2 费攻击 ≈ 8–13）偏高，现下修为 1 费 10。
+/// ★ 原为 2 费 14 伤害，按原版尺子偏高，现下修为 1 费 10 伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChiXuQinRao : WanJieRuLinCardModel

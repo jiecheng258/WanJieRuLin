@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 你接下来的回合不再获得能量，改为获得同等数值的鬼气。每回合开始时额外抽 1 张牌。
-/// ★ 达佛（Darv）给予的能力卡，到手即为升级状态。
+/// ★ 达佛给予的能力卡，到手即为升级状态。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GuiQiSenSen : WanJieRuLinCardModel

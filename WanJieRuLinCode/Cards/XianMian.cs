@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 耗费所有鬼气。对所有敌人造成 8 点伤害，每耗费 1 点鬼气此伤害 +4。
+/// 耗费所有鬼气。对所有敌人造成 8 点伤害，每耗费 1 点鬼气此伤害 +3。
 /// 升级后基础 12 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -28,12 +28,12 @@ public sealed class XianMian : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),
-        ModCardVars.Int("BonusPerQi", 4)
+        ModCardVars.Int("BonusPerQi", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await DealDamageToAll(choiceContext, DynamicVars.Damage.BaseValue + GhostQiXValue(cardPlay) * DynamicVars.GetIntOrDefault("BonusPerQi", 4));
+        await DealDamageToAll(choiceContext, DynamicVars.Damage.BaseValue + GhostQiXValue(cardPlay) * DynamicVars.GetIntOrDefault("BonusPerQi", 3));
     }
 
     protected override void OnUpgrade()

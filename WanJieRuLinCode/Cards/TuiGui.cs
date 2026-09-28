@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// ★ L 流收尾牌。**鬼气为 0 时才能打出**。造成 8 点伤害，共 2 次。
-/// ★ 升级质变：次数 2→3。（原 10 伤害 ×2 按原版尺子偏高，下修到 8）
+/// 升级 ★ 质变：次数 2→3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class TuiGui : WanJieRuLinCardModel

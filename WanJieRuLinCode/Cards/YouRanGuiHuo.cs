@@ -15,12 +15,12 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 给予 2 层易伤。造成 5 点伤害，共 2 次；鬼气每有 5 点，次数 +1。
-/// 升级质变：每 4 点即可 +1 次。★ 梯度过渡牌（高鬼气友好）。
+/// 升级质变：每 4 点即可 +1 次。★ 梯度过渡牌。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YouRanGuiHuo : WanJieRuLinCardModel
 {
-    public YouRanGuiHuo() : base(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+    public YouRanGuiHuo() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 

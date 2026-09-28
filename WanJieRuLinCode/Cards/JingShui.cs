@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 12 点格挡，本回合你无法获得鬼气。升级后 16 点。
-/// ★ 锁气牌：把鬼气冻在 M 流区间内。
+/// 获得 11 点格挡，本回合你无法获得鬼气。升级后 15 点。
+/// ★ 锁气牌：把鬼气冻在 M 流区间内。按原版 2 费格挡（≈11）定档。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class JingShui : WanJieRuLinCardModel
@@ -26,7 +26,7 @@ public sealed class JingShui : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(12m, ValueProp.Move)
+        new BlockVar(11m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

@@ -14,32 +14,33 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 9 点伤害；下回合开始时获得 1 点鬼气。升级后 13 点伤害。
+/// ★ **伏笔**极意：3 回合后，对所有敌人造成 30 点伤害。升级后 45 点。
+/// ★ 全模组最高的延迟爆发 —— 要活着等三回合。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class XiaBi : WanJieRuLinCardModel
+public sealed class ShiRiHou : WanJieRuLinCardModel
 {
-    public XiaBi() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public ShiRiHou() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(9m, ValueProp.Move),
-        ModCardVars.Int("NextTurn", 1)
+        ModCardVars.Int("Damage", 30),
+        ModCardVars.Int("Turns", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
-        await ApplySelf<GhostQiNextTurnPower>(choiceContext, DynamicVars.GetIntOrDefault("NextTurn", 1));
+        var power = await ApplySelfAndGet<FuBiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            power.Damage = DynamicVars.GetIntOrDefault("Damage", 30);
+            power.TurnsLeft = DynamicVars.GetIntOrDefault("Turns", 3);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+        DynamicVars["Damage"].UpgradeValueBy(15);    }
 }

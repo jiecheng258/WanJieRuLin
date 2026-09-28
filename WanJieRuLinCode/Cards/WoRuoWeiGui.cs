@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 下回合获得的能量全部转为鬼气。下回合抽 2 张牌。[消耗]
-/// ★ 只作用 **1 回合**（原实现「永不复位」是 bug，会永久锁死能量）。升级质变：抽 3 张。
+/// ★ 只作用 1 回合（原「永不复位」是 bug，会永久锁死能量）。升级质变：抽 3 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WoRuoWeiGui : WanJieRuLinCardModel

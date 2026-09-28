@@ -14,8 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 下回合获得的鬼气全部转为能量。下回合可以免费打出 1 张牌。[消耗]
-/// 升级后免费牌 2 张。
+/// 下回合获得的鬼气全部转为能量。下回合可以免费打出 1 张牌。[消耗] 升级后 2 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WoRuoWeiShen : WanJieRuLinCardModel

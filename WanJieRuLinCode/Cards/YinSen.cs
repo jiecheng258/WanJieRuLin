@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 给予 2 层易伤，造成 9 点伤害，共 2 次。升级后 13 点伤害。
+/// 给予 2 层易伤，造成 9 点伤害，共 2 次。[消耗] 升级后 13 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YinSen : WanJieRuLinCardModel

@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 获得 2 点鬼气，抽 1 张牌。升级后 ★ 双升级：鬼气 3 点且抽 2 张。
-/// ★ 反无限（R6）：原为 **0 费** 且会返还鬼气 = 免费燃料，已改 1 费。
+/// ★ 反无限（R6）：原为 0 费且会返还鬼气 = 免费燃料，已改 1 费。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class CengCengQinShi : WanJieRuLinCardModel

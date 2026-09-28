@@ -29,6 +29,8 @@ public sealed class DanMiao : WanJieRuLinCardModel
         ModCardVars.Int("ThinBonus", 4)
     ];
 
+    public override bool GainsBlock => true;
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue + (IsThinInk ? DynamicVars.GetIntOrDefault("ThinBonus", 4) : 0m));

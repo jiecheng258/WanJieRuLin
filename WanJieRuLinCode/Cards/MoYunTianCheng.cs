@@ -35,7 +35,7 @@ public sealed class MoYunTianCheng : WanJieRuLinCardModel
         var power = await ApplySelfAndGet<InkRhythmPower>(choiceContext, 1m);
         if (power is not null)
         {
-            power.DrawPerTurn = DynamicVars.Cards.IntValue;
+            power.DrawPerTurn = DynamicVars.GetIntOrDefault("DrawPerTurn", 2);
             power.EnergyPerTurn = DynamicVars.GetIntOrDefault("EnergyPerTurn", 2);
         }
     }

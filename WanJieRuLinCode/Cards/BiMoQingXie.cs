@@ -15,7 +15,6 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 耗费所有鬼气。对所有敌人造成 X+4 点伤害。升级后 X+6。
-/// ★ 0 费但有鬼气费（R1 只约束「产」资源），只吃不产。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class BiMoQingXie : WanJieRuLinCardModel

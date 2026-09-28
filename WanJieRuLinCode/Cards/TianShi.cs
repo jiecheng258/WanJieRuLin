@@ -14,33 +14,32 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 10 点伤害，失去 3 点鬼气；若因此鬼气不高于 2，再额外造成 5 点。
-/// 升级后基础 14 点。
+/// ★ **相位天气**（v0.4 新机制）：每回合开始时随机降下一种墨相 ——
+/// 厚（获得 5 点格挡）／润（获得 5 点鬼气）／活（获得 1 点能量）。
+/// 升级后强度 8。★ 不确定但高收益，考验即时决策。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class GanBi : WanJieRuLinCardModel
+public sealed class TianShi : WanJieRuLinCardModel
 {
-    public GanBi() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public TianShi() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(10m, ValueProp.Move),
-        ModCardVars.Int("ThinBonus", 5)
+        ModCardVars.Int("Amount", 5)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await LoseGhostQi(3);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (IsThinInk ? DynamicVars.GetIntOrDefault("ThinBonus", 5) : 0m))
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        var power = await ApplySelfAndGet<TianQiPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            power.Amount = DynamicVars.GetIntOrDefault("Amount", 5);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+        DynamicVars["Amount"].UpgradeValueBy(3);    }
 }

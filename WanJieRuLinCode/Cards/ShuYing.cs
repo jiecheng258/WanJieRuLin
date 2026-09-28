@@ -14,30 +14,30 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得等于当前鬼气 2 倍的格挡（最多 15 点）。升级后上限 22 点。
+/// 获得等于当前鬼气 2 倍的格挡（最多 14 点）。升级后上限 20 点。
 /// ★ 单次结算，无增量循环。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShuYing : WanJieRuLinCardModel
 {
-    public ShuYing() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public ShuYing() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Int("PerQi", 2),
-        ModCardVars.Int("Cap", 15)
+        ModCardVars.Int("Cap", 14)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var raw = MyGhostQi * DynamicVars.GetIntOrDefault("PerQi", 2);
-        var cap = DynamicVars.GetIntOrDefault("Cap", 15);
+        var cap = DynamicVars.GetIntOrDefault("Cap", 14);
         await GainBlock(choiceContext, Math.Min(raw, cap));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Cap"].UpgradeValueBy(7);    }
+        DynamicVars["Cap"].UpgradeValueBy(6);    }
 }

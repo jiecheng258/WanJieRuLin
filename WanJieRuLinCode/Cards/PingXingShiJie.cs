@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 弃掉任意张手牌（X）。抽 X+2 张牌。升级后抽 X+3 张。
-/// ★ 反无限（R1/R7）：原为 **0 费** 且升级后产能量 → 净资源为正。现改 1 费、不产能量。
+/// ★ 反无限（R1/R7）：原为 0 费且升级后产能量 → 净资源为正。现改 1 费、不产能量。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class PingXingShiJie : WanJieRuLinCardModel

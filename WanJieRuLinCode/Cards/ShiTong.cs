@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气在 3 到 7 之间时才能打出。
-/// ★ M 流专属硬条件牌 —— 与 H（≥8）、L（≤2）**都**互斥。
+/// 鬼气在 3 到 7 之间时才能打出。本回合每打出一张牌，获得 1 点鬼气。
+/// ★ M 流专属硬条件牌 —— 与 H（≥8）、L（≤2）都互斥。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShiTong : WanJieRuLinCardModel

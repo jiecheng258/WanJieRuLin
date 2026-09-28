@@ -14,8 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 每回合开始时获得 3 把剑。抽 1 张牌。[消耗]
-/// 升级后抽 2 张。
+/// 每回合开始时获得 3 把剑。抽 1 张牌。[消耗] 升级后抽 2 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class Jian : WanJieRuLinCardModel

@@ -14,13 +14,13 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 每回合最多触发 2 次：消耗鬼气时，抽 1 张牌并获得 1 点能量。升级后上限 3 次。
+/// 每回合最多触发 2 次：你消耗鬼气时，抽 1 张牌并获得 1 点能量。升级后上限 3 次。
 /// ★ 反无限（R5）：原为「每消耗 1 点就 ×」，无上限 → 配产气牌即无限。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuaShen : WanJieRuLinCardModel
 {
-    public HuaShen() : base(3, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+    public HuaShen() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

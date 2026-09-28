@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 本回合获得 3 点格挡。下回合开始时获得 2 点能量与 1 点鬼气。
-/// ★ L 流过渡牌：用「暂避」换下回合的运转资源。升级后 3 点能量。
+/// 升级后 3 点能量。★ L 流过渡牌：用「暂避」换下回合的运转资源。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ZanBiFengMang : WanJieRuLinCardModel

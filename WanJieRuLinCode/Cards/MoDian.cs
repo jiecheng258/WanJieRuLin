@@ -15,8 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 获得 8 点格挡，获得 2 点鬼气。升级后 11 点格挡。
-/// ★ 原为 2 费 12 格挡 —— 按原版尺子（2 费技能 ≈ 11）属于虚高且费太重，
-///    现下修为 1 费 8 格挡。
+/// ★ 原为 2 费 12 格挡 —— 按原版尺子（2 费技能 ≈11）虚高且过重，现 1 费 8 格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoDian : WanJieRuLinCardModel

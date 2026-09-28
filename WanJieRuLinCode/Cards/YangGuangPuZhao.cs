@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气为 0 时才能打出。对所有敌人造成 14 点伤害，获得 8 点格挡。[消耗]
-/// ★ L 流硬条件牌。升级后 19 点伤害。
+/// 鬼气为 0 时才能打出。对所有敌人造成 12 点伤害，获得 8 点格挡。[消耗]
+/// ★ L 流硬条件牌。升级后 16 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YangGuangPuZhao : WanJieRuLinCardModel
@@ -26,7 +26,7 @@ public sealed class YangGuangPuZhao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move),
+        new DamageVar(12m, ValueProp.Move),
         new BlockVar(8m, ValueProp.Move)
     ];
 
@@ -42,5 +42,5 @@ public sealed class YangGuangPuZhao : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5m);    }
+        DynamicVars.Damage.UpgradeValueBy(4m);    }
 }

@@ -15,7 +15,9 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 造成 6 点伤害。升级后 9 点。
+/// ★ 与原版同档，不用改。
 /// </summary>
+[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaJi : WanJieRuLinCardModel
 {

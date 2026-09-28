@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 每回合开始时抽 2 张牌。
-/// ★ H 流引擎（手牌续航）。
+/// ★ 手牌续航引擎。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GuiYu : WanJieRuLinCardModel

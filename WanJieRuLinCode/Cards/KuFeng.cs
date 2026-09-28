@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气不高于 3 时才能打出。造成 12 点伤害。升级后 16 点。
+/// 鬼气不高于 3 时才能打出。造成 11 点伤害。升级后 15 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KuFeng : WanJieRuLinCardModel
@@ -25,7 +25,7 @@ public sealed class KuFeng : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(12m, ValueProp.Move)
+        new DamageVar(11m, ValueProp.Move)
     ];
 
     protected override bool? PlayCondition => GhostQiAtMost(3);

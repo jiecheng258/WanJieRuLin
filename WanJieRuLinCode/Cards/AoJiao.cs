@@ -14,9 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 抽 3 张牌，获得这些牌面板伤害合计的[gold]格挡[/gold]。[消耗]
-/// ★ 恢复原设计：v0.3 重写时误简化成「只抽 1 张」，丢了核心的「抽到多少伤害就叠多少甲」。
-/// 升级 ★ 质变：抽 3→4 张。
+/// 抽 3 张牌，获得这些牌面板伤害合计的格挡。[消耗]
+/// ★ 恢复原设计（重写时曾误简化成「只抽 1 张」）。升级 ★ 质变：抽 3→4 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class AoJiao : WanJieRuLinCardModel

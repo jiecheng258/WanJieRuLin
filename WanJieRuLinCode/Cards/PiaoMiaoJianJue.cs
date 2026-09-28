@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 耗费 2 点鬼气。造成 6 点伤害，随机获得一把剑。[消耗]
+/// 耗费 2 点鬼气。造成 13 点伤害，随机获得一把剑。[消耗]
 /// 升级 ★ 质变：能量费 2→1（原版经典的降费升级）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -28,7 +28,7 @@ public sealed class PiaoMiaoJianJue : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Int("GhostQiCost", 2),
-        new DamageVar(6m, ValueProp.Move)
+        new DamageVar(13m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

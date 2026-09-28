@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气不低于 10 时才能打出。消耗所有鬼气，每 3 点造成 8 点伤害，共 2 次。
+/// 鬼气不低于 10 时才能打出。失去所有鬼气，每 3 点造成 8 点伤害，共 2 次。
 /// 升级质变：每 2 点即可换一次。★ H 流硬条件收尾牌。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

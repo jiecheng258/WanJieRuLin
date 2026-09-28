@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 12 点伤害，共 2 次；鬼气不低于 10 时改为 3 次。升级后 15 点伤害。
+/// 造成 10 点伤害，共 2 次；鬼气不低于 10 时改为 3 次。升级后 13 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoHaiFanTeng : WanJieRuLinCardModel
@@ -25,7 +25,7 @@ public sealed class MoHaiFanTeng : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(12m, ValueProp.Move),
+        new DamageVar(10m, ValueProp.Move),
         ModCardVars.Repeat(2)
     ];
 

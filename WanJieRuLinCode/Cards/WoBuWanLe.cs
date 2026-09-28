@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 耗费所有鬼气。接下来 X 张牌可以免费打出。[消耗]
-/// ★ 反无限：原本**无 [消耗]** → 无限元凶。升级后免费牌 +2。
+/// ★ 反无限：原本无 [消耗] → 无限元凶。升级后免费牌 +2。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WoBuWanLe : WanJieRuLinCardModel

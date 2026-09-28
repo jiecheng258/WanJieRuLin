@@ -15,7 +15,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 鬼气不高于 2 时才能打出。抽 4 张牌，获得 2 点能量。[消耗]
-/// ★ 反无限：原本**无 [消耗]** = 无限过牌核心。升级后抽 5 张。
+/// ★ 反无限：原本无 [消耗] = 无限过牌核心。升级后抽 5 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KongMing : WanJieRuLinCardModel

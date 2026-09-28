@@ -48,9 +48,7 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.XiBi),              // 洗笔
         typeof(Cards.LiuBai),            // 留白
         typeof(Cards.DanMiao),           // 淡描
-        typeof(Cards.ChengXin),          // 澄心
         typeof(Cards.SuLian),            // 素练
-        typeof(Cards.LianFeng),          // 敛锋
         typeof(Cards.CangFeng),          // 藏锋
         typeof(Cards.YunMo),             // 匀墨
         typeof(Cards.NongDanXiangSheng), // 浓淡相生
@@ -61,7 +59,11 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.KongMing),          // 空明
         typeof(Cards.ShuYing),           // 疏影
         typeof(Cards.GuiYi),             // 归一
-        typeof(Cards.HuanQi)             // 换气
+        typeof(Cards.HuanQi),            // 换气
+
+        // ---- v0.4 重做：新增技能牌 ----
+        typeof(Cards.MaiFeng),           // 埋锋（伏笔）
+        typeof(Cards.ShiRiHou)           // 十日后（伏笔）
     ];
 
     /// <summary>随机挑一张技能牌的类型；卡池为空时返回 null。</summary>

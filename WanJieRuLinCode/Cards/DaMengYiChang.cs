@@ -14,7 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 8 点格挡；下回合开始时抽 1 张牌。升级后 12 点格挡。
+/// ★ **血墨**：对自己造成 2 点伤害，获得 14 点格挡；下回合抽 1 张牌。
+/// 升级后 18 点格挡（代价不变）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaMengYiChang : WanJieRuLinCardModel
@@ -26,14 +27,20 @@ public sealed class DaMengYiChang : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new BlockVar(8m, ValueProp.Move),
-        ModCardVars.Cards(1)
+        ModCardVars.Cards(1),
+        ModCardVars.Int("BloodCost", 2)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        if (Owner is { } self)
+        {
+            await CreatureCmd.Damage(choiceContext, self.Creature,
+                DynamicVars.GetIntOrDefault("BloodCost", 2), ValueProp.Move, self.Creature, null, null);
+        }
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue + 6m);
         await ApplySelf<DrawCardsNextTurnPower>(choiceContext, DynamicVars.Cards.IntValue);
     }
 

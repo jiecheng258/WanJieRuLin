@@ -14,7 +14,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 失去所有鬼气。造成 8 点伤害，每失去 3 点鬼气此伤害 +5。
+/// 失去所有鬼气。造成 8 点伤害，每失去 3 点鬼气此伤害 +3。
 /// 升级质变：每 2 点即可换一次。★ 单向清空，不给资源。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -28,14 +28,14 @@ public sealed class XiJinQianHua : WanJieRuLinCardModel
     [
         new DamageVar(8m, ValueProp.Move),
         ModCardVars.Int("QiPerBonus", 3),
-        ModCardVars.Int("BonusPer", 5)
+        ModCardVars.Int("BonusPer", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var spent = await ClearGhostQi();
         var per = Math.Max(1, DynamicVars.GetIntOrDefault("QiPerBonus", 3));
-        var bonus = (spent / per) * DynamicVars.GetIntOrDefault("BonusPer", 5);
+        var bonus = (spent / per) * DynamicVars.GetIntOrDefault("BonusPer", 3);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue + bonus)
             .FromCard(this, cardPlay)

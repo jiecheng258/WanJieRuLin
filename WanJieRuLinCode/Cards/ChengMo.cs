@@ -15,13 +15,13 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 失去所有鬼气，每 4 点抽 1 张牌。[消耗]
-/// ★ 反无限（R3）：原为「2 鬼气换 1 能量 **+1 张牌**」且不消耗 → 无限元凶。
+/// ★ 反无限（R3）：原为「2 鬼气换 1 能量 +1 张牌」且不消耗 → 无限元凶。
 /// 升级质变：汇率 4:1→3:1。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChengMo : WanJieRuLinCardModel
 {
-    public ChengMo() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public ChengMo() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

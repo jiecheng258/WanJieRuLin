@@ -14,27 +14,30 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 给予 2 层易伤与 2 层虚弱，造成 10 点伤害。升级后 13 点伤害。
+/// ★ **血墨**：对自己造成 4 点伤害，造成 16 点伤害。升级后 21 点。
+/// ★ 用生命换输出，性价比高于同费攻击牌，但代价真实。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class ShengWenZi : WanJieRuLinCardModel
+public sealed class HuiYingXueMo : WanJieRuLinCardModel
 {
-    public ShengWenZi() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public HuiYingXueMo() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(10m, ValueProp.Move),
-        ModCardVars.Int("Vulnerable", 2),
-        ModCardVars.Int("Weak", 2)
+        new DamageVar(16m, ValueProp.Move),
+        ModCardVars.Int("BloodCost", 4)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        if (Owner is { } self)
+        {
+            await CreatureCmd.Damage(choiceContext, self.Creature,
+                DynamicVars.GetIntOrDefault("BloodCost", 4), ValueProp.Move, self.Creature, null, null);
+        }
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await ApplyTo<VulnerablePower>(choiceContext, cardPlay.Target, DynamicVars.GetIntOrDefault("Vulnerable", 2));
-        await ApplyTo<WeakPower>(choiceContext, cardPlay.Target, DynamicVars.GetIntOrDefault("Weak", 2));
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
@@ -43,5 +46,5 @@ public sealed class ShengWenZi : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Damage.UpgradeValueBy(5m);    }
 }

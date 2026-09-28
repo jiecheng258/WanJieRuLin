@@ -31,8 +31,6 @@ public sealed class MoRanJiangShan : WanJieRuLinCardModel
         ModCardVars.Int("BonusStat", 3)
     ];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain];
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var x = GhostQiXValue(cardPlay);

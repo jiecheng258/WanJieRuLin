@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 每回合最多触发 5 次：你造成伤害时获得 1 点鬼气。升级后 ★ 质变：次数上限 5→7。
-/// ★ H 流引擎：把攻击变成鬼气。有每回合上限，不会无限。
+/// 每回合最多触发 5 次：你造成伤害时获得 1 点鬼气。升级后 ★ 质变：上限 5→7。
+/// ★ H 流引擎：把攻击变成鬼气，有每回合上限所以不会无限。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GuiYingSenSen : WanJieRuLinCardModel

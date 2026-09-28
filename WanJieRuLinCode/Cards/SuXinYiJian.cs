@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气为 0 时才能打出。造成 22 点伤害，抽 2 张牌。[消耗]
-/// ★ L 流收尾牌 —— 与 H 流的「鬼气 ≥12」**不可能同时满足**。升级后 30 点。
+/// 鬼气为 0 时才能打出。造成 18 点伤害，抽 2 张牌。[消耗]
+/// ★ L 流收尾牌 —— 与 H 流的「鬼气 ≥12」不可能同时满足。升级后 25 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class SuXinYiJian : WanJieRuLinCardModel
@@ -26,7 +26,7 @@ public sealed class SuXinYiJian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(22m, ValueProp.Move),
+        new DamageVar(18m, ValueProp.Move),
         ModCardVars.Cards(2)
     ];
 
@@ -46,5 +46,5 @@ public sealed class SuXinYiJian : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(8m);    }
+        DynamicVars.Damage.UpgradeValueBy(7m);    }
 }

@@ -14,35 +14,37 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 9 点伤害；鬼气不高于 2 时，抽 1 张牌。升级后 13 点伤害。
+/// ★ **血墨**极意：对自己造成 6 点伤害，造成 20 点伤害（0 费）。
+/// 升级后 28 点。★ 全模组最高的「以血换伤」性价比，但 6 点真伤很痛。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class TiaoDeng : WanJieRuLinCardModel
+public sealed class LiXue : WanJieRuLinCardModel
 {
-    public TiaoDeng() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public LiXue() : base(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(9m, ValueProp.Move),
-        ModCardVars.Cards(1)
+        new DamageVar(20m, ValueProp.Move),
+        ModCardVars.Int("BloodCost", 6)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        if (Owner is { } self)
+        {
+            await CreatureCmd.Damage(choiceContext, self.Creature,
+                DynamicVars.GetIntOrDefault("BloodCost", 6), ValueProp.Move, self.Creature, null, null);
+        }
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        if (IsThinInk)
-        {
-            await Draw(choiceContext, DynamicVars.Cards.IntValue);
-        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+        DynamicVars.Damage.UpgradeValueBy(8m);    }
 }

@@ -14,8 +14,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 16 点伤害；鬼气不低于 10 时，此伤害额外 +8。升级后基础 21 点。
-/// ★ H 流阈值牌。奖励随升级缩放（原为硬编码 24，升级后反而吃亏）。
+/// 造成 13 点伤害；鬼气不低于 10 时，额外 +7。升级后基础 17 点。
+/// ★ H 流阈值牌，按原版 2 费攻击（8–13）定档。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoLong : WanJieRuLinCardModel
@@ -26,14 +26,14 @@ public sealed class MoLong : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(16m, ValueProp.Move),
-        ModCardVars.Int("HighBonus", 8)
+        new DamageVar(13m, ValueProp.Move),
+        ModCardVars.Int("HighBonus", 7)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (GhostQiAtLeast(10) ? DynamicVars.GetIntOrDefault("HighBonus", 8) : 0m))
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (GhostQiAtLeast(10) ? DynamicVars.GetIntOrDefault("HighBonus", 7) : 0m))
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
@@ -41,5 +41,5 @@ public sealed class MoLong : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5m);    }
+        DynamicVars.Damage.UpgradeValueBy(4m);    }
 }

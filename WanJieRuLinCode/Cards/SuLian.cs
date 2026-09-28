@@ -14,20 +14,23 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 8 点格挡；鬼气在 3–7 之间时，额外 5 点。升级后基础 12 点。
+/// 获得 11 点格挡；鬼气在 3–7 之间时，额外 5 点。升级后基础 15 点。
+/// ★ 按原版尺子（2 费技能 ≈11）定档。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class SuLian : WanJieRuLinCardModel
 {
-    public SuLian() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public SuLian() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move),
+        new BlockVar(11m, ValueProp.Move),
         ModCardVars.Int("EvenBonus", 5)
     ];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
