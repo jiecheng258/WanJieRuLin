@@ -186,11 +186,11 @@ public sealed class TianQiPower : ModPowerTemplate
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Amount", 5)
+        ModCardVars.Int("PhaseAmount", 5)
     ];
 
     /// <summary>每次降下的强度（格挡/鬼气点数）。</summary>
-    public int Amount { get; set; } = 5;
+    public int PhaseAmount { get; set; } = 5;
 
     public override async Task AfterPlayerTurnStart(
         PlayerChoiceContext choiceContext,
@@ -205,12 +205,12 @@ public sealed class TianQiPower : ModPowerTemplate
         {
             case 0:
                 // 墨相·厚 —— 获得格挡
-                await CreatureCmd.GainBlock(Owner, Amount, ValueProp.Move, null);
+                await CreatureCmd.GainBlock(Owner, PhaseAmount, ValueProp.Move, null);
                 break;
 
             case 1:
                 // 墨相·润 —— 获得鬼气
-                await GhostQi.Gain(player, Amount);
+                await GhostQi.Gain(player, PhaseAmount);
                 break;
 
             default:

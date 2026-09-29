@@ -25,7 +25,7 @@ POWER_DIR = os.path.join(CODE, 'Powers')
 
 # 不是「具体卡牌/能力」的文件：基类、工具类。它们不该被当成具体内容去查本地化键。
 NON_CARD_FILES = {'WanJieRuLinCardModel', 'Swords'}
-NON_POWER_FILES = {'WanJieTempAppliedPower', 'WanJieTempAppliedPowers', 'WanJieTempAppliedPowers'}
+NON_POWER_FILES = {'WanJieTempAppliedPower', 'WanJieTempAppliedPowers', 'WanJieV04Powers'}
 
 # 框架/原版注入的通用变量，文案里可以直接用，不算缺失。
 GLOBAL_VARS = {

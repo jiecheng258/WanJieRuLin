@@ -18,7 +18,7 @@ import shutil
 import hashlib
 import zipfile
 
-VERSION = "v0.4.5"
+VERSION = "v0.4.6"
 
 REPO = r"C:\Users\wangx\Documents\Default Project\WanJieRuLin"
 GAME_MODS = r"C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods"
@@ -201,6 +201,21 @@ def main():
             d = z.read(i.filename)
             print("  %-40s %9d B  md5=%s" % (
                 i.filename, len(d), hashlib.md5(d).hexdigest()[:12]))
+    # ---- 5. 自动发布 install 包到 GitHub（dist 分支），并让**本地只留最新** ----
+    #   ★ 用户要求：打包后自动上传安装包，且只保留最新的安装包。
+    #   发布脚本用**独立临时仓库**推 dist 分支，绝不碰主仓库工作区。
+    _pub = os.path.join(REPO, ".tools", "publish.py")
+    if os.path.isfile(_pub) and os.environ.get("WJRL_SKIP_PUBLISH") != "1":
+        print("\n[5/5] 发布 install 包到 GitHub")
+        _r = subprocess.run([sys.executable, _pub], capture_output=True)
+        _o = (_r.stdout + _r.stderr).decode("utf-8", "replace")
+        for _ln in _o.strip().splitlines()[-8:]:
+            print("  " + _ln)
+        if _r.returncode != 0:
+            print("  !! 发布失败（不影响本地打包结果）")
+    else:
+        print("\n[5/5] 已跳过发布（设 WJRL_SKIP_PUBLISH=1 可手动跳过）")
+
     if _want_source:
         print("\n--- 复检 source.zip ---")
         with zipfile.ZipFile(source_zip) as z:

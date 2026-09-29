@@ -27,7 +27,6 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.MoDian),            // 墨点
         typeof(Cards.GuangMingQieGe),    // 光明切割
         typeof(Cards.ShenShiDuoShi),     // 审时度势
-        typeof(Cards.XiaoHuo),           // 消火
         typeof(Cards.DaMengYiChang),     // 大梦一场
         typeof(Cards.CengCengQinShi),    // 层层侵蚀
         typeof(Cards.WoRuoWeiGui),       // 我若为鬼
@@ -43,6 +42,7 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.PingXingShiJie),    // 平行世界
         typeof(Cards.ShiTong),           // 尸瞳
         typeof(Cards.WoBuWanLe),         // 我不玩了
+        typeof(Cards.YanMoInk),          // 研墨
 
         // ---- 第三批：墨之相三流派新增 ----
         typeof(Cards.XiBi),              // 洗笔

@@ -729,9 +729,9 @@ POWERS['FuBiPower'] = (
     '[gold]Foreshadow[/gold]: after {Turns} turns, deal {Damage} damage to ALL enemies.')
 POWERS['TianQiPower'] = (
     '相位天气',
-    '[gold]相位天气[/gold]：每回合开始时随机降下一种墨相（格挡 / 鬼气 / 能量），强度 {Amount}。',
+    '[gold]相位天气[/gold]：每回合开始时随机降下一种墨相（格挡 / 鬼气 / 能量），强度 {PhaseAmount}。',
     'Phase Weather',
-    '[gold]Phase Weather[/gold]: at the start of each turn, a random omen falls (Block / Ghost Qi / Energy), strength {Amount}.')
+    '[gold]Phase Weather[/gold]: at the start of each turn, a random omen falls (Block / Ghost Qi / Energy), strength {PhaseAmount}.')
 
 for lang in ('zhs', 'eng'):
     zh = (lang == 'zhs')
