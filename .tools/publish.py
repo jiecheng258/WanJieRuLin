@@ -103,10 +103,17 @@ print('  提交: %s' % (out.strip().splitlines()[0] if out.strip() else ''))
 
 # ---------------------------------------------------------------- 推送
 run([GIT, 'remote', 'add', 'origin', REMOTE])
-print('推送中（%.1f MB）...' % (total / 1048576))
-rc, out = run([GIT, 'push', '-f', 'origin', 'dist'], check=False)
-print('  push 返回码 =', rc)
-print('  %s' % out.strip().splitlines()[-1] if out.strip() else '')
+
+# ★ 实时显示上传进度：**不捕获**输出，让 git 的进度条直接打到终端。
+#   实测 GitHub SSH 上传约 1.4 MB/s，20 MB ≈ 15 秒、170 MB ≈ 2 分钟。
+_mb = total / 1048576
+print('推送中：%.1f MB，按实测 1.4 MB/s 预计约 %.0f 秒（下方为 git 实时进度）'
+      % (_mb, _mb / 1.4))
+import time as _time
+_t0 = _time.time()
+rc = subprocess.call([GIT, 'push', '-f', '--progress', 'origin', 'dist'],
+                     cwd=TMP, env=env)
+print('  push 返回码 = %d，耗时 %.1f 秒' % (rc, _time.time() - _t0))
 
 # ---------------------------------------------------------------- 校验
 rc, local = run([GIT, 'rev-parse', 'HEAD'])
