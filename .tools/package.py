@@ -13,6 +13,7 @@ WanJieRuLin 打包脚本
   输出文件按版本号命名，**旧版本的 zip 不会被删除或覆盖**，可以随时回滚对照。
 """
 import os
+import subprocess
 import sys
 import shutil
 import hashlib
