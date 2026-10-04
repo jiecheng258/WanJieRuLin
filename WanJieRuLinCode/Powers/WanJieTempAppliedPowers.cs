@@ -18,23 +18,18 @@ namespace WanJieRuLin.Powers;
 // ---------------------------------------------------------------- 绘
 
 /// <summary>「绘」给出的临时力量。</summary>
-public sealed class HuiTempStrengthPower : WanJieTempStrengthAppliedPower<Hui>;
 
 /// <summary>「绘」给出的临时敏捷。</summary>
-public sealed class HuiTempDexterityPower : WanJieTempDexterityAppliedPower<Hui>;
 
 // ---------------------------------------------------------------- 墨染江山
 
 /// <summary>「墨染江山」给出的临时力量。</summary>
-public sealed class MoRanJiangShanTempStrengthPower : WanJieTempStrengthAppliedPower<MoRanJiangShan>;
 
 /// <summary>「墨染江山」给出的临时敏捷。</summary>
-public sealed class MoRanJiangShanTempDexterityPower : WanJieTempDexterityAppliedPower<MoRanJiangShan>;
 
 // ---------------------------------------------------------------- 黑暗壁障
 
 /// <summary>「黑暗壁障」给出的临时敏捷。</summary>
-public sealed class HeiAnBiZhangTempDexterityPower : WanJieTempDexterityAppliedPower<HeiAnBiZhang>;
 
 // ---------------------------------------------------------------- 能力来源
 

@@ -21,49 +21,66 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
     /// </summary>
     public static readonly Type[] SkillCardTypes =
     [
-        typeof(Cards.FangYu),            // 防御
-        typeof(Cards.Hui),               // 绘
-        typeof(Cards.FengBi),            // 封笔
-        typeof(Cards.MoDian),            // 墨点
-        typeof(Cards.GuangMingQieGe),    // 光明切割
-        typeof(Cards.ShenShiDuoShi),     // 审时度势
-        typeof(Cards.DaMengYiChang),     // 大梦一场
-        typeof(Cards.CengCengQinShi),    // 层层侵蚀
-        typeof(Cards.WoRuoWeiGui),       // 我若为鬼
-        typeof(Cards.WoRuoWeiShen),      // 我若为神
-        typeof(Cards.ZanBiFengMang),     // 暂避锋芒
-        typeof(Cards.YaZhiYuWang),       // 压制欲望
-        typeof(Cards.ShenShengBaoZou),   // 神圣暴走
-        typeof(Cards.DuZiShengJi),       // 独自升级
-        typeof(Cards.DianLongHuFa),      // 电龙护法
-        typeof(Cards.HeiAnBiZhang),      // 黑暗壁障
-        typeof(Cards.AoJiao),            // 傲娇
-        typeof(Cards.Jian),              // 剑！
-        typeof(Cards.PingXingShiJie),    // 平行世界
-        typeof(Cards.ShiTong),           // 尸瞳
-        typeof(Cards.WoBuWanLe),         // 我不玩了
-        typeof(Cards.YanMoInk),          // 研墨
 
-        // ---- 第三批：墨之相三流派新增 ----
-        typeof(Cards.XiBi),              // 洗笔
-        typeof(Cards.LiuBai),            // 留白
-        typeof(Cards.DanMiao),           // 淡描
-        typeof(Cards.SuLian),            // 素练
-        typeof(Cards.CangFeng),          // 藏锋
-        typeof(Cards.YunMo),             // 匀墨
-        typeof(Cards.NongDanXiangSheng), // 浓淡相生
-        typeof(Cards.NingMo),            // 凝墨
-        typeof(Cards.JingShui),          // 静水
-        typeof(Cards.PoYan),             // 破砚
-        typeof(Cards.ChengMo),           // 澄墨
-        typeof(Cards.KongMing),          // 空明
-        typeof(Cards.ShuYing),           // 疏影
-        typeof(Cards.GuiYi),             // 归一
-        typeof(Cards.HuanQi),            // 换气
+        // ---- Basic ----
+        typeof(Cards.FangYu),   // 防御
+        typeof(Cards.QiBi),   // 起笔
+        typeof(Cards.YunBi),   // 运笔
 
-        // ---- v0.4 重做：新增技能牌 ----
-        typeof(Cards.MaiFeng),           // 埋锋（伏笔）
-        typeof(Cards.ShiRiHou)           // 十日后（伏笔）
+        // ---- Common ----
+        typeof(Cards.BiZhi),   // 笔直
+        typeof(Cards.ChangXian),   // 长线
+        typeof(Cards.ChenMo),   // 沉墨
+        typeof(Cards.DaMian),   // 大面
+        typeof(Cards.DianPo),   // 点破
+        typeof(Cards.DianRan),   // 点染
+        typeof(Cards.GouXian),   // 勾线
+        typeof(Cards.LuoDian),   // 落点
+        typeof(Cards.MoMian),   // 磨面
+        typeof(Cards.ShuBi),   // 数笔
+        typeof(Cards.ShuXian),   // 竖线
+
+        // ---- Uncommon ----
+        typeof(Cards.BiFengYiZhuan),   // 笔锋一转
+        typeof(Cards.ChanSi),   // 缠丝
+        typeof(Cards.DianJing),   // 点睛
+        typeof(Cards.DianShi),   // 点石
+        typeof(Cards.DianXianChengMian),   // 点线成面
+        typeof(Cards.DianYin),   // 点引
+        typeof(Cards.JuanZhou),   // 卷轴
+        typeof(Cards.KuangCao),   // 狂草
+        typeof(Cards.LiDaoHuiLiu),   // 力道回流
+        typeof(Cards.LiTouZhiBei),   // 力透纸背
+        typeof(Cards.LuoMo),   // 落墨
+        typeof(Cards.ManZhiYunYan),   // 满纸云烟
+        typeof(Cards.MoYunTianChengV5),   // 墨韵天成
+        typeof(Cards.ShuSan),   // 疏散
+        typeof(Cards.WanHeQianYan),   // 万壑千岩
+        typeof(Cards.YunJinChengFeng),   // 运斤成风
+        typeof(Cards.ZongHeng),   // 纵横
+
+        // ---- Rare ----
+        typeof(Cards.BiLaoMoXiu),   // 笔老墨秀
+        typeof(Cards.ChangJuan),   // 长卷
+        typeof(Cards.DianJingZhiBi),   // 点睛之笔
+        typeof(Cards.DianShiChengJin),   // 点石成金
+        typeof(Cards.JieBi),   // 接笔
+        typeof(Cards.JingShuiLiuShen),   // 静水流深
+        typeof(Cards.MoHai),   // 墨海
+        typeof(Cards.MoShou),   // 墨守
+        typeof(Cards.ShanGaoShuiChang),   // 山高水长
+        typeof(Cards.ShuMiYouZhi),   // 疏密有致
+        typeof(Cards.XingYunLiuShui),   // 行云流水
+        typeof(Cards.XuZhi),   // 续纸
+        typeof(Cards.ZhongFeng),   // 中锋
+
+        // ---- Ancient ----
+        typeof(Cards.WanJieRuLin),   // 万界如林
+        typeof(Cards.WuMingZhiShi),   // 无名之始
+
+        // ---- Event ----
+        typeof(Cards.Mi),   // 谜
+        typeof(Cards.TaDeLaiChu),   // 她的来处
     ];
 
     /// <summary>随机挑一张技能牌的类型；卡池为空时返回 null。</summary>

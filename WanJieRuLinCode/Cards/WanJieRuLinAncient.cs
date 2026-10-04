@@ -8,39 +8,50 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
+using WanJieRuLin.Aspects;
 using WanJieRuLin.Characters;
 using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 鬼气为 0 时才能打出。对所有敌人造成 12 点伤害，获得 8 点格挡。[消耗]
-/// ★ L 流硬条件牌。升级后 16 点伤害。
+/// ★ **先古牌** —— 每 3 点[gold]墨韵[/gold]，获得 1 点能量并抽 1 张牌。[消耗]
+/// [gold]保留[/gold]。★ 不直接造成伤害 —— 它把墨韵变成你继续运转的燃料。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class YangGuangPuZhao : WanJieRuLinCardModel
+public sealed class WanJieRuLinAncient : WanJieRuLinCardModel
 {
-    public YangGuangPuZhao() : base(1, CardType.Attack, CardRarity.Rare, TargetType.None)
+    public WanJieRuLinAncient() : base(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Face;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(12m, ValueProp.Move),
-        new BlockVar(8m, ValueProp.Move)
+        ModCardVars.Int("PerMoYun", 3)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
-    protected override bool? PlayCondition => GhostQiEquals(0);
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await DealDamageToAll(choiceContext, DynamicVars.Damage.BaseValue);
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        var mo = MyMoYun;
+        if (mo <= 0)
+        {
+            return;
+        }
+        var per = Math.Max(1, DynamicVars.GetIntOrDefault("PerMoYun", 3));
+        var n = mo / per;
+        if (n > 0)
+        {
+            await GainEnergy(n);
+            await Draw(choiceContext, n);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+    }
 }

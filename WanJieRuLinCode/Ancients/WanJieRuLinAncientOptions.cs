@@ -84,16 +84,16 @@ public static class WanJieRuLinAncientOptions
     /// <summary>构造「墨染江山」选项：把一张墨染江山永久加入牌组。</summary>
     private static EventOption BuildMoRanOption(AncientEventModel ancient)
     {
-        // 注意：这里不能再 new MoRanJiangShan()。
+        // 注意：这里不能再 new WanJieRuLinAncient()。
         // ModCardTemplate 的构造函数会把模型注册进 ModelDb，
         // 而该卡已由 [RegisterCard] 注册过，重复实例化会抛 DuplicateModelException，
         // 导致先古选项整体构造失败（选项不显示）。
         // 正确做法是取 ModelDb 里已经注册好的规范实例来读文案。
-        var canonical = ModelDb.Card<MoRanJiangShan>();
+        var canonical = ModelDb.Card<WanJieRuLinAncient>();
 
         return new EventOption(
             ancient,
-            onChosen: () => GrantMoRanJiangShan(ancient),
+            onChosen: () => GrantWanJieRuLinAncient(ancient),
             // 标题仍可复用卡牌标题（纯文本，不含占位符）。
             title: canonical.TitleLocString,
             // 描述必须用独立键：见类注释里关于事件界面变量表的说明。
@@ -128,7 +128,7 @@ public static class WanJieRuLinAncientOptions
     /// → <c>StateChanged</c> 触发 → <c>NEventRoom.SetOptions</c> 看到 IsFinished
     /// → 生成 PROCEED 按钮 → 玩家点击 → <c>NEventRoom.Proceed()</c> → 回地图。
     /// </summary>
-    private static async Task GrantMoRanJiangShan(AncientEventModel ancient)
+    private static async Task GrantWanJieRuLinAncient(AncientEventModel ancient)
     {
         // ★ 无论成败都必须推进事件，否则软锁。用 try/finally 兜住所有分支
         //   （包括造牌抛异常的情况 —— onChosen 由 TaskHelper.RunSafely 调用，
@@ -204,7 +204,7 @@ public static class WanJieRuLinAncientOptions
             }
 
             // ★ ① 先让框架在 RunState 里「造」出这张牌（= ToMutable + 设 Owner + 登记 + AfterCreated）。
-            var card = runState.CreateCard(ModelDb.Card<MoRanJiangShan>(), player);
+            var card = runState.CreateCard(ModelDb.Card<WanJieRuLinAncient>(), player);
 
             // ★ ② 再 permanent 加入主牌组（Deck 堆）。守卫此时检查 ContainsCard → 通过。
             await CardPileCmd.Add(card, PileType.Deck, CardPilePosition.Bottom, null, false);

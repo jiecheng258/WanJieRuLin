@@ -19,6 +19,7 @@ namespace WanJieRuLin.Cards;
 /// 升级 ★ 质变：抽 2 张。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 1)]
+[RegisterArchaicToothTranscendence(typeof(WanJieRuLinAncient))]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class QiBi : WanJieRuLinCardModel
 {
