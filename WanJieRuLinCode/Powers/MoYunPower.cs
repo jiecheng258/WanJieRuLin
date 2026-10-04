@@ -69,6 +69,12 @@ public sealed class MoYunPower : ModPowerTemplate
             return 0m;
         }
 
+        // ★ 偏激流·纯面「泼天」：墨韵不再削弱点/线（改由 PoTianPower 强化面牌）。
+        if (PoTianPower.Active(Owner))
+        {
+            return 0m;
+        }
+
         var penalty = PenaltyOf(Owner);
         if (penalty <= 0)
         {
@@ -92,6 +98,12 @@ public sealed class MoYunPower : ModPowerTemplate
         }
 
         if (!WanJieAspectQuery.IsPointOrLine(cardSource))
+        {
+            return 0m;
+        }
+
+        // ★ 偏激流·纯面「泼天」：墨韵不再削弱点/线（改由 PoTianPower 强化面牌）。
+        if (PoTianPower.Active(Owner))
         {
             return 0m;
         }
