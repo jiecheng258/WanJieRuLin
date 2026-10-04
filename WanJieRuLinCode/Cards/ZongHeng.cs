@@ -15,32 +15,36 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **线** —— 获得 2 点[gold]力道[/gold]。本回合每次获得力道时额外 +1。
+/// 升级后额外 +2。★ 和「勾线」这类牌形成滚雪球。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class DaJi : WanJieRuLinCardModel
+public sealed class ZongHeng : WanJieRuLinCardModel
 {
-    public DaJi() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public ZongHeng() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Line;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        ModCardVars.Int("Force", 2),
+        ModCardVars.Int("Bonus", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
+        var power = await ApplySelfAndGet<ZongHengPower>(choiceContext, 1m);
+        if (power is not null)
+        {
+            power.Amount = DynamicVars.GetIntOrDefault("Bonus", 1);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["Bonus"].UpgradeValueBy(1);    }
 }

@@ -54,6 +54,57 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     /// <summary>当前笔锋层数（本回合的减费层数）。</summary>
     protected int MyBiFeng => Owner is { } p ? BiFengPower.Of(p.Creature) : 0;
 
+    // ------------------------------------------------------------------
+    // v0.5 辅助方法（供生成的卡牌调用）
+    // ------------------------------------------------------------------
+
+    /// <summary>获得笔锋（点牌的核心产出）。</summary>
+    protected async Task GainBiFeng(PlayerChoiceContext ctx, int amount)
+    {
+        if (Owner is { } p && amount > 0)
+        {
+            await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, amount, p.Creature, this);
+        }
+    }
+
+    /// <summary>消耗全部笔锋并返回消耗量。</summary>
+    protected async Task<int> ClearBiFeng(PlayerChoiceContext ctx)
+    {
+        var n = MyBiFeng;
+        if (Owner is { } p && n > 0)
+        {
+            await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, -n, p.Creature, this);
+        }
+
+        return Math.Max(0, n);
+    }
+
+    /// <summary>消耗全部力道并返回消耗量。</summary>
+    protected async Task<int> ClearLiDao(PlayerChoiceContext ctx)
+    {
+        var n = MyLiDao;
+        if (Owner is { } p && n > 0)
+        {
+            await PowerCmd.Apply<LiDaoPower>(ctx, p.Creature, -n, p.Creature, this);
+        }
+
+        return Math.Max(0, n);
+    }
+
+    /// <summary>力道是否不低于 n（用于「一线天」这类条件牌）。</summary>
+    protected bool LiDaoAtLeast(int n) => MyLiDao >= n;
+
+    /// <summary>手牌是否不多于 n 张（用于「墨尽」这类条件牌）。</summary>
+    protected bool HandCountAtMost(int n)
+    {
+        if (Owner is not { } p)
+        {
+            return true;
+        }
+
+        return CardPile.GetCards(p, [PileType.Hand]).Count() <= n;
+    }
+
     /// <summary>
     /// ★ 笔锋减费。
     ///

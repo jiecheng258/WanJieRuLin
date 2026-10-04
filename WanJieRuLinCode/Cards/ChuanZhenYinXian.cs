@@ -15,26 +15,29 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **线** —— 造成 6 点伤害；你每有 1 点[gold]力道[/gold]，此伤害 +2。升级后每点 +3。
+/// ★ 线流的兑现口：力道垫得越高，这一击越重。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class DaJi : WanJieRuLinCardModel
+public sealed class ChuanZhenYinXian : WanJieRuLinCardModel
 {
-    public DaJi() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public ChuanZhenYinXian() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Line;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        new DamageVar(6m, ValueProp.Move),
+        ModCardVars.Int("PerForce", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + MyLiDao * DynamicVars.GetIntOrDefault("PerForce", 2))
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
@@ -42,5 +45,5 @@ public sealed class DaJi : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["PerForce"].UpgradeValueBy(1);    }
 }

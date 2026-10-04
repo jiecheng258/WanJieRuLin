@@ -15,32 +15,32 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **面** —— 获得 3 点[gold]墨韵[/gold]，抽 2 张牌。升级后 4 点墨韵。
+/// ★ 细水长流的核心铺场牌。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class DaJi : WanJieRuLinCardModel
+public sealed class MoYunTianChengV5 : WanJieRuLinCardModel
 {
-    public DaJi() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public MoYunTianChengV5() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Face;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        ModCardVars.Int("MoYun", 3),
+        ModCardVars.Cards(2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await ApplySelf<MoYunPower>(choiceContext, DynamicVars.GetIntOrDefault("MoYun", 3));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["MoYun"].UpgradeValueBy(1);    }
 }

@@ -15,32 +15,36 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **面 · 高过牌+代价** —— 抽 5 张牌，**受到 5 点伤害**。升级后抽 6 张。
+/// ★ 套路③：效率越高代价越高。这张是全模组最强过牌，代价也是真的。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class DaJi : WanJieRuLinCardModel
+public sealed class KuangCao : WanJieRuLinCardModel
 {
-    public DaJi() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public KuangCao() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Face;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        ModCardVars.Cards(5),
+        ModCardVars.Int("BloodCost", 5)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        if (Owner is { } self)
+        {
+            await CreatureCmd.Damage(choiceContext, self.Creature,
+                DynamicVars.GetIntOrDefault("BloodCost", 5), ValueProp.Move, self.Creature, null, null);
+        }
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

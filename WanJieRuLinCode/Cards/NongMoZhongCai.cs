@@ -8,37 +8,48 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
+using WanJieRuLin.Aspects;
 using WanJieRuLin.Characters;
 using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 每回合最多获得 10 点此牌格挡：你获得鬼气时，获得等量的格挡。升级后上限 15。
-/// ★ H 流引擎：产气即叠甲。有每回合上限。
+/// ★ **面** —— 造成 11 点伤害；**消耗 3 点[gold]墨韵[/gold]**，此牌伤害 +9。升级后 13 点。
+/// ★ 墨韵的兑现口 —— 囤够了就打。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class NongMoZhongCai : WanJieRuLinCardModel
 {
-    public NongMoZhongCai() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+    public NongMoZhongCai() : base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Face;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("MaxBlockPerTurn", 10)
+        new DamageVar(11m, ValueProp.Move),
+        ModCardVars.Int("MoYunCost", 3),
+        ModCardVars.Int("Bonus", 9)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var power = await ApplySelfAndGet<RichInkPower>(choiceContext, 1m);
-        if (power is not null)
+        var cost = Math.Max(0, DynamicVars.GetIntOrDefault("MoYunCost", 3));
+        if (cost > 0 && MyMoYun >= cost)
         {
-            power.MaxBlockPerTurn = DynamicVars.GetIntOrDefault("MaxBlockPerTurn", 10);
+            await MoYunPower.Gain(choiceContext, Owner!.Creature, -cost);
         }
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (MyMoYun >= cost ? DynamicVars.GetIntOrDefault("Bonus", 9) : 0m))
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MaxBlockPerTurn"].UpgradeValueBy(5);    }
+        DynamicVars.Damage.UpgradeValueBy(2m);    }
 }

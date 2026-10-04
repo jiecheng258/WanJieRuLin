@@ -15,33 +15,37 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 8 点伤害。升级后 11 点。
+/// ★ **点 → 面 的转换器** —— 消耗所有[gold]笔锋[/gold]，每 2 点换 1 点[gold]墨韵[/gold]。
+/// 升级 ★ 质变：汇率 2:1 → 1:1。
+/// ★ 均衡流的关键桥：笔锋这回合用不完，可以存成墨韵。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class ZhiBi : WanJieRuLinCardModel
+public sealed class DianXianChengMian : WanJieRuLinCardModel
 {
-    public ZhiBi() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public DianXianChengMian() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
     /// <inheritdoc />
-    public override WanJieAspect Aspect => WanJieAspect.Line;
+    public override WanJieAspect Aspect => WanJieAspect.Point;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8m, ValueProp.Move)
+        ModCardVars.Int("QiPerMoYun", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        var edge = await ClearBiFeng(choiceContext);
+        var per = Math.Max(1, DynamicVars.GetIntOrDefault("QiPerMoYun", 2));
+        var gain = edge / per;
+        if (gain > 0)
+        {
+            await MoYunPower.Gain(choiceContext, Owner!.Creature, gain);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["QiPerMoYun"].UpgradeValueBy(-1);    }
 }

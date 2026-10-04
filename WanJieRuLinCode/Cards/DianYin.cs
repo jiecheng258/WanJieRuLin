@@ -15,32 +15,31 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **点** —— 抽 2 张牌，获得 1 点[gold]笔锋[/gold]。升级后抽 3 张。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class DaJi : WanJieRuLinCardModel
+public sealed class DianYin : WanJieRuLinCardModel
 {
-    public DaJi() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public DianYin() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Point;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        ModCardVars.Cards(2),
+        ModCardVars.Int("Edge", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

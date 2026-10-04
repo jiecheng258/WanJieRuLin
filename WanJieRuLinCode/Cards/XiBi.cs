@@ -8,36 +8,42 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
+using WanJieRuLin.Aspects;
 using WanJieRuLin.Characters;
 using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 失去所有鬼气，每失去 1 点获得 3 点格挡。升级后每点 4 点。
+/// ★ **点** —— 0 费：造成 4 点伤害，获得 1 点[gold]笔锋[/gold]。升级后 6 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class XiBi : WanJieRuLinCardModel
 {
-    public XiBi() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public XiBi() : base(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Point;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("BlockPerQi", 3)
+        new DamageVar(4m, ValueProp.Move),
+        ModCardVars.Int("Edge", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var spent = await ClearGhostQi();
-        if (spent > 0)
-        {
-            await GainBlock(choiceContext, spent * DynamicVars.GetIntOrDefault("BlockPerQi", 3));
-        }
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
+        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["BlockPerQi"].UpgradeValueBy(1);    }
+        DynamicVars.Damage.UpgradeValueBy(2m);    }
 }

@@ -15,32 +15,35 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **线** —— 消耗所有[gold]力道[/gold]，抽等同层数 +1 的牌。升级后 +2。
+/// ★ 力道用不完时的回收口，配合「笔锋一转」可以爆抽。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class DaJi : WanJieRuLinCardModel
+public sealed class LiDaoHuiLiu : WanJieRuLinCardModel
 {
-    public DaJi() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public LiDaoHuiLiu() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Line;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        ModCardVars.Int("Bonus", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        var force = await ClearLiDao(choiceContext);
+        var n = force + DynamicVars.GetIntOrDefault("Bonus", 1);
+        if (n > 0)
+        {
+            await Draw(choiceContext, n);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["Bonus"].UpgradeValueBy(1);    }
 }

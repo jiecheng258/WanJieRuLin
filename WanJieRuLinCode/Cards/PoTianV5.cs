@@ -15,12 +15,13 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 对**所有**敌人造成 9 点伤害。升级后 12 点。
+/// ★ **面** —— **消耗所有[gold]墨韵[/gold]**，每点对所有敌人造成 3 点伤害。[消耗]
+/// 升级后每点 4 点。★ 墨韵越厚越恐怖 —— 细水长流的终极兑现。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class KuoMian : WanJieRuLinCardModel
+public sealed class PoTianV5 : WanJieRuLinCardModel
 {
-    public KuoMian() : base(2, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
+    public PoTianV5() : base(3, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
     {
     }
 
@@ -29,15 +30,25 @@ public sealed class KuoMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(9m, ValueProp.Move)
+        ModCardVars.Int("PerMoYun", 3)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await DealDamageToAll(choiceContext, DynamicVars.Damage.BaseValue);
+        var mo = MyMoYun;
+        if (mo > 0)
+        {
+            await MoYunPower.Gain(choiceContext, Owner!.Creature, -mo);
+        }
+        if (mo > 0)
+        {
+            await DealDamageToAll(choiceContext, mo * DynamicVars.GetIntOrDefault("PerMoYun", 3));
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars["PerMoYun"].UpgradeValueBy(1);    }
 }

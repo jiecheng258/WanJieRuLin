@@ -46,6 +46,19 @@ public sealed class MoYunPower : ModPowerTemplate
     public static int Of(Creature? creature)
         => creature is null ? 0 : Math.Max(0, creature.GetPowerAmount<MoYunPower>());
 
+    /// <summary>增减墨韵（amount 可为负）。</summary>
+    public static async Task Gain(
+        MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext ctx,
+        MegaCrit.Sts2.Core.Entities.Creatures.Creature creature,
+        int amount)
+    {
+        if (amount != 0)
+        {
+            await MegaCrit.Sts2.Core.Commands.PowerCmd.Apply<MoYunPower>(
+                ctx, creature, amount, creature, null);
+        }
+    }
+
     /// <summary>当前的「点/线削弱值」= 墨韵 / 每级步长。</summary>
     public static int PenaltyOf(Creature? creature)
         => Of(creature) / Math.Max(1, WanJieV05Tuning.MoYunPenaltyStep);
