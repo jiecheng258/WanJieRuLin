@@ -63,6 +63,18 @@ POWERS = {
         'You played Echo Edge this turn.'),
 }
 
+
+RELIC_ZH = {
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title': '未完成的自画像',
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description':
+        '每回合开始时获得 1 点[gold]笔锋[/gold]。\n每当你打出一张「面」牌，获得 1 点[gold]墨韵[/gold]。',
+}
+RELIC_EN = {
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title': 'Unfinished Self-Portrait',
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description':
+        'At the start of each turn, gain 1 [gold]Edge[/gold].\nWhenever you play a Face card, gain 1 [gold]Ink[/gold].',
+}
+
 CHARACTER_ZH = {
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.title': '万界如林',
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.description':
@@ -117,6 +129,7 @@ for lang in ('zhs', 'eng'):
         powers[k + 'smartDescription'] = v[1] if zh else v[3]
     write(os.path.join(base, 'powers.json'), powers)
 
+    write(os.path.join(base, 'relics.json'), RELIC_ZH if zh else RELIC_EN)
     write(os.path.join(base, 'characters.json'), CHARACTER_ZH if zh else CHARACTER_EN)
     write(os.path.join(base, 'static_hover_tips.json'), TIPS_ZH if zh else TIPS_EN)
     write(os.path.join(base, 'card_keywords.json'), KW_ZH if zh else KW_EN)

@@ -19,7 +19,7 @@ import shutil
 import hashlib
 import zipfile
 
-VERSION = "v0.5.1"
+VERSION = "v0.5.2"
 
 REPO = r"C:\Users\wangx\Documents\Default Project\WanJieRuLin"
 GAME_MODS = r"C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods"
