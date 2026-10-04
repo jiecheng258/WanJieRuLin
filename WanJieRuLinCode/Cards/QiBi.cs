@@ -13,30 +13,33 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 5 点格挡。升级后 8 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **点** —— 抽 1 张牌，获得 1 点[gold]笔锋[/gold]。
+/// 升级 ★ 质变：抽 2 张。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
+[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 1)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class FangYu : WanJieRuLinCardModel
+public sealed class QiBi : WanJieRuLinCardModel
 {
-    public FangYu() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+    public QiBi() : base(0, CardType.Skill, CardRarity.Basic, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Point;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move)
+        ModCardVars.Int("Edge", 1),
+        ModCardVars.Cards(1)
     ];
-
-    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

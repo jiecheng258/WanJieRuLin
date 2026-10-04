@@ -13,30 +13,32 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 5 点格挡。升级后 8 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **点** —— 敌人失去 1 点[gold]力量[/gold]，获得 1 点[gold]笔锋[/gold]。升级后失 2 点力量。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class FangYu : WanJieRuLinCardModel
+public sealed class DianPo : WanJieRuLinCardModel
 {
-    public FangYu() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+    public DianPo() : base(1, CardType.Skill, CardRarity.Common, TargetType.AnyEnemy)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Point;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move)
+        ModCardVars.Int("StrengthLoss", 1),
+        ModCardVars.Int("Edge", 1)
     ];
-
-    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await ApplyTo<StrengthPower>(choiceContext, cardPlay.Target, -DynamicVars.GetIntOrDefault("StrengthLoss", 1));
+        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);    }
+        DynamicVars["StrengthLoss"].UpgradeValueBy(1);    }
 }

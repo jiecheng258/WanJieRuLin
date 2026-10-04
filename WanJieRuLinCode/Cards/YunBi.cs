@@ -13,20 +13,23 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 5 点格挡。升级后 8 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **线** —— 获得 5 点格挡，获得 1 点[gold]力道[/gold]。升级后 6 点格挡。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
+[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 1)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class FangYu : WanJieRuLinCardModel
+public sealed class YunBi : WanJieRuLinCardModel
 {
-    public FangYu() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+    public YunBi() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Line;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move)
+        new BlockVar(5m, ValueProp.Move),
+        ModCardVars.Int("Force", 1)
     ];
 
     public override bool GainsBlock => true;
@@ -34,9 +37,10 @@ public sealed class FangYu : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);    }
+        DynamicVars.Block.UpgradeValueBy(1m);    }
 }

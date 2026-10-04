@@ -13,30 +13,29 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 5 点格挡。升级后 8 点。
-/// ★ 与原版同档，不属于点线面。
+/// ★ **面** —— 获得 2 点[gold]墨韵[/gold]（跨回合累积）。升级后 3 点。
 /// </summary>
-[RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
-public sealed class FangYu : WanJieRuLinCardModel
+public sealed class ChenMo : WanJieRuLinCardModel
 {
-    public FangYu() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+    public ChenMo() : base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Face;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move)
+        ModCardVars.Int("MoYun", 2)
     ];
-
-    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ApplySelf<MoYunPower>(choiceContext, DynamicVars.GetIntOrDefault("MoYun", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);    }
+        DynamicVars["MoYun"].UpgradeValueBy(1);    }
 }

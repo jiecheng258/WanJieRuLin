@@ -11,6 +11,8 @@ using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Models.Capabilities;
 using STS2RitsuLib.Scaffolding.Content;
+using WanJieRuLin.Aspects;
+using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
@@ -23,8 +25,55 @@ namespace WanJieRuLin.Cards;
 /// - 提供鬼气相关的通用工具方法。
 /// - 通过 <see cref="ICardPlayStateContributor"/> 支持「鬼气为 0 才可打出」这类条件。
 /// </summary>
-public abstract class WanJieRuLinCardModel : ModCardTemplate, ICardPlayStateContributor
+public abstract class WanJieRuLinCardModel : ModCardTemplate,
+    ICardPlayStateContributor,
+    ICardEnergyCostContributor,
+    IWanJieAspectCard
 {
+    // ========================================================================
+    // v0.5 「点 · 线 · 面」框架
+    //
+    // 所有攻击牌与技能牌都必须在子类里重写 Aspect 声明归属（点/线/面）；
+    // 能力牌与打击/防御等基础牌保持默认的 None。
+    // ========================================================================
+
+    /// <summary>
+    /// 本牌的笔法归属。子类重写：<c>public override WanJieAspect Aspect =&gt; WanJieAspect.Point;</c>
+    /// </summary>
+    public virtual WanJieAspect Aspect => WanJieAspect.None;
+
+    /// <summary>本牌的归属（供框架内部与审计使用）。</summary>
+    public WanJieAspect AspectValue => Aspect;
+
+    /// <summary>当前力道层数（本回合的伤害/格挡加成）。</summary>
+    protected int MyLiDao => Owner is { } p ? LiDaoPower.Of(p.Creature) : 0;
+
+    /// <summary>当前墨韵层数（跨回合累积，会削弱点/线牌）。</summary>
+    protected int MyMoYun => Owner is { } p ? MoYunPower.Of(p.Creature) : 0;
+
+    /// <summary>当前笔锋层数（本回合的减费层数）。</summary>
+    protected int MyBiFeng => Owner is { } p ? BiFengPower.Of(p.Creature) : 0;
+
+    /// <summary>
+    /// ★ 笔锋减费。
+    ///
+    /// 框架在每次需要「这张牌的当前费用」时都会调用这里
+    /// （卡面显示 / 可打出判定 / 实际支付），所以只要返回扣减后的值，
+    /// 减费就会同时体现在视觉与结算上。
+    /// </summary>
+    int ICardEnergyCostContributor.ModifyEnergyCost(
+        CardModel card, int currentCost, CostModifiers modifiers)
+    {
+        // 只处理自己；笔锋是本回合的一次性减费，打出后由 BiFengPower 自行清空。
+        if (!ReferenceEquals(card, this) || currentCost <= 0 || Owner is null)
+        {
+            return currentCost;
+        }
+
+        var edge = BiFengPower.Of(Owner.Creature);
+        return edge <= 0 ? currentCost : Math.Max(0, currentCost - edge);
+    }
+
     /// <summary>鬼气费用数值变量的名字（对应卡面占位符 {GhostQiCost:...}）。</summary>
     public const string GhostQiCostVarName = "GhostQiCost";
 
