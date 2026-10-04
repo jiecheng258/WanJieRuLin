@@ -75,7 +75,7 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.ZhongFeng),   // 中锋
 
         // ---- Ancient ----
-        typeof(Cards.WanJieRuLin),   // 万界如林
+        typeof(Cards.WanJieRuLinAncient),   // 万界如林
         typeof(Cards.WuMingZhiShi),   // 无名之始
 
         // ---- Event ----
