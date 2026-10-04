@@ -1,8 +1,8 @@
 {
-  "WAN_JIE_RU_LIN_GHOST_QI.description": "万界如林的第二资源，类似[gold]星辉[/gold]：独立于能量，用于支付部分卡牌的费用。\n一场战斗内跨回合保留，进入下一场战斗时重置为 [blue]1[/blue]点；回合开始时不会自动恢复。",
-  "WAN_JIE_RU_LIN_GHOST_QI.title": "鬼气",
-  "WAN_JIE_RU_LIN_GHOST_QI_DESC": "万界如林的第二资源，类似[gold]星辉[/gold]：独立于能量，用于支付部分卡牌的费用。\n一场战斗内跨回合保留，进入下一场战斗时重置为 [blue]1[/blue]点；回合开始时不会自动恢复。",
-  "WAN_JIE_RU_LIN_GHOST_QI_TITLE": "鬼气",
-  "WAN_JIE_RU_LIN_SECONDARY_RESOURCE_GHOST_QI.description": "万界如林的第二资源，类似[gold]星辉[/gold]：独立于能量，用于支付部分卡牌的费用。\n一场战斗内跨回合保留，进入下一场战斗时重置为 [blue]1[/blue]点；回合开始时不会自动恢复。",
-  "WAN_JIE_RU_LIN_SECONDARY_RESOURCE_GHOST_QI.title": "鬼气"
+  "WAN_JIE_RU_LIN_FACE_DESC": "费用高、数值高的牌。产出[gold]墨韵[/gold]（跨回合累积）。",
+  "WAN_JIE_RU_LIN_FACE_TITLE": "面",
+  "WAN_JIE_RU_LIN_LINE_DESC": "费用与数值都均衡的牌。产出[gold]力道[/gold]，增强你本回合打出的牌。",
+  "WAN_JIE_RU_LIN_LINE_TITLE": "线",
+  "WAN_JIE_RU_LIN_POINT_DESC": "费用低、数值偏低的牌。产出[gold]笔锋[/gold]，让你打出的下一张牌更便宜。",
+  "WAN_JIE_RU_LIN_POINT_TITLE": "点"
 }

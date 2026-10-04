@@ -1,8 +1,8 @@
 {
-  "WAN_JIE_RU_LIN_GHOST_QI.description": "Wan Jie Ru Lin's secondary resource, similar to [gold]Stars[/gold]: it is independent of Energy and is spent to pay the cost of certain cards.\nIt is kept between turns within a combat, but resets to [blue]1[/blue] when a new combat begins, and does not refill automatically at the start of each turn.",
-  "WAN_JIE_RU_LIN_GHOST_QI.title": "Ghost Qi",
-  "WAN_JIE_RU_LIN_GHOST_QI_DESC": "Wan Jie Ru Lin's secondary resource, similar to [gold]Stars[/gold]: it is independent of Energy and is spent to pay the cost of certain cards.\nIt is kept between turns within a combat, but resets to [blue]1[/blue] when a new combat begins, and does not refill automatically at the start of each turn.",
-  "WAN_JIE_RU_LIN_GHOST_QI_TITLE": "Ghost Qi",
-  "WAN_JIE_RU_LIN_SECONDARY_RESOURCE_GHOST_QI.description": "Wan Jie Ru Lin's secondary resource, similar to [gold]Stars[/gold]: it is independent of Energy and is spent to pay the cost of certain cards.\nIt is kept between turns within a combat, but resets to [blue]1[/blue] when a new combat begins, and does not refill automatically at the start of each turn.",
-  "WAN_JIE_RU_LIN_SECONDARY_RESOURCE_GHOST_QI.title": "Ghost Qi"
+  "WAN_JIE_RU_LIN_FACE_DESC": "Expensive, high-value cards. Produce [gold]Ink[/gold] (accumulates across turns).",
+  "WAN_JIE_RU_LIN_FACE_TITLE": "Face",
+  "WAN_JIE_RU_LIN_LINE_DESC": "Balanced cards. Produce [gold]Force[/gold], boosting the cards you play this turn.",
+  "WAN_JIE_RU_LIN_LINE_TITLE": "Line",
+  "WAN_JIE_RU_LIN_POINT_DESC": "Cheap, low-value cards. Produce [gold]Edge[/gold], making your next card cheaper.",
+  "WAN_JIE_RU_LIN_POINT_TITLE": "Point"
 }

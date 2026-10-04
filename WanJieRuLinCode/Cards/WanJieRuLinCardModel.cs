@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
-using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Models.Capabilities;
 using STS2RitsuLib.Scaffolding.Content;
 using WanJieRuLin.Aspects;
@@ -21,15 +20,28 @@ namespace WanJieRuLin.Cards;
 ///
 /// 作用：
 /// - 统一把卡图指到 res://WanJieRuLin/images/cards/{类名}.png。
-/// - 提供「鬼气费用」的便捷写法（鬼气走 RitsuLib 的次要资源费用系统）。
-/// - 提供鬼气相关的通用工具方法。
-/// - 通过 <see cref="ICardPlayStateContributor"/> 支持「鬼气为 0 才可打出」这类条件。
+/// - 承载「点 · 线 · 面」框架：子类重写 <see cref="Aspect"/> 声明归属。
+/// - 实现 <see cref="ICardEnergyCostContributor"/>，把「笔锋」变成实际减费。
+/// - 通过 <see cref="ICardPlayStateContributor"/> 支持「力道 ≥5 才可打出」这类条件。
 /// </summary>
 public abstract class WanJieRuLinCardModel : ModCardTemplate,
     ICardPlayStateContributor,
     ICardEnergyCostContributor,
     IWanJieAspectCard
 {
+    protected WanJieRuLinCardModel(
+        int energyCost,
+        CardType type,
+        CardRarity rarity,
+        TargetType targetType,
+        bool shouldShowInCardLibrary = true)
+        : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary)
+    {
+    }
+
+    public override CardAssetProfile AssetProfile => new(
+        PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
+
     // ========================================================================
     // v0.5 「点 · 线 · 面」框架
     //
@@ -125,107 +137,6 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
         return edge <= 0 ? currentCost : Math.Max(0, currentCost - edge);
     }
 
-    /// <summary>鬼气费用数值变量的名字（对应卡面占位符 {GhostQiCost:...}）。</summary>
-    public const string GhostQiCostVarName = "GhostQiCost";
-
-    /// <summary>鬼气获得量变量的默认名字（对应卡面占位符 {GhostQiGain}）。</summary>
-    protected const string GhostQiGainVar = "GhostQiGain";
-
-    protected WanJieRuLinCardModel(
-        int energyCost,
-        CardType type,
-        CardRarity rarity,
-        TargetType targetType,
-        bool shouldShowInCardLibrary = true)
-        : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary)
-    {
-    }
-
-    public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
-
-    /// <summary>
-    /// 给这张牌挂上「耗费鬼气 N」的固定费用。
-    /// 使用 RitsuLib 的次要资源费用集合（SecondaryResourceCostSet）—— 这是官方文档
-    /// （04-22-7 次要资源）的标准做法，框架会自动在出牌时扣费，
-    /// 并在卡面绘制费用图标（见 ModResources 里注册的 NSecondaryResourceCardCostUi）。
-    /// </summary>
-    protected void SetGhostQiCost(int amount)
-    {
-        this.SecondaryCosts().Set(ModResources.GhostQiId, amount);
-    }
-
-    /// <summary>
-    /// 给这张牌挂上「耗费全部鬼气」的 X 费用。
-    ///
-    /// 官方文档（04-22-7 次要资源）的标准写法就是
-    /// <c>SecondaryCosts().Set(id, SecondaryResourceCost.X())</c>。
-    /// X 不是「必需支付 N 点」，所以鬼气为 0 时不算缺口，牌依然可以打出（X = 0）。
-    /// X 的实际数值在 OnPlay 里用 <see cref="GhostQiXValue"/> 读取。
-    /// </summary>
-    /// <param name="multiplier">每 1 点鬼气换算的效果倍率，默认 1。</param>
-    protected void SetGhostQiCostX(int multiplier = 1)
-    {
-        this.SecondaryCosts().Set(ModResources.GhostQiId, SecondaryResourceCost.X(multiplier));
-    }
-
-    /// <summary>
-    /// 读取本张牌的 X 鬼气效果数值。
-    ///
-    /// 优先读支付记录里捕获的「效果数值」（Value）；若框架没有填 Value
-    /// （某些版本只记 AmountToSpend），则退回实际消耗量 × 倍率，
-    /// 保证 X 永远等于「玩家真正花掉的鬼气」。
-    /// </summary>
-    protected int GhostQiXValue(CardPlay cardPlay)
-    {
-        var ledger = cardPlay.SecondaryResources();
-
-        var value = ledger.Value(ModResources.GhostQiId);
-        if (value > 0)
-        {
-            return value;
-        }
-
-        // 兜底：用实际消耗量。
-        return ledger.Spent(ModResources.GhostQiId);
-    }
-
-    /// <summary>本张牌的鬼气费用是否为 X 型。</summary>
-    protected bool GhostQiCostIsX(CardPlay cardPlay) =>
-        cardPlay.SecondaryResources().CostsX(ModResources.GhostQiId);
-
-    /// <summary>本张牌实际消耗的鬼气量。</summary>
-    protected int GhostQiSpent(CardPlay cardPlay) =>
-        cardPlay.SecondaryResources().Spent(ModResources.GhostQiId);
-
-    /// <summary>本张牌的鬼气费用是否因资源不足而出现缺口（缺口不为 0）。</summary>
-    protected int GhostQiShortfall(CardPlay cardPlay) =>
-        cardPlay.SecondaryResources().Shortfall(ModResources.GhostQiId);
-
-    /// <summary>构造一个「获得 N 点鬼气」的数值变量（用于卡面显示与提示）。</summary>
-    protected static DynamicVar GhostQiGainVarOf(int amount) =>
-        ModCardVars.Int(GhostQiGainVar, amount).WithSharedTooltip("WAN_JIE_RU_LIN_GHOST_QI");
-
-    /// <summary>
-    /// 构造一个绑定鬼气资源的「费用」数值变量，用于在卡面文本里显示费用。
-    ///
-    /// 官方文档（04-22-7 次要资源）推荐的做法：
-    /// <code>
-    /// CanonicalVars => [ SecondaryResourceVars.For("Mana", ManaId, 2) ];
-    /// // 文本里写 {Mana:secondaryResourceIcons()} → 渲染成「鬼气图标 + 数字」
-    /// //            {Mana}                        → 只渲染数字
-    /// </code>
-    /// 好处：数字是真正的 DynamicVar，升级时能用 <c>:diff()</c> 自动变化，
-    /// 而且图标由框架渲染，不用拼文字。
-    ///
-    /// 这里用 <see cref="SecondaryResourceVars.ForLocal"/> 而不是 <c>For</c>：
-    /// 前者按 (modId, localId) 解析，不依赖 <c>ModResources.Register</c> 的执行顺序，
-    /// 更不容易因为初始化次序踩坑。
-    /// </summary>
-    protected static DynamicVar GhostQiCostVarOf(int amount) =>
-        SecondaryResourceVars.ForLocal(
-            GhostQiCostVarName, Entry.ModId, ModResources.GhostQiLocalId, amount);
-
     // ------------------------------------------------------------------
     // 可打出性：子类只需实现 PlayCondition，返回 false 即灰掉这张牌。
     //
@@ -253,57 +164,26 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     // ------------------------------------------------------------------
 
     /// <summary>当前鬼气。</summary>
-    protected int MyGhostQi => Owner is { } p ? GhostQi.Get(p) : 0;
-
-    // ---- 墨之相相位判定（阈值与 InkPhasePower 保持一致）----
-
-    /// <summary>墨淡：鬼气不高于 <see cref="InkPhaseThinMax"/>。</summary>
-    protected bool IsThinInk => MyGhostQi <= InkPhaseThinMax;
-
-    /// <summary>墨浓：鬼气不低于 <see cref="InkPhaseDenseMin"/>。</summary>
-    protected bool IsDenseInk => MyGhostQi >= InkPhaseDenseMin;
-
-    /// <summary>墨极浓：鬼气不低于 <see cref="InkPhaseDeepMin"/>。</summary>
-    protected bool IsDeepestInk => MyGhostQi >= InkPhaseDeepMin;
 
     /// <summary>墨匀：鬼气落在均衡区间（3–7）。</summary>
-    protected bool IsEvenInk => MyGhostQi >= InkEvenMin && MyGhostQi <= InkEvenMax;
 
     /// <summary>鬼气不高于 n。</summary>
-    protected bool GhostQiAtMost(int n) => MyGhostQi <= n;
 
     /// <summary>鬼气不低于 n。</summary>
-    protected bool GhostQiAtLeast(int n) => MyGhostQi >= n;
 
     /// <summary>鬼气恰好为 n。</summary>
-    protected bool GhostQiEquals(int n) => MyGhostQi == n;
 
-    // 相位阈值常量：与 Powers/InkPhasePower.cs 的取值必须一致。
     // 设为 public，方便能力（如 HalfInkPower）复用同一套阈值，避免两处写死漂移。
-    public const int InkPhaseThinMax = 2;
-    public const int InkPhaseDenseMin = 8;
-    public const int InkPhaseDeepMin = 14;
-    public const int InkEvenMin = 3;
-    public const int InkEvenMax = 7;
 
     /// <summary>给自己加鬼气。</summary>
-    protected Task GainGhostQi(int amount) =>
-        Owner is { } p ? GhostQi.Gain(p, amount) : Task.CompletedTask;
 
     /// <summary>给自己扣鬼气（不视为"支付费用"，用于卡牌副作用）。</summary>
-    protected Task LoseGhostQi(int amount) =>
-        Owner is { } p ? GhostQi.Lose(p, amount) : Task.CompletedTask;
 
     /// <summary>失去全部鬼气，返回实际失去量。</summary>
-    protected Task<int> ClearGhostQi() =>
-        Owner is { } p ? GhostQi.SpendAll(p) : Task.FromResult(0);
 
     /// <summary>把鬼气直接设为某个值。</summary>
-    protected Task SetGhostQi(int amount) =>
-        Owner is { } p ? GhostQi.Set(p, amount) : Task.CompletedTask;
 
     /// <summary>已知要失去的量，直接扣（用于「失去所有鬼气」后按量结算）。</summary>
-    protected Task LoseAllGhostQiTracked(int amount) => LoseGhostQi(amount);
 
     // ---- 伤害助手 ----
 
