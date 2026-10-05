@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 8 点格挡。升级后 9 点。
+/// 线 —— 获得 6 点格挡。抽 1 张牌。
+/// 升级后 9 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShuXian : WanJieRuLinCardModel
@@ -29,14 +30,17 @@ public sealed class ShuXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move)
+        new BlockVar(6m, ValueProp.Move),
+        ModCardVars.Cards(1)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()

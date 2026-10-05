@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 9 点伤害。升级后 10 点。
+/// 线 —— 造成 7 点伤害，给予 1 层[gold]虚弱[/gold]。
+/// （千钧一线：另获 1 临时力量/敏捷 + 抽 1 张）
+/// 升级后 10 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HengXian : WanJieRuLinCardModel
@@ -29,16 +31,19 @@ public sealed class HengXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(9m, ValueProp.Move)
+        new DamageVar(7m, ValueProp.Move),
+        ModCardVars.Int("Weak", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await ApplyTo<WeakPower>(choiceContext, cardPlay.Target, DynamicVars.GetIntOrDefault("Weak", 1));
     }
 
     protected override void OnUpgrade()

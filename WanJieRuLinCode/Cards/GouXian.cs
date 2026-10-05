@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 2 点[gold]力道[/gold]。升级后 3 点。
+/// 线 —— 抽 2 张牌。
+/// （千钧一线：另获 1 临时力量/敏捷 + 抽 1 张）
+/// 升级后抽 3 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class GouXian : WanJieRuLinCardModel
@@ -29,15 +31,16 @@ public sealed class GouXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 2)
+        ModCardVars.Cards(2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
+        await LineHit(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 抽 3 张牌，获得 3 点能量。升级后抽 4 张。
+/// 面 —— 抽 3 张牌，获得 1 点能量。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后抽 4 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoMian : WanJieRuLinCardModel
@@ -32,10 +34,13 @@ public sealed class MoMian : WanJieRuLinCardModel
         ModCardVars.Cards(3)
     ];
 
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
         await GainEnergy(1);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

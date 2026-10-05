@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 6 点伤害，获得 1 点[gold]笔锋[/gold]。升级后 6 点伤害。
+/// 点 —— 造成 6 点伤害。抽 1 张牌。
+/// 升级 ★ 额外抽 1 张（共抽 2）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class QingDian : WanJieRuLinCardModel
@@ -30,20 +31,21 @@ public sealed class QingDian : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(6m, ValueProp.Move),
-        ModCardVars.Int("Edge", 1)
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(1m);    }
+        DynamicVars.Damage.UpgradeValueBy(3m);        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

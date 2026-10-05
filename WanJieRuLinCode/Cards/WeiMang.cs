@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 0 费，造成 4 点伤害。升级后 5 点。
+/// 点 —— 0 费：造成 4 点伤害。
+/// 升级后 7 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WeiMang : WanJieRuLinCardModel
@@ -34,6 +35,7 @@ public sealed class WeiMang : WanJieRuLinCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
@@ -43,5 +45,5 @@ public sealed class WeiMang : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2m);    }
+        DynamicVars.Damage.UpgradeValueBy(3m);    }
 }

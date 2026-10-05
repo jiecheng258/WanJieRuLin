@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 9 点格挡，获得 1 点[gold]力道[/gold]。升级后 9 点格挡。
+/// 线 —— 获得 7 点格挡。抽 1 张牌。
+/// 升级后 11 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class BiZhi : WanJieRuLinCardModel
@@ -29,19 +30,20 @@ public sealed class BiZhi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(9m, ValueProp.Move),
-        ModCardVars.Int("Force", 1)
+        new BlockVar(7m, ValueProp.Move),
+        ModCardVars.Cards(1)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 1));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(2m);    }
+        DynamicVars.Block.UpgradeValueBy(4m);    }
 }

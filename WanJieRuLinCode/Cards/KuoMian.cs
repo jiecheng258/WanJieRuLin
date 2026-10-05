@@ -15,12 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 对**所有**敌人造成 11 点伤害。升级后 12 点。
+/// 面 —— 对**所有**敌人造成 10 点伤害。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 15 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KuoMian : WanJieRuLinCardModel
 {
-    public KuoMian() : base(2, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
+    public KuoMian() : base(3, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
     {
     }
 
@@ -29,15 +31,18 @@ public sealed class KuoMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(11m, ValueProp.Move)
+        new DamageVar(10m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await DealDamageToAll(choiceContext, DynamicVars.Damage.BaseValue);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Damage.UpgradeValueBy(5m);    }
 }

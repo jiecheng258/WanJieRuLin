@@ -15,8 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 10 点格挡，造成 12 点伤害。
-/// 升级 ★ 双升级：格挡 10 / 伤害 13。
+/// 面 —— 获得 9 点格挡，造成 12 点伤害。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级 ★ 双升级：17 伤害 / 13 格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ManFu : WanJieRuLinCardModel
@@ -30,9 +31,13 @@ public sealed class ManFu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(10m, ValueProp.Move),
-        new DamageVar(12m, ValueProp.Move)
+        new DamageVar(12m, ValueProp.Move),
+        new BlockVar(9m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -42,9 +47,10 @@ public sealed class ManFu : WanJieRuLinCardModel
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(2m);        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Damage.UpgradeValueBy(5m);        DynamicVars.Block.UpgradeValueBy(4m);    }
 }

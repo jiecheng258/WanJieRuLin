@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 敌人失去 1 点[gold]力量[/gold]，获得 1 点[gold]笔锋[/gold]。升级后失 2 点力量。
+/// 点 —— 敌人失去 1 点[gold]力量[/gold]。抽 1 张牌。
+/// 升级后失去 2 点力量。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianPo : WanJieRuLinCardModel
@@ -29,15 +30,16 @@ public sealed class DianPo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("StrengthLoss", 2),
-        ModCardVars.Int("Edge", 1)
+        ModCardVars.Int("StrengthLoss", 1),
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await ApplyTo<StrengthPower>(choiceContext, cardPlay.Target, -DynamicVars.GetIntOrDefault("StrengthLoss", 1));
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()

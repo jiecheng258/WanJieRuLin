@@ -15,12 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 13 点格挡。升级后 15 点。
+/// 面 —— 获得 18 点格挡。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 24 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaMian : WanJieRuLinCardModel
 {
-    public DaMian() : base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public DaMian() : base(3, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 
@@ -29,17 +31,20 @@ public sealed class DaMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(13m, ValueProp.Move)
+        new BlockVar(18m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(4m);    }
+        DynamicVars.Block.UpgradeValueBy(6m);    }
 }

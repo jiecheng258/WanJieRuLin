@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 0 费，获得 2 点[gold]笔锋[/gold]。升级后 3 点。
+/// 点 —— 0 费：抽 2 张牌。
+/// 升级后抽 3 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LuoDian : WanJieRuLinCardModel
@@ -29,15 +30,16 @@ public sealed class LuoDian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Edge", 2)
+        ModCardVars.Cards(2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 2));
+        await PointHit(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Edge"].UpgradeValueBy(1);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

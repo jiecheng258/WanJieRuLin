@@ -15,12 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 抽 1 张牌，获得 1 点[gold]力道[/gold]。升级后 3 点力道。
+/// 线 —— 造成 11 点伤害。抽 2 张牌。
+/// （千钧一线：另获 1 临时力量/敏捷 + 抽 1 张）
+/// 升级 ★ 双升级：15 伤害 / 抽 3 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChangXian : WanJieRuLinCardModel
 {
-    public ChangXian() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public ChangXian() : base(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
     }
 
@@ -29,17 +31,22 @@ public sealed class ChangXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 2),
-        ModCardVars.Cards(1)
+        new DamageVar(11m, ValueProp.Move),
+        ModCardVars.Cards(2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars.Damage.UpgradeValueBy(4m);        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

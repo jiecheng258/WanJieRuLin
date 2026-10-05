@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 5 点伤害，抽 1 张牌。升级后 6 点伤害。
+/// 点 —— 造成 5 点伤害。抽 1 张牌。
+/// 升级后 9 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianZhui : WanJieRuLinCardModel
@@ -35,6 +36,7 @@ public sealed class DianZhui : WanJieRuLinCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
@@ -45,5 +47,5 @@ public sealed class DianZhui : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2m);    }
+        DynamicVars.Damage.UpgradeValueBy(4m);    }
 }
