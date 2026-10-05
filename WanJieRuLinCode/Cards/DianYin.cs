@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 抽 2 张牌，获得 1 点[gold]笔锋[/gold]。升级后抽 2 张。
+/// 点 —— 抽 2 张牌。若你本回合已打出 3 张以上点牌，额外获得 1 点能量。
+/// 升级后抽 3 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianYin : WanJieRuLinCardModel
@@ -30,13 +31,14 @@ public sealed class DianYin : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Cards(2),
-        ModCardVars.Int("Edge", 1)
+        ModCardVars.Int("Energy", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
+        if (MyLuanDian >= 3) { await GainEnergy(DynamicVars.GetIntOrDefault("Energy", 1)); }
     }
 
     protected override void OnUpgrade()

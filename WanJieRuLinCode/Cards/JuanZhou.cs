@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 抽 4 张牌。升级后抽 5 张。
+/// 面 —— 抽 4 张牌。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后抽 5 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class JuanZhou : WanJieRuLinCardModel
@@ -32,9 +34,12 @@ public sealed class JuanZhou : WanJieRuLinCardModel
         ModCardVars.Cards(4)
     ];
 
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

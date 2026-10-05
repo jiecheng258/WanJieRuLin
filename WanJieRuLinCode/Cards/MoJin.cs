@@ -15,9 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面 · 条件牌** —— **需手牌不多于 1 张** 才能打出。造成 26 点伤害。
-/// 升级后 28 点。
-/// ★ 套路①：用别的牌把手牌打空 → 这张 1 费牌就是全模组最高性价比。
+/// 面 —— **需手牌不多于 1 张**才能打出。造成 22 点伤害。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 28 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoJin : WanJieRuLinCardModel
@@ -31,8 +31,10 @@ public sealed class MoJin : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(26m, ValueProp.Move)
+        new DamageVar(22m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override bool? PlayCondition => HandCountAtMost(1);
 
@@ -43,6 +45,7 @@ public sealed class MoJin : WanJieRuLinCardModel
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

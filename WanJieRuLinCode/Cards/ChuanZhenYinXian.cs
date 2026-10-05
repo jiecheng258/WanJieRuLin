@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 8 点伤害；你每有 1 点[gold]力道[/gold]，此伤害 +2。升级后每点 +3。
-/// ★ 线流的兑现口：力道垫得越高，这一击越重。
+/// 线 —— 造成 7 点伤害。你每打出过 1 张线牌，此伤害 +2。
+/// 升级 ★ 效果升级：每张 +2 → +3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChuanZhenYinXian : WanJieRuLinCardModel
@@ -30,20 +30,18 @@ public sealed class ChuanZhenYinXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8m, ValueProp.Move),
-        ModCardVars.Int("PerForce", 3)
+        new DamageVar(7m, ValueProp.Move),
+        ModCardVars.Int("PerLine", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + MyLiDao * DynamicVars.GetIntOrDefault("PerForce", 2))
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + MyQianJun * DynamicVars.GetIntOrDefault("PerLine", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["PerForce"].UpgradeValueBy(1);    }
+        DynamicVars["PerLine"].UpgradeValueBy(1);    }
 }

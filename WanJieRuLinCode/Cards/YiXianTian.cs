@@ -15,9 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线 · 条件牌** —— **需[gold]力道[/gold]不低于 5** 才能打出。
-/// 造成 24 点伤害。[消耗] 升级后 26 点。
-/// ★ 用「勾线 / 长线」把力道垫起来，这张 0 费牌就是白送的 20 点。
+/// 线 —— **需本回合已打出 3 张以上线牌**才能打出。
+/// 造成 24 点伤害。[消耗]
+/// 升级后 30 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YiXianTian : WanJieRuLinCardModel
@@ -36,10 +36,11 @@ public sealed class YiXianTian : WanJieRuLinCardModel
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
-    protected override bool? PlayCondition => LiDaoAtLeast(5);
+    protected override bool? PlayCondition => QianJunAtLeast(3);
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)

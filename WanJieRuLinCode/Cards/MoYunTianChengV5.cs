@@ -15,8 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 2 点[gold]墨韵[/gold]，抽 2 张牌。升级后 4 点墨韵。
-/// ★ 细水长流的核心铺场牌。
+/// 面 —— 抽 3 张牌，获得 2 点临时力量。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级 ★ 效果升级：临时力量 2 → 3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoYunTianChengV5 : WanJieRuLinCardModel
@@ -30,17 +31,20 @@ public sealed class MoYunTianChengV5 : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("MoYun", 3),
-        ModCardVars.Cards(2)
+        ModCardVars.Cards(3),
+        ModCardVars.Int("TempStr", 2)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<MoYunPower>(choiceContext, DynamicVars.GetIntOrDefault("MoYun", 3));
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MoYun"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);    }
 }

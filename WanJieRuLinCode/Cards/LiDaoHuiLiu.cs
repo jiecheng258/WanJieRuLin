@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 消耗所有[gold]力道[/gold]，抽等同层数 +1 的牌。升级后 +2。
-/// ★ 力道用不完时的回收口，配合「笔锋一转」可以爆抽。
+/// 线 —— 获得 2 点临时力量，抽 2 张牌。
+/// 升级 ★ 效果升级：临时力量 2 → 3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiDaoHuiLiu : WanJieRuLinCardModel
@@ -30,20 +30,18 @@ public sealed class LiDaoHuiLiu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Bonus", 2)
+        ModCardVars.Int("TempStr", 2),
+        ModCardVars.Cards(2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var force = await ClearLiDao(choiceContext);
-        var n = force + DynamicVars.GetIntOrDefault("Bonus", 1);
-        if (n > 0)
-        {
-            await Draw(choiceContext, n);
-        }
+        await LineHit(choiceContext);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Bonus"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);    }
 }

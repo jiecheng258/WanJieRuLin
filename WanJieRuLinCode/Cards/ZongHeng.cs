@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 2 点[gold]力道[/gold]。本回合每次获得力道时额外 +1。
-/// 升级后额外 +2。★ 和「勾线」这类牌形成滚雪球。
+/// 线 —— 获得 2 点临时力量与 2 点临时敏捷。
+/// 升级 ★ 双升级：各 3 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ZongHeng : WanJieRuLinCardModel
@@ -30,21 +30,18 @@ public sealed class ZongHeng : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 2),
-        ModCardVars.Int("Bonus", 2)
+        ModCardVars.Int("TempStr", 2),
+        ModCardVars.Int("TempDex", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
-        var power = await ApplySelfAndGet<ZongHengPower>(choiceContext, 1m);
-        if (power is not null)
-        {
-            power.Amount = DynamicVars.GetIntOrDefault("Bonus", 1);
-        }
+        await LineHit(choiceContext);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
+        await ApplySelf<WanJieTempDexterityPower>(choiceContext, DynamicVars.GetIntOrDefault("TempDex", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Bonus"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);        DynamicVars["TempDex"].UpgradeValueBy(1);    }
 }

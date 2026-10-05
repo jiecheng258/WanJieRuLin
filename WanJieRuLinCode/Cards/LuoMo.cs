@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 获得 6 点格挡，获得 1 点[gold]笔锋[/gold]。升级后 7 点格挡。
+/// 点 —— 获得 6 点格挡。抽 1 张牌。
+/// 升级后 9 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LuoMo : WanJieRuLinCardModel
@@ -30,18 +31,19 @@ public sealed class LuoMo : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new BlockVar(6m, ValueProp.Move),
-        ModCardVars.Int("Edge", 1)
+        ModCardVars.Cards(1)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(2m);    }
+        DynamicVars.Block.UpgradeValueBy(3m);    }
 }

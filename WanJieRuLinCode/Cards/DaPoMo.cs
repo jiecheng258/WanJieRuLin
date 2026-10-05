@@ -15,13 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 对**所有**敌人造成 24 点伤害。升级后 26 点。
-/// ★ 3 费群体 —— 靠笔锋减费打出才是它的正确用法。
+/// 面 —— 对**所有**敌人造成 20 点伤害。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 26 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaPoMo : WanJieRuLinCardModel
 {
-    public DaPoMo() : base(3, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
+    public DaPoMo() : base(4, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
     {
     }
 
@@ -30,12 +31,15 @@ public sealed class DaPoMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(24m, ValueProp.Move)
+        new DamageVar(20m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await DealDamageToAll(choiceContext, DynamicVars.Damage.BaseValue);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

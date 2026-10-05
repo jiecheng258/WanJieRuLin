@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 6 点伤害；若你持有[gold]笔锋[/gold]，额外造成 4 点。升级后 8 点。
+/// 点 —— 造成 6 点伤害，给予 1 层[gold]易伤[/gold]。
+/// 升级 ★ 效果升级：易伤 1 → 2 层。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class QianMiao : WanJieRuLinCardModel
@@ -29,20 +30,22 @@ public sealed class QianMiao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8m, ValueProp.Move),
-        ModCardVars.Int("EdgeBonus", 5)
+        new DamageVar(6m, ValueProp.Move),
+        ModCardVars.Int("Vulnerable", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (MyBiFeng > 0 ? DynamicVars.GetIntOrDefault("EdgeBonus", 4) : 0m))
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await ApplyTo<VulnerablePower>(choiceContext, cardPlay.Target, DynamicVars.GetIntOrDefault("Vulnerable", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(1m);    }
+        DynamicVars["Vulnerable"].UpgradeValueBy(1);    }
 }

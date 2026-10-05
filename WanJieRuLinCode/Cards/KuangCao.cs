@@ -15,13 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面 · 高过牌+代价** —— 抽 5 张牌，**受到 5 点伤害**。升级后抽 6 张。
-/// ★ 套路③：效率越高代价越高。这张是全模组最强过牌，代价也是真的。
+/// 面 —— 受到 4 点伤害，抽 5 张牌。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后抽 6 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KuangCao : WanJieRuLinCardModel
 {
-    public KuangCao() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public KuangCao() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
@@ -31,17 +32,20 @@ public sealed class KuangCao : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Cards(5),
-        ModCardVars.Int("BloodCost", 5)
+        ModCardVars.Int("BloodCost", 4)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (Owner is { } self)
         {
             await CreatureCmd.Damage(choiceContext, self.Creature,
-                DynamicVars.GetIntOrDefault("BloodCost", 5), ValueProp.Move, self.Creature, null, null);
+                DynamicVars.GetIntOrDefault("BloodCost", 4), ValueProp.Move, self.Creature, null, null);
         }
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

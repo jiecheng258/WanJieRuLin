@@ -15,8 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 造成 16 点伤害。若你的[gold]墨韵[/gold]不低于 10，此牌**费用变为 0**。
-/// 升级后 17 点。★ 高墨韵的额外奖励（由卡牌基类的减费钩子配合判定）。
+/// 面 —— 造成 15 点伤害，获得 2 点临时力量。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 20 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiYaQianJun : WanJieRuLinCardModel
@@ -30,8 +31,11 @@ public sealed class LiYaQianJun : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(16m, ValueProp.Move)
+        new DamageVar(15m, ValueProp.Move),
+        ModCardVars.Int("TempStr", 2)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -40,9 +44,11 @@ public sealed class LiYaQianJun : WanJieRuLinCardModel
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+        DynamicVars.Damage.UpgradeValueBy(5m);    }
 }

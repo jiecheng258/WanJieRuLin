@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 弃 1 张牌，获得 3 点[gold]笔锋[/gold]。升级后 4 点。
-/// ★ 把打不出的牌换成费用优势。
+/// 点 —— 抽 3 张牌。
+/// 升级后抽 4 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShuSan : WanJieRuLinCardModel
@@ -30,32 +30,16 @@ public sealed class ShuSan : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Discard", 1),
-        ModCardVars.Int("Edge", 3)
+        ModCardVars.Cards(3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (Owner is not { } p)
-        {
-            return;
-        }
-        var hand = CardPile.GetCards(p, [PileType.Hand]).ToList();
-        if (hand.Count == 0)
-        {
-            return;
-        }
-        var n = Math.Min(DynamicVars.GetIntOrDefault("Discard", 1), hand.Count);
-        var prefs = new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, n);
-        var picked = (await CardSelectCmd.FromHandForDiscard(choiceContext, p, prefs, null, this)).ToList();
-        if (picked.Count > 0)
-        {
-            await CardCmd.Discard(choiceContext, picked);
-        }
-        await GainBiFeng(choiceContext, DynamicVars.GetIntOrDefault("Edge", 3));
+        await PointHit(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Edge"].UpgradeValueBy(1);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 6 点伤害；获得等同你[gold]笔锋[/gold]层数的格挡。升级后 7 点伤害。
-/// ★ 笔锋在这张牌上是「一鱼两吃」：既减费又叠甲。
+/// 点 —— 造成 6 点伤害。获得等同于本回合已打出点牌数 ×2 的格挡。
+/// 升级 ★ 效果升级：×2 → ×3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoDianV5 : WanJieRuLinCardModel
@@ -30,22 +30,24 @@ public sealed class MoDianV5 : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        new DamageVar(6m, ValueProp.Move),
+        ModCardVars.Int("BlockPer", 2)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await GainBlock(choiceContext, MyBiFeng);
+        await GainBlock(choiceContext, MyLuanDian * DynamicVars.GetIntOrDefault("BlockPer", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2m);    }
+        DynamicVars["BlockPer"].UpgradeValueBy(1);    }
 }

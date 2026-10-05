@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 8 点格挡，获得 2 点[gold]力道[/gold]。升级后 8 点格挡。
+/// 线 —— 获得 9 点格挡，额外获得 2 点临时敏捷。
+/// 升级 ★ 效果升级：临时敏捷 2 → 3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChanSi : WanJieRuLinCardModel
@@ -29,19 +30,20 @@ public sealed class ChanSi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move),
-        ModCardVars.Int("Force", 2)
+        new BlockVar(9m, ValueProp.Move),
+        ModCardVars.Int("TempDex", 2)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
+        await ApplySelf<WanJieTempDexterityPower>(choiceContext, DynamicVars.GetIntOrDefault("TempDex", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(2m);    }
+        DynamicVars["TempDex"].UpgradeValueBy(1);    }
 }

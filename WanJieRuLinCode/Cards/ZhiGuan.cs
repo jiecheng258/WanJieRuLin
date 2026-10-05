@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 17 点伤害；若你的[gold]力道[/gold]不低于 3，**伤害翻倍**。
-/// 升级后 18 点。★ 线流的兑现点。
+/// 线 —— 造成 15 点伤害。若本回合已打出 2 张以上线牌，伤害翻倍。
+/// 升级后 20 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ZhiGuan : WanJieRuLinCardModel
@@ -30,19 +30,19 @@ public sealed class ZhiGuan : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(17m, ValueProp.Move)
+        new DamageVar(15m, ValueProp.Move),
+        ModCardVars.Int("Bonus", 6)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue + (MyLiDao >= 3 ? DynamicVars.Damage.BaseValue : 0m))
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        var mult = MyQianJun >= 2 ? 2 : 1;
+        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue * mult);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+        DynamicVars.Damage.UpgradeValueBy(5m);    }
 }

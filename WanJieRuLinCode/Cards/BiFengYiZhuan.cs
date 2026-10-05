@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 将你的[gold]力道[/gold]**翻倍**（先 +1 再叠加当前层数）。升级后基础 +2。
-/// ★ 线流的爆发按钮。
+/// 线 —— 获得 3 点临时力量。
+/// 升级 ★ 效果升级：临时力量 3 → 5。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class BiFengYiZhuan : WanJieRuLinCardModel
@@ -30,16 +30,16 @@ public sealed class BiFengYiZhuan : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 1)
+        ModCardVars.Int("TempStr", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 1));
-        await ApplySelf<LiDaoPower>(choiceContext, MyLiDao);
+        await LineHit(choiceContext);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 3));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(2);    }
 }

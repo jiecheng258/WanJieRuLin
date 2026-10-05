@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 10 点伤害，获得 2 点[gold]力道[/gold]。升级后 11 点伤害。
+/// 线 —— 造成 12 点伤害，获得 6 点格挡。
+/// 升级 ★ 双升级：16 伤害 / 8 格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YiBiHua : WanJieRuLinCardModel
@@ -29,21 +30,24 @@ public sealed class YiBiHua : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(10m, ValueProp.Move),
-        ModCardVars.Int("Force", 2)
+        new DamageVar(12m, ValueProp.Move),
+        new BlockVar(6m, ValueProp.Move)
     ];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Damage.UpgradeValueBy(4m);        DynamicVars.Block.UpgradeValueBy(2m);    }
 }

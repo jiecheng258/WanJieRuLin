@@ -79,6 +79,9 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     /// <summary>本回合已打出几张「线」牌。</summary>
     protected int MyQianJun => Owner is { } p ? QianJunPower.Of(p.Creature) : 0;
 
+    /// <summary>本回合是否已打出不少于 n 张「线」牌（用于「一线天」这类条件牌）。</summary>
+    protected bool QianJunAtLeast(int n) => MyQianJun >= n;
+
     /// <summary>
     /// 「点」牌打出时的统一入口：累积乱点；超过 3 层自动吃罚（力量/敏捷/虚弱/易伤/诅咒）。
     /// 所有点牌都应在 OnPlay 里调用它。

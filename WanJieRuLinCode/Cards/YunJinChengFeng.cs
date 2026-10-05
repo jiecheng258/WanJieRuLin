@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 2 点[gold]力道[/gold]，抽 2 张牌。升级后 4 点力道。
+/// 线 —— 抽 3 张牌。
+/// （千钧一线：另 +1 临时力/敏 + 抽 1 张）
+/// 升级后抽 4 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YunJinChengFeng : WanJieRuLinCardModel
@@ -29,17 +31,16 @@ public sealed class YunJinChengFeng : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 3),
-        ModCardVars.Cards(2)
+        ModCardVars.Cards(3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 3));
+        await LineHit(choiceContext);
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

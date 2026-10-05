@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 0 费：造成 3 点伤害，共 3 次。升级后 ★ 质变：4 次。
+/// 点 —— 0 费：造成 2 点伤害，共 3 次。
+/// 升级 ★ 多打 1 次（共 4 次）。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YiDian : WanJieRuLinCardModel
@@ -29,12 +30,13 @@ public sealed class YiDian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(3m, ValueProp.Move),
+        new DamageVar(2m, ValueProp.Move),
         ModCardVars.Repeat(3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)

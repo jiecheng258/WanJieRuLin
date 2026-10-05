@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 3 点[gold]力道[/gold]。升级后 4 点。
+/// 线 —— 获得 8 点格挡，额外获得 2 点临时力量。
+/// （千钧一线：另 +1 临时力/敏 + 抽 1 张）
+/// 升级 ★ 效果升级：临时力量 2 → 3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiTouZhiBei : WanJieRuLinCardModel
@@ -29,15 +31,20 @@ public sealed class LiTouZhiBei : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 3)
+        new BlockVar(8m, ValueProp.Move),
+        ModCardVars.Int("TempStr", 2)
     ];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 3));
+        await LineHit(choiceContext);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);    }
 }

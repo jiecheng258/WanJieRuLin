@@ -15,9 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点 → 面 的转换器** —— 消耗所有[gold]笔锋[/gold]，每 2 点换 1 点[gold]墨韵[/gold]。
-/// 升级 ★ 质变：汇率 2:1 → 1:1。
-/// ★ 均衡流的关键桥：笔锋这回合用不完，可以存成墨韵。
+/// 点 —— 获得 1 点能量。若本回合已打出 2 张以上点牌，额外抽 1 张。
+/// 升级 ★ 效果升级：能量 1 → 2。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianXianChengMian : WanJieRuLinCardModel
@@ -31,21 +30,18 @@ public sealed class DianXianChengMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("QiPerMoYun", 2)
+        ModCardVars.Int("Energy", 1),
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var edge = await ClearBiFeng(choiceContext);
-        var per = Math.Max(1, DynamicVars.GetIntOrDefault("QiPerMoYun", 2));
-        var gain = edge / per;
-        if (gain > 0)
-        {
-            await MoYunPower.Gain(choiceContext, Owner!.Creature, gain);
-        }
+        await PointHit(choiceContext);
+        await GainEnergy(DynamicVars.GetIntOrDefault("Energy", 1));
+        if (MyLuanDian >= 2) { await Draw(choiceContext, DynamicVars.Cards.IntValue); }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["QiPerMoYun"].UpgradeValueBy(-1);    }
+        DynamicVars["Energy"].UpgradeValueBy(1);    }
 }
