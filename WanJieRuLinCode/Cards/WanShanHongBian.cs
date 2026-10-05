@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 对**所有**敌人造成 24 点伤害。
+/// 面 —— 对**所有**敌人造成 30 点伤害。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级后 32 点。
 /// </summary>

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 获得 18 点格挡。
+/// 面 —— 获得 24 点格挡。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级后 24 点格挡。
 /// </summary>

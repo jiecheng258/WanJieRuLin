@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— **需手牌不多于 1 张**才能打出。造成 22 点伤害。
+/// 面 —— **需手牌不多于 1 张**才能打出。造成 26 点伤害。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级后 28 点伤害。
 /// </summary>
