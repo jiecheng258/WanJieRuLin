@@ -24,12 +24,10 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
 
         // ---- Basic ----
         typeof(Cards.FangYu),   // 防御
-        typeof(Cards.QiBi),   // 起笔
         typeof(Cards.YunBi),   // 运笔
 
         // ---- Common ----
         typeof(Cards.BiZhi),   // 笔直
-        typeof(Cards.ChangXian),   // 长线
         typeof(Cards.ChenMo),   // 沉墨
         typeof(Cards.DaMian),   // 大面
         typeof(Cards.DianPo),   // 点破
@@ -45,7 +43,6 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.ChanSi),   // 缠丝
         typeof(Cards.DianJing),   // 点睛
         typeof(Cards.DianShi),   // 点石
-        typeof(Cards.DianXianChengMian),   // 点线成面
         typeof(Cards.DianYin),   // 点引
         typeof(Cards.JuanZhou),   // 卷轴
         typeof(Cards.KuangCao),   // 狂草
@@ -64,7 +61,7 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
         typeof(Cards.ChangJuan),   // 长卷
         typeof(Cards.DianJingZhiBi),   // 点睛之笔
         typeof(Cards.DianShiChengJin),   // 点石成金
-        typeof(Cards.JieBi),   // 接笔
+        typeof(Cards.DianXianChengMian),   // 点线成面
         typeof(Cards.JingShuiLiuShen),   // 静水流深
         typeof(Cards.MoHai),   // 墨海
         typeof(Cards.MoShou),   // 墨守

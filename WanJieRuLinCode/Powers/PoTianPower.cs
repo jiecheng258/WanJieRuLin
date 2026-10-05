@@ -12,14 +12,12 @@ using WanJieRuLin.Aspects;
 namespace WanJieRuLin.Powers;
 
 /// <summary>
-/// 泼天 —— ★ **偏激流 · 纯面** 的支撑能力。
+/// 泼天 —— ★ **纯面流**的支撑能力（v0.7 版）。
 ///
-/// 效果：**墨韵不再削弱「点 / 线」牌**，改为**每满
-/// <see cref="WanJieV05Tuning.MoYunPenaltyStep"/> 层，你的「面」牌伤害 +{PerStep}**。
+/// 效果：你的「面」牌伤害额外 +{PerStep}。
 ///
-/// 设计意图：把墨韵从「双刃」变成「纯增益」，于是「只堆面牌」成为一条
-/// 越打越强的路线 —— 这正是「细水长流」的极端形态。
-/// 代价是你彻底放弃了点/线，前期会很难受。
+/// 设计意图：让「只堆面牌」成为一条越打越强的路线。
+/// 面牌本身数值就高，这个能力再给一层常驻加成。
 /// </summary>
 [RegisterPower]
 public sealed class PoTianPower : ModPowerTemplate
@@ -37,13 +35,8 @@ public sealed class PoTianPower : ModPowerTemplate
         ModCardVars.Int("PerStep", 3)
     ];
 
-    /// <summary>墨韵每满一级，面牌额外 +多少伤害。</summary>
+    /// <summary>每张面牌额外 +多少伤害。</summary>
     public int PerStep { get; set; } = 3;
-
-    /// <summary>玩家身上是否有「泼天」（供 <see cref="MoYunPower"/> 检查，决定是否跳过削弱）。</summary>
-    public static bool Active(Creature? creature)
-        => creature is not null
-           && creature.GetPowerAmount<PoTianPower>() > 0;
 
     public override decimal ModifyDamageAdditive(
         Creature? target,
@@ -58,13 +51,6 @@ public sealed class PoTianPower : ModPowerTemplate
             return 0m;
         }
 
-        // 只强化「面」。
-        if (!WanJieAspectQuery.IsFace(cardSource))
-        {
-            return 0m;
-        }
-
-        var steps = MoYunPower.Of(Owner) / Math.Max(1, WanJieV05Tuning.MoYunPenaltyStep);
-        return steps <= 0 ? 0m : steps * Math.Max(1, PerStep);
+        return WanJieAspectQuery.IsFace(cardSource) ? Math.Max(1, PerStep) : 0m;
     }
 }

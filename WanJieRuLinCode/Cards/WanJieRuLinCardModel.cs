@@ -56,14 +56,6 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     /// <summary>本牌的归属（供框架内部与审计使用）。</summary>
     public WanJieAspect AspectValue => Aspect;
 
-    /// <summary>当前力道层数（本回合的伤害/格挡加成）。</summary>
-    protected int MyLiDao => Owner is { } p ? LiDaoPower.Of(p.Creature) : 0;
-
-    /// <summary>当前墨韵层数（跨回合累积，会削弱点/线牌）。</summary>
-    protected int MyMoYun => Owner is { } p ? MoYunPower.Of(p.Creature) : 0;
-
-    /// <summary>当前笔锋层数（本回合的减费层数）。</summary>
-    protected int MyBiFeng => Owner is { } p ? BiFengPower.Of(p.Creature) : 0;
 
     // ------------------------------------------------------------------
     // v0.5 辅助方法（供生成的卡牌调用）
@@ -134,80 +126,10 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             created, PileType.Discard, p, CardPilePosition.Random);
     }
 
-    /// <summary>
-    /// 获得笔锋（点牌的核心产出）。
-    ///
-    /// ★ v0.6.2 起，「笔锋」= **本回合最多触发 3 次，每次获得 1 点能量**。
-    /// 原因：原本的「减费」需要重写原版的费用计算方法，而它是 `private protected`，
-    /// 模组无法重写（两次尝试都以 CS0115 失败）。改走产能量 ——
-    /// `PlayerCmd.GainEnergy` 是工程里已验证的稳定路径。
-    ///
-    /// <see cref="BiFengPower"/> 现在只充当「本回合已触发几次」的计数器
-    /// （继承 WanJieTurnScopedPower，回合结束自动清零）。
-    /// </summary>
-    protected async Task GainBiFeng(PlayerChoiceContext ctx, int amount)
-    {
-        if (Owner is not { } p || amount <= 0)
-        {
-            return;
-        }
 
-        var used = BiFengPower.Of(p.Creature);
-        var cap = WanJieV05Tuning.BiFengTriggerCap;
-        if (used >= cap)
-        {
-            return;
-        }
 
-        var gain = Math.Min(amount, cap - used);
-        for (var n = 0; n < gain; n++)
-        {
-            await GainEnergy(1);
-        }
 
-        await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, gain, p.Creature, this);
-    }
 
-    /// <summary>撤掉手牌上的笔锋减费（笔锋被消耗后调用）。</summary>
-    public static void ClearBiFengFromHand(MegaCrit.Sts2.Core.Entities.Players.Player p, int edge)
-    {
-        if (edge <= 0)
-        {
-            return;
-        }
-
-        foreach (var c in CardPile.GetCards(p, [PileType.Hand]))
-        {
-            c.EnergyCost.AddUntilPlayed(edge, false);
-        }
-    }
-
-    /// <summary>消耗全部笔锋并返回消耗量。</summary>
-    protected async Task<int> ClearBiFeng(PlayerChoiceContext ctx)
-    {
-        var n = MyBiFeng;
-        if (Owner is { } p && n > 0)
-        {
-            await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, -n, p.Creature, this);
-        }
-
-        return Math.Max(0, n);
-    }
-
-    /// <summary>消耗全部力道并返回消耗量。</summary>
-    protected async Task<int> ClearLiDao(PlayerChoiceContext ctx)
-    {
-        var n = MyLiDao;
-        if (Owner is { } p && n > 0)
-        {
-            await PowerCmd.Apply<LiDaoPower>(ctx, p.Creature, -n, p.Creature, this);
-        }
-
-        return Math.Max(0, n);
-    }
-
-    /// <summary>力道是否不低于 n（用于「一线天」这类条件牌）。</summary>
-    protected bool LiDaoAtLeast(int n) => MyLiDao >= n;
 
     /// <summary>手牌是否不多于 n 张（用于「墨尽」这类条件牌）。</summary>
     protected bool HandCountAtMost(int n)

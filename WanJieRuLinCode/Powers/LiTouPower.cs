@@ -10,15 +10,12 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace WanJieRuLin.Powers;
 
 /// <summary>
-/// 力透纸背 —— ★ **偏激流 · 纯线** 的支撑能力。
+/// 力透纸背 —— ★ **纯线流**的支撑能力（v0.7 版）。
 ///
-/// 效果：**每回合开始时获得 {Force} 点力道**。
+/// 效果：每回合开始时获得 {Force} 点[gold]临时力量[/gold]。
 ///
-/// 设计意图：让「只堆线牌」有一条稳定引擎 —— 力道本来是回合内玩法，
-/// 这个能力把它变成每回合自动到账的底盘，于是线牌越打越厚。
-///
-/// 注：设计稿原本写「力道不再清空」，但那样会让数值无限累积（反无限红线）。
-/// 改成「每回合固定到账」既保留了纯线的手感，又天然有上限。
+/// 设计意图：让线流有一条稳定底盘 —— 每回合白给临时力量，
+/// 线牌（千钧一线本身还 +1 临时力/敏 + 抽 1）就越打越厚。
 /// </summary>
 [RegisterPower]
 public sealed class LiTouPower : ModPowerTemplate
@@ -36,7 +33,7 @@ public sealed class LiTouPower : ModPowerTemplate
         ModCardVars.Int("Force", 2)
     ];
 
-    /// <summary>每回合自动获得的力道层数。</summary>
+    /// <summary>每回合自动获得的临时力量层数。</summary>
     public int Force { get; set; } = 2;
 
     public override async Task AfterPlayerTurnStart(
@@ -48,7 +45,7 @@ public sealed class LiTouPower : ModPowerTemplate
         }
 
         var amount = Math.Max(1, Force);
-        await PowerCmd.Apply<LiDaoPower>(
+        await PowerCmd.Apply<WanJieTempStrengthPower>(
             choiceContext, Owner, amount, Owner, null);
     }
 }
