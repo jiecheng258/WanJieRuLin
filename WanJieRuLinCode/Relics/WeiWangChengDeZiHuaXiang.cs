@@ -37,7 +37,7 @@ namespace WanJieRuLin.Relics;
 public sealed class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
 {
     /// <summary>「面」牌首次打出时的伤害/格挡加成。</summary>
-    public const int FaceBonus = 5;
+    public const int FaceBonus = 10;
 
     // 本回合三类是否已经触发过
     private bool _pointUsed;
@@ -133,15 +133,15 @@ public sealed class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
             case WanJieAspect.Point when !_pointUsed:
                 _pointUsed = true;
                 Flash();
-                await PlayerCmd.GainEnergy(1, player);
+                await PlayerCmd.GainEnergy(2, player);
                 break;
 
             case WanJieAspect.Line when !_lineUsed:
                 _lineUsed = true;
                 Flash();
                 await PowerCmd.Apply<WanJieTempStrengthPower>(
-                    choiceContext, player.Creature, 1, player.Creature, null);
-                await CardPileCmd.Draw(choiceContext, 1, player);
+                    choiceContext, player.Creature, 2, player.Creature, null);
+                await CardPileCmd.Draw(choiceContext, 2, player);
                 break;
 
             case WanJieAspect.Face when !_faceUsed:

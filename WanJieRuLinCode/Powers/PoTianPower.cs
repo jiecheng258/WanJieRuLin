@@ -32,11 +32,11 @@ public sealed class PoTianPower : ModPowerTemplate
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerStep", 3)
+        ModCardVars.Int("PerStep", 6)
     ];
 
     /// <summary>每张面牌额外 +多少伤害。</summary>
-    public int PerStep { get; set; } = 3;
+    public int PerStep { get; set; } = 6;
 
     public override decimal ModifyDamageAdditive(
         Creature? target,

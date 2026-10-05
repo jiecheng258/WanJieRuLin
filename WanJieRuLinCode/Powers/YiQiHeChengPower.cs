@@ -25,9 +25,9 @@ public sealed class YiQiHeChengPower : ModPowerTemplate
         IconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png",
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png");
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("Amount", 1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("Amount", 2)];
 
-    public int Amount { get; set; } = 1;
+    public int Amount { get; set; } = 2;
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -43,5 +43,6 @@ public sealed class YiQiHeChengPower : ModPowerTemplate
 
         await PowerCmd.Apply<WanJieTempStrengthPower>(
             choiceContext, player.Creature, Math.Max(1, Amount), player.Creature, null);
+        await CardPileCmd.Draw(choiceContext, 1, player);
     }
 }

@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ManFu : WanJieRuLinCardModel
 {
-    public ManFu() : base(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public ManFu() : base(3, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class ManFu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(12m, ValueProp.Move),
+        new DamageVar(16m, ValueProp.Move),
         new BlockVar(9m, ValueProp.Move)
     ];
 

@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoYunTianChengV5 : WanJieRuLinCardModel
 {
-    public MoYunTianChengV5() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public MoYunTianChengV5() : base(3, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

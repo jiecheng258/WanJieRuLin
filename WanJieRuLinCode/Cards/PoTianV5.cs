@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class PoTianV5 : WanJieRuLinCardModel
 {
-    public PoTianV5() : base(4, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
+    public PoTianV5() : base(5, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class PoTianV5 : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(18m, ValueProp.Move)
+        new DamageVar(24m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChengFu : WanJieRuLinCardModel
 {
-    public ChengFu() : base(2, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+    public ChengFu() : base(3, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class ChengFu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move)
+        new DamageVar(18m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KuoMian : WanJieRuLinCardModel
 {
-    public KuoMian() : base(3, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
+    public KuoMian() : base(4, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
     {
     }
 

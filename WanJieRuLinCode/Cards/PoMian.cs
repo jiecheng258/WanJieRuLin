@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class PoMian : WanJieRuLinCardModel
 {
-    public PoMian() : base(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public PoMian() : base(3, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class PoMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move),
+        new DamageVar(18m, ValueProp.Move),
         ModCardVars.Int("Vulnerable", 1)
     ];
 

@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaMian : WanJieRuLinCardModel
 {
-    public DaMian() : base(3, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public DaMian() : base(4, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class DaMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(18m, ValueProp.Move)
+        new BlockVar(24m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

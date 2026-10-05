@@ -21,7 +21,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuoXuShiZhenDe : WanJieRuLinCardModel
 {
-    public HuoXuShiZhenDe() : base(2, CardType.Attack, CardRarity.Event, TargetType.AnyEnemy)
+    public HuoXuShiZhenDe() : base(3, CardType.Attack, CardRarity.Event, TargetType.AnyEnemy)
     {
     }
 

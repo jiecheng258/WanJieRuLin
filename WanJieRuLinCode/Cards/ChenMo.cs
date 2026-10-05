@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChenMo : WanJieRuLinCardModel
 {
-    public ChenMo() : base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public ChenMo() : base(3, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 

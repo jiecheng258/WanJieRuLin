@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiYaQianJun : WanJieRuLinCardModel
 {
-    public LiYaQianJun() : base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public LiYaQianJun() : base(3, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class LiYaQianJun : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(15m, ValueProp.Move),
+        new DamageVar(20m, ValueProp.Move),
         ModCardVars.Int("TempStr", 2)
     ];
 

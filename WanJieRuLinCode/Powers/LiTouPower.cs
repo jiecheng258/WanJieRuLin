@@ -30,11 +30,11 @@ public sealed class LiTouPower : ModPowerTemplate
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 2)
+        ModCardVars.Int("Force", 3)
     ];
 
     /// <summary>每回合自动获得的临时力量层数。</summary>
-    public int Force { get; set; } = 2;
+    public int Force { get; set; } = 3;
 
     public override async Task AfterPlayerTurnStart(
         PlayerChoiceContext choiceContext, Player player)
@@ -46,6 +46,8 @@ public sealed class LiTouPower : ModPowerTemplate
 
         var amount = Math.Max(1, Force);
         await PowerCmd.Apply<WanJieTempStrengthPower>(
+            choiceContext, Owner, amount, Owner, null);
+        await PowerCmd.Apply<WanJieTempDexterityPower>(
             choiceContext, Owner, amount, Owner, null);
     }
 }

@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KuangCao : WanJieRuLinCardModel
 {
-    public KuangCao() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public KuangCao() : base(3, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

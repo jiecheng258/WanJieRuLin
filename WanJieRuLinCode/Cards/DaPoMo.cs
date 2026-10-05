@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaPoMo : WanJieRuLinCardModel
 {
-    public DaPoMo() : base(4, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
+    public DaPoMo() : base(5, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class DaPoMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(20m, ValueProp.Move)
+        new DamageVar(26m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

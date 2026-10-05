@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShanGaoShuiChang : WanJieRuLinCardModel
 {
-    public ShanGaoShuiChang() : base(4, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public ShanGaoShuiChang() : base(5, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class ShanGaoShuiChang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(20m, ValueProp.Move)
+        new BlockVar(26m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

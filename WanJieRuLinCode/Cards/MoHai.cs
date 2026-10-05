@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoHai : WanJieRuLinCardModel
 {
-    public MoHai() : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public MoHai() : base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 

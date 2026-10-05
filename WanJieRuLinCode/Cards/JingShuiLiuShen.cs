@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class JingShuiLiuShen : WanJieRuLinCardModel
 {
-    public JingShuiLiuShen() : base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public JingShuiLiuShen() : base(4, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -31,7 +31,7 @@ public sealed class JingShuiLiuShen : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(14m, ValueProp.Move),
+        new BlockVar(18m, ValueProp.Move),
         ModCardVars.Int("TempDex", 3)
     ];
 

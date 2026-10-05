@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoMian : WanJieRuLinCardModel
 {
-    public MoMian() : base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public MoMian() : base(3, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 

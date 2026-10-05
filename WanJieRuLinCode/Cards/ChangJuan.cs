@@ -22,7 +22,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChangJuan : WanJieRuLinCardModel
 {
-    public ChangJuan() : base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public ChangJuan() : base(4, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 

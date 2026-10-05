@@ -72,20 +72,23 @@ public sealed class LuanDianPower : WanJieTurnScopedPower
         // 第 4 层起，每层追加一项负面（循环取用）。
         //
         // ★ v0.7：负面幅度**翻倍**，且第 5 项改为**塞一张原版诅咒卡进弃牌堆**
-        //（用户：「你这个循环代价太低，还要增强负面效果」）。
+        //（用户：「你这个循环代价太低，还要增强负面效果」）
+        // ★ v0.7.1：负面从「永久」改成「本回合临时」—— 用户反馈
+        //   「不是永久降低力量敏捷，这样代价太大了」。
+        //   现在用 WanJieTempStrengthPower / WanJieTempDexterityPower（回合结束消失）。
         for (var k = 0; k < over; k++)
         {
             switch (k % 5)
             {
                 case 0:
-                    // 力量 −2
-                    await PowerCmd.Apply<StrengthPower>(
+                    // 临时力量 −2（回合结束消失）
+                    await PowerCmd.Apply<WanJieTempStrengthPower>(
                         ctx, player.Creature, -2, player.Creature, null);
                     break;
 
                 case 1:
-                    // 敏捷 −2
-                    await PowerCmd.Apply<DexterityPower>(
+                    // 临时敏捷 −2（回合结束消失）
+                    await PowerCmd.Apply<WanJieTempDexterityPower>(
                         ctx, player.Creature, -2, player.Creature, null);
                     break;
 
