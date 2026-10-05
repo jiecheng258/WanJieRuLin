@@ -5,18 +5,15 @@ r"""反无限审计 —— 把「哪些牌能拼成无限循环」固化成检�
 ----
 曾经 3 张牌就能拼出无限，双方各自看都没问题、合起来才是无限：
 
-    层层侵蚀（0 费产鬼气） → 审时度势（0 费：X 鬼气 → X 能量 + X 张牌） → 抽回层层侵蚀
+    层层侵蚀 → 审时度势（0 费：X 鬼气 → X 能量 + X 张牌） → 抽回层层侵蚀
 
 问题**不在单张牌，而在组合** —— 人眼很难发现，所以固化成机器检查。
 
 铁律 R1–R8（详见 handoff 技能「五·补」）
 ----------------------------------------
-R1  0 费牌不产能量、不产鬼气
-R2  「鬼气 → 能量」的兑换器必须 [消耗]
-R3  「鬼气 → 抽牌」的牌不产能量
+  R1  0 费牌不产能量（笔锋除外 —— 它有每回合上限）
 R4  抽牌 ≥2 的牌必须 ≥1 费，或 [消耗]
 R5  触发式收益（能力）必须有每回合上限
-R6  0 费产鬼气必须 [消耗]
 R7  单卡不同时「抽牌 + 产能量」
 R8  「本回合」增幅类不产可循环资源（人工复核项，脚本不拦）
 
@@ -40,8 +37,6 @@ POWERS = os.path.join(CODE, 'Powers')
 
 RE_CTOR = re.compile(
     r'base\(\s*(-?\d+)\s*,\s*CardType\.(\w+),\s*CardRarity\.(\w+)')
-RE_GQ_FIXED = re.compile(r'SetGhostQiCost\(\s*(\d+)\s*\)')
-RE_GQ_X = re.compile(r'SetGhostQiCostX\s*\(')
 RE_ENERGY_X = re.compile(r'HasEnergyCostX\s*=>\s*true')
 
 RE_EXHAUST = re.compile(r'CardKeyword\.Exhaust')
@@ -49,11 +44,9 @@ RE_EXHAUST = re.compile(r'CardKeyword\.Exhaust')
 # 抽牌：Draw(ctx, N) —— N 可能是数字，也可能是 DynamicVars.Cards.IntValue 之类
 RE_DRAW = re.compile(r'\bDraw\s*\([^;]*?,\s*([^,)]+)\)')
 # 产能量
+# ★ v0.5：笔锋 = 有每回合上限的能量（GainBiFeng -> BiFengPower 限 3 次/回合）
+RE_EDGE = re.compile(r'GainBiFeng\s*\(')
 RE_ENERGY = re.compile(r'GainEnergy\s*\(\s*([^)]+?)\s*\)')
-# 产鬼气
-RE_QI_GAIN = re.compile(r'\bGainGhostQi\s*\(|GhostQi\.Gain\s*\(')
-# 失鬼气（含清空 / 设为）
-RE_QI_LOSE = re.compile(r'\bLoseGhostQi\s*\(|ClearGhostQi\s*\(|GhostQi\.Lose\s*\(|GhostQi\.SpendAll\s*\(')
 
 
 def _int_or_var(expr):
@@ -76,6 +69,7 @@ def parse_card(path):
 
     draw_vals = [_int_or_var(x) for x in RE_DRAW.findall(body)]
     energy_vals = [_int_or_var(x) for x in RE_ENERGY.findall(body)]
+    edge_gain = bool(RE_EDGE.search(body))
 
     return dict(
         name=name,
@@ -83,15 +77,13 @@ def parse_card(path):
         ctype=m.group(2),
         rarity=m.group(3),
         cost_x=bool(RE_ENERGY_X.search(s)),
-        gq_cost=int(RE_GQ_FIXED.search(s).group(1)) if RE_GQ_FIXED.search(s) else (0 if not RE_GQ_X.search(s) else 'X'),
+        edge_gain=edge_gain,
         exhaust=bool(RE_EXHAUST.search(s)),
         draw_max=max([v for v in draw_vals if isinstance(v, int)] or [0]),
         draw_any=bool(draw_vals),
         draw_var=any(v == 'var' for v in draw_vals),
         energy_max=max([v for v in energy_vals if isinstance(v, int)] or [0]),
         energy_any=bool(energy_vals),
-        qi_gain=bool(RE_QI_GAIN.search(body)),
-        qi_lose=bool(RE_QI_LOSE.search(body)),
         path=path,
     )
 
@@ -117,9 +109,8 @@ def check_card(r):
 
     if r['cost'] == 0 and not r['exhaust']:
         if r['energy_any']:
-            out.append(('R1', '0 费却产能量 —— 0 费产资源是无限的第一因'))
-        if r['qi_gain']:
-            out.append(('R6', '0 费却产鬼气 —— 白产燃料；要么改 ≥1 费，要么 [消耗]'))
+            if not r.get('edge_gain'):
+                out.append(('R1', '0 费却产能量 —— 0 费产资源是无限的第一因'))
 
     if r['draw_any'] and not r['exhaust'] and r['draw_max'] >= 2 and r['cost'] == 0:
         out.append(('R4', '抽牌 ≥2 却是 0 费且不 [消耗] —— 能把自己抽回来'))
@@ -127,7 +118,6 @@ def check_card(r):
     if r['draw_any'] and r['energy_any'] and not r['exhaust']:
         out.append(('R7', '同一张牌既抽牌又产能量 —— 净资源为正'))
 
-    if r['qi_lose'] and r['energy_any'] and not r['exhaust']:
         if r['draw_any']:
             out.append(('R3', '鬼气换能量**且**换牌，还不 [消耗] —— 净赚手牌'))
         else:
@@ -151,7 +141,7 @@ def check_power(path):
         return []
     if not RE_HOOK.search(s):
         return []
-    gives = bool(RE_DRAW.search(s) or RE_ENERGY.search(s) or RE_QI_GAIN.search(s))
+    gives = bool(RE_DRAW.search(s) or RE_ENERGY.search(s) or RE_EDGE.search(s))
     if not gives:
         return []
     if RE_CAP.search(s):
