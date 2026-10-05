@@ -39,7 +39,6 @@ public sealed class MoShou : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PointHit(choiceContext);
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue + MyLuanDian * DynamicVars.GetIntOrDefault("PerDian", 3));
     }
 

@@ -110,10 +110,24 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        // ★ 造牌姿势（修 DuplicateModelException）：
-        //   Activator.CreateInstance(GetType()) 会**重复注册模型** → DuplicateModelException 卡住。
-        //   正确做法：ModelDb.Card<T>() 是泛型且无 Type 重载，所以用反射拿到规范实例
-        //   （走模型数据库，不会重复注册），再 ToMutable + 设 Owner + 入堆。
+        // ★ 造牌姿势（官方入口，一步做完三件事）：
+        //   RunState.CreateCard(canonical, player) 内部：
+        //     ① ToMutable() 拿可变实例
+        //     ② AddCard(card, owner) → 设 Owner **并登记进 RunState 的 _allCards**
+        //     ③ AfterCreated() 收尾钩子
+        //
+        //   之前手动 ToMutable + 设 Owner，漏了「登记进 RunState」这一步 →
+        //   报 "must be added to a CombatState before adding it to this pile"，
+        //   并导致回合循环死亡（软锁）。这是先古选项踩过的同一个坑。
+        //
+        //   注意：Player.RunState 静态类型是 IRunState（接口上没有 CreateCard），
+        //   所以要 `is RunState runState` 取具体类型。
+        if (p.RunState is not MegaCrit.Sts2.Core.Runs.RunState runState)
+        {
+            return;
+        }
+
+        // ModelDb 全是泛型（Card<T>()），基类拿不到具体类型 → 反射调泛型拿规范实例。
         var cardMethod = typeof(ModelDb).GetMethod("Card", System.Type.EmptyTypes)?
             .MakeGenericMethod(GetType());
         if (cardMethod?.Invoke(null, null) is not CardModel canonical)
@@ -121,18 +135,13 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        var created = canonical.ToMutable();
-        created.Owner = p;
+        var created = runState.CreateCard(canonical, p);
 
-        // ★ 0 费版本 —— 用 SetCustomBaseCost 直接改「基础费用」。
-        //   之前用 SetThisCombat(0, false)（挂局部修改器）是错的：
-        //   那种修改器会在洗牌/抽牌流程中被清理掉 → 回流牌进弃牌堆后
-        //   第二轮抽出来费用异常（用户实机反馈的 bug）。
-        //   SetCustomBaseCost 改的是底价，永久生效、不受洗牌影响。
+        // ★ 0 费版本 —— SetCustomBaseCost 直接改「基础费用」（永久、不受洗牌影响）。
         created.EnergyCost.SetCustomBaseCost(0);
 
-        await CardPileCmd.AddGeneratedCardToCombat(
-            created, PileType.Discard, p, CardPilePosition.Random);
+        await CardPileCmd.Add(
+            created, PileType.Discard, CardPilePosition.Random, null, false);
     }
 
 
