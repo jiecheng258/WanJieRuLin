@@ -124,8 +124,12 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
         var created = canonical.ToMutable();
         created.Owner = p;
 
-        // 0 费版本
-        created.EnergyCost.SetThisCombat(0, false);
+        // ★ 0 费版本 —— 用 SetCustomBaseCost 直接改「基础费用」。
+        //   之前用 SetThisCombat(0, false)（挂局部修改器）是错的：
+        //   那种修改器会在洗牌/抽牌流程中被清理掉 → 回流牌进弃牌堆后
+        //   第二轮抽出来费用异常（用户实机反馈的 bug）。
+        //   SetCustomBaseCost 改的是底价，永久生效、不受洗牌影响。
+        created.EnergyCost.SetCustomBaseCost(0);
 
         await CardPileCmd.AddGeneratedCardToCombat(
             created, PileType.Discard, p, CardPilePosition.Random);
