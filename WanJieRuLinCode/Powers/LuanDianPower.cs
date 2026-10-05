@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -69,36 +70,75 @@ public sealed class LuanDianPower : WanJieTurnScopedPower
         }
 
         // 第 4 层起，每层追加一项负面（循环取用）。
+        //
+        // ★ v0.7：负面幅度**翻倍**，且第 5 项改为**塞一张原版诅咒卡进弃牌堆**
+        //（用户：「你这个循环代价太低，还要增强负面效果」）。
         for (var k = 0; k < over; k++)
         {
-            var slot = (k % 5);
-            switch (slot)
+            switch (k % 5)
             {
                 case 0:
-                    // 力量 −1
+                    // 力量 −2
                     await PowerCmd.Apply<StrengthPower>(
-                        ctx, player.Creature, -1, player.Creature, null);
+                        ctx, player.Creature, -2, player.Creature, null);
                     break;
+
                 case 1:
-                    // 敏捷 −1
+                    // 敏捷 −2
                     await PowerCmd.Apply<DexterityPower>(
-                        ctx, player.Creature, -1, player.Creature, null);
+                        ctx, player.Creature, -2, player.Creature, null);
                     break;
+
                 case 2:
-                    // 虚弱 1
+                    // 虚弱 2
                     await PowerCmd.Apply<WeakPower>(
-                        ctx, player.Creature, 1, player.Creature, null);
+                        ctx, player.Creature, 2, player.Creature, null);
                     break;
+
                 case 3:
-                    // 易伤 1
+                    // 易伤 2
                     await PowerCmd.Apply<VulnerablePower>(
-                        ctx, player.Creature, 1, player.Creature, null);
+                        ctx, player.Creature, 2, player.Creature, null);
                     break;
+
                 default:
-                    // 抽 1 张「乱墨」（由卡牌侧提供的诅咒）
-                    await CardPileCmd.Draw(ctx, 1, player);
+                    // ★ 塞一张**原版诅咒卡**进弃牌堆（四张轮换）
+                    await AddCurseToDiscard(ctx, player, k / 5);
                     break;
             }
         }
+    }
+
+    /// <summary>原版诅咒卡（轮换塞入弃牌堆）。</summary>
+    private static readonly Type[] CurseCycle =
+    [
+        typeof(MegaCrit.Sts2.Core.Models.Cards.Doubt),
+        typeof(MegaCrit.Sts2.Core.Models.Cards.Shame),
+        typeof(MegaCrit.Sts2.Core.Models.Cards.Injury),
+        typeof(MegaCrit.Sts2.Core.Models.Cards.Decay),
+    ];
+
+    /// <summary>
+    /// 把一张原版诅咒卡放进弃牌堆。
+    ///
+    /// ★ 造牌姿势（沿用工程里已验证的写法）：
+    ///   规范实例 → ToMutable() → 设 Owner → 交给 AddGeneratedCardToCombat。
+    ///   三者缺一不可：不 ToMutable 会抛 CanonicalModelException；
+    ///   手工克隆会踩「牌没有堆」的 NullReferenceException。
+    /// </summary>
+    private static async Task AddCurseToDiscard(
+        PlayerChoiceContext ctx, Player player, int index)
+    {
+        var type = CurseCycle[Math.Abs(index) % CurseCycle.Length];
+        if (Activator.CreateInstance(type) is not CardModel canonical)
+        {
+            return;
+        }
+
+        var created = canonical.ToMutable();
+        created.Owner = player;
+
+        await CardPileCmd.AddGeneratedCardToCombat(
+            created, PileType.Discard, player, CardPilePosition.Random);
     }
 }
