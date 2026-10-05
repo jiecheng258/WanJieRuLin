@@ -69,6 +69,68 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     // v0.5 辅助方法（供生成的卡牌调用）
     // ------------------------------------------------------------------
 
+    // ========================================================================
+    // v0.7 三机制入口（点 / 线 / 面）
+    // ========================================================================
+
+    /// <summary>本回合已打出几张「点」牌（= 乱点层数）。</summary>
+    protected int MyLuanDian => Owner is { } p ? LuanDianPower.Of(p.Creature) : 0;
+
+    /// <summary>本回合已打出几张「线」牌。</summary>
+    protected int MyQianJun => Owner is { } p ? QianJunPower.Of(p.Creature) : 0;
+
+    /// <summary>
+    /// 「点」牌打出时的统一入口：累积乱点；超过 3 层自动吃罚（力量/敏捷/虚弱/易伤/诅咒）。
+    /// 所有点牌都应在 OnPlay 里调用它。
+    /// </summary>
+    protected async Task PointHit(PlayerChoiceContext ctx)
+    {
+        if (Owner is { } p)
+        {
+            await LuanDianPower.OnPointCardPlayed(ctx, p);
+        }
+    }
+
+    /// <summary>
+    /// 「线」牌打出时的统一入口：+1 临时力量、+1 临时敏捷、额外抽 1 张。
+    /// 所有线牌都应在 OnPlay 里调用它。
+    /// </summary>
+    protected async Task LineHit(PlayerChoiceContext ctx)
+    {
+        if (Owner is { } p)
+        {
+            await QianJunPower.OnLineCardPlayed(ctx, p);
+        }
+    }
+
+    /// <summary>
+    /// ★ 「去年今日此门中」—— 面牌回流：
+    /// 把**本牌的 0 费版本**放进弃牌堆。**每张面牌每场战斗只生效一次**。
+    /// 所有面牌都应在 OnPlay 末尾调用它。
+    /// </summary>
+    protected async Task ReturnFaceZeroCostCopy(PlayerChoiceContext ctx)
+    {
+        if (Owner is not { } p || !WanJieFaceReturn.TryClaim(p, GetType()))
+        {
+            return;
+        }
+
+        // 造牌姿势（工程内已验证）：规范实例 → ToMutable → 设 Owner → 交给框架入堆。
+        if (Activator.CreateInstance(GetType()) is not CardModel canonical)
+        {
+            return;
+        }
+
+        var created = canonical.ToMutable();
+        created.Owner = p;
+
+        // 0 费版本
+        created.EnergyCost.SetThisCombat(0, false);
+
+        await CardPileCmd.AddGeneratedCardToCombat(
+            created, PileType.Discard, p, CardPilePosition.Random);
+    }
+
     /// <summary>
     /// 获得笔锋（点牌的核心产出）。
     ///

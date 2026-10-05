@@ -15,15 +15,16 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 抽 1 张牌，获得 1 点[gold]笔锋[/gold]。
-/// 升级 ★ 质变：抽 1 张。
+/// 点 —— 造成 8 点伤害。
+/// 若你本回合已打出过「点」牌，此牌伤害改为 14 点。
+/// 升级后基础 12 点（连点收益同步提高）。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 1)]
 [RegisterArchaicToothTranscendence(typeof(WanJieRuLinAncient))]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class QiBi : WanJieRuLinCardModel
 {
-    public QiBi() : base(0, CardType.Skill, CardRarity.Basic, TargetType.Self)
+    public QiBi() : base(0, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
     {
     }
 
@@ -32,17 +33,22 @@ public sealed class QiBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Edge", 1),
-        ModCardVars.Cards(1)
+        new DamageVar(8m, ValueProp.Move),
+        ModCardVars.Int("RepeatBonus", 6)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await Draw(choiceContext, DynamicVars.Cards.IntValue);
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 1));
+        var repeated = MyLuanDian > 0;
+        await PointHit(choiceContext);
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Cards.UpgradeValueBy(1);    }
+        DynamicVars.Damage.UpgradeValueBy(4m);    }
 }

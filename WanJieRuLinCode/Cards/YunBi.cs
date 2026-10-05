@@ -15,7 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 6 点格挡，获得 1 点[gold]力道[/gold]。升级后 6 点格挡。
+/// 线 —— 获得 7 点格挡。
+/// 打出后本回合获得 1 点临时力量与 1 点临时敏捷，并抽 1 张牌（千钧一线）。
+/// 升级后 10 点格挡。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 1)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,19 +32,20 @@ public sealed class YunBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(6m, ValueProp.Move),
-        ModCardVars.Int("Force", 1)
+        new BlockVar(7m, ValueProp.Move),
+        ModCardVars.Int("SecondBlock", 4)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        var repeated = MyQianJun > 0;
+        await LineHit(choiceContext);
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 1));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(1m);    }
+        DynamicVars.Block.UpgradeValueBy(3m);    }
 }
