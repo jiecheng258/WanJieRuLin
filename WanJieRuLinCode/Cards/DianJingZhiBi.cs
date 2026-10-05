@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 0 费：获得 3 点[gold]笔锋[/gold]，抽 2 张牌。升级后 4 点笔锋。
+/// ★ **点** —— 0 费：获得 2 点[gold]笔锋[/gold]，抽 2 张牌。升级后 4 点笔锋。
 /// ★ 一次把费用垫足 + 补手牌，是「面」牌的完美前置。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

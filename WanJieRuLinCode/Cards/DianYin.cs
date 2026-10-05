@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 抽 2 张牌，获得 1 点[gold]笔锋[/gold]。升级后抽 3 张。
+/// ★ **点** —— 抽 2 张牌，获得 1 点[gold]笔锋[/gold]。升级后抽 2 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianYin : WanJieRuLinCardModel

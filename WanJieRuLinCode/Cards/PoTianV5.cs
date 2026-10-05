@@ -30,7 +30,7 @@ public sealed class PoTianV5 : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerMoYun", 3)
+        ModCardVars.Int("PerMoYun", 4)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

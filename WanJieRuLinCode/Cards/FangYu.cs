@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 5 点格挡。升级后 8 点。
+/// 获得 6 点格挡。升级后 8 点。
 /// ★ 与原版同档，不属于点线面。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
@@ -28,7 +28,7 @@ public sealed class FangYu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move)
+        new BlockVar(6m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

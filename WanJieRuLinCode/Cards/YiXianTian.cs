@@ -16,7 +16,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// ★ **线 · 条件牌** —— **需[gold]力道[/gold]不低于 5** 才能打出。
-/// 造成 20 点伤害。[消耗] 升级后 26 点。
+/// 造成 24 点伤害。[消耗] 升级后 26 点。
 /// ★ 用「勾线 / 长线」把力道垫起来，这张 0 费牌就是白送的 20 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -31,7 +31,7 @@ public sealed class YiXianTian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(20m, ValueProp.Move)
+        new DamageVar(24m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

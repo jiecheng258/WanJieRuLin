@@ -110,12 +110,20 @@ public sealed class MoYunPower : ModPowerTemplate
             return 0m;
         }
 
-        if (!WanJieAspectQuery.IsPointOrLine(cardSource))
+        var aspect = WanJieAspectQuery.Of(cardSource);
+
+        // ★ v0.6 回报侧：面牌拿到墨韵加成（与伤害侧同口径）。
+        if (aspect == WanJieAspect.Face)
+        {
+            return MoYunStep(Owner) * WanJieV05Tuning.MoYunFaceBonus;
+        }
+
+        // ★ v0.6：惩罚只作用于「点」牌（线牌是基准档，不受波及）。
+        if (aspect != WanJieAspect.Point)
         {
             return 0m;
         }
 
-        // ★ 偏激流·纯面「泼天」：墨韵不再削弱点/线（改由 PoTianPower 强化面牌）。
         if (PoTianPower.Active(Owner))
         {
             return 0m;
@@ -130,4 +138,8 @@ public sealed class MoYunPower : ModPowerTemplate
         var room = (int)block - WanJieV05Tuning.MoYunPenaltyFloor;
         return -Math.Min(penalty, Math.Max(0, room));
     }
+
+    /// <summary>墨韵可兑现的「档数」（每 5 层一档）。</summary>
+    public static int MoYunStep(Creature? creature)
+        => Of(creature) / Math.Max(1, WanJieV05Tuning.MoYunPenaltyStep);
 }

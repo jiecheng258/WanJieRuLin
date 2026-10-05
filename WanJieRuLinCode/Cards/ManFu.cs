@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 8 点格挡，造成 10 点伤害。
+/// ★ **面** —— 获得 10 点格挡，造成 12 点伤害。
 /// 升级 ★ 双升级：格挡 10 / 伤害 13。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,8 +30,8 @@ public sealed class ManFu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(8m, ValueProp.Move),
-        new DamageVar(10m, ValueProp.Move)
+        new BlockVar(10m, ValueProp.Move),
+        new DamageVar(12m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

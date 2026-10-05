@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 14 点伤害；若你的[gold]力道[/gold]不低于 3，**伤害翻倍**。
+/// ★ **线** —— 造成 17 点伤害；若你的[gold]力道[/gold]不低于 3，**伤害翻倍**。
 /// 升级后 18 点。★ 线流的兑现点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class ZhiGuan : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move)
+        new DamageVar(17m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

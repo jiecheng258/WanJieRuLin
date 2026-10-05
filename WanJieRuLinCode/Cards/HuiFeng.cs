@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点 · 无限流一环** —— 0 费：造成 3 点伤害，**失去 1 点生命**。
+/// ★ **点 · 无限流一环** —— 0 费：造成 4 点伤害，**失去 1 点生命**。
 /// 升级后 5 点伤害。
 /// ★ 单独用很亏（自己掉血只换 3 点伤害）。它的价值在**联动**：
 ///    打出它会给「接笔」亮灯，接笔因此多产 1 点能量 —— 两张凑起来才开始成立。
@@ -32,7 +32,7 @@ public sealed class HuiFeng : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(3m, ValueProp.Move),
+        new DamageVar(4m, ValueProp.Move),
         ModCardVars.Int("BloodCost", 1)
     ];
 

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 6 点伤害。升级后 9 点。
+/// 造成 8 点伤害。升级后 9 点。
 /// ★ 与原版同档，不属于点线面。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
@@ -28,7 +28,7 @@ public sealed class DaJi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move)
+        new DamageVar(8m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

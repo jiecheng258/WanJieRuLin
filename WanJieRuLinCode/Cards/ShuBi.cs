@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 抽 2 张牌。升级后抽 3 张。
+/// ★ **点** —— 抽 2 张牌。升级后抽 2 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShuBi : WanJieRuLinCardModel

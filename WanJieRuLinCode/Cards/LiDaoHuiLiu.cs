@@ -30,7 +30,7 @@ public sealed class LiDaoHuiLiu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Bonus", 1)
+        ModCardVars.Int("Bonus", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

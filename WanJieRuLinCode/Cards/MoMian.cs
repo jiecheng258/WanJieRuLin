@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 抽 3 张牌，获得 1 点能量。升级后抽 4 张。
+/// ★ **面** —— 抽 3 张牌，获得 3 点能量。升级后抽 4 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoMian : WanJieRuLinCardModel

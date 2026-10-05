@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 6 点伤害；你每有 1 点[gold]力道[/gold]，此伤害 +2。升级后每点 +3。
+/// ★ **线** —— 造成 8 点伤害；你每有 1 点[gold]力道[/gold]，此伤害 +2。升级后每点 +3。
 /// ★ 线流的兑现口：力道垫得越高，这一击越重。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,8 +30,8 @@ public sealed class ChuanZhenYinXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move),
-        ModCardVars.Int("PerForce", 2)
+        new DamageVar(8m, ValueProp.Move),
+        ModCardVars.Int("PerForce", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

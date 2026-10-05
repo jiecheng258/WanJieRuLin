@@ -48,8 +48,18 @@ public sealed class BiFengPower : WanJieTurnScopedPower
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay)
     {
-        // 笔锋只管「下一张牌」，打出任何一张牌后即失效。
         if (Owner is null || _consumed)
+        {
+            return;
+        }
+
+        // ★ v0.6 修复：**0 费牌不消耗笔锋**。
+        //
+        // 原因：点牌大多是 0 费，而点牌自己就是笔锋的产出方。
+        // 如果「打任何牌都清空」，那么「起笔(0费) → 再打一张 0 费点牌」
+        // 会把笔锋白白吃掉（减费 0 效果），点牌的核心产出被点牌自己浪费掉了。
+        // 改成只看「这张牌实际花了几费」，0 费牌直接跳过。
+        if (cardPlay.Card is null || cardPlay.Card.EnergyCost.GetAmountToSpend() <= 0)
         {
             return;
         }

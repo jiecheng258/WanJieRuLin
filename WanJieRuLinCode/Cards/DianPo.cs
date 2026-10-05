@@ -29,7 +29,7 @@ public sealed class DianPo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("StrengthLoss", 1),
+        ModCardVars.Int("StrengthLoss", 2),
         ModCardVars.Int("Edge", 1)
     ];
 

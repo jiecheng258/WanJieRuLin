@@ -16,7 +16,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// ★ **点** —— 抽 1 张牌，获得 1 点[gold]笔锋[/gold]。
-/// 升级 ★ 质变：抽 2 张。
+/// 升级 ★ 质变：抽 1 张。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 1)]
 [RegisterArchaicToothTranscendence(typeof(WanJieRuLinAncient))]

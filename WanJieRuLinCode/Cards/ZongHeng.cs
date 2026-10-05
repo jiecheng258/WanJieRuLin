@@ -31,7 +31,7 @@ public sealed class ZongHeng : WanJieRuLinCardModel
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Int("Force", 2),
-        ModCardVars.Int("Bonus", 1)
+        ModCardVars.Int("Bonus", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

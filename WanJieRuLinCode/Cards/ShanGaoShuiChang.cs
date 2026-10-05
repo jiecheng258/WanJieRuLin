@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 16 点格挡。升级后 21 点。
+/// ★ **面** —— 获得 19 点格挡。升级后 21 点。
 /// ★ 全模组最高单次格挡。配合笔锋减费打出才划算。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class ShanGaoShuiChang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(16m, ValueProp.Move)
+        new BlockVar(19m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

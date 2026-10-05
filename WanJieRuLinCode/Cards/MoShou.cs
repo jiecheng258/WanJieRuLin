@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 获得 4 点格挡，再额外获得等于你[gold]笔锋[/gold] 3 倍的格挡。
+/// ★ **点** —— 获得 5 点格挡，再额外获得等于你[gold]笔锋[/gold] 3 倍的格挡。
 /// 升级后基础 8 点。★ 把「留着不用的笔锋」变成防御。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class MoShou : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(4m, ValueProp.Move)
+        new BlockVar(5m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

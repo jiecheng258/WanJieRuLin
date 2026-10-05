@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 7 点伤害，抽 1 张牌。升级后 10 点伤害。
+/// ★ **线** —— 造成 9 点伤害，抽 1 张牌。升级后 10 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class XianTiao : WanJieRuLinCardModel
@@ -29,7 +29,7 @@ public sealed class XianTiao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(7m, ValueProp.Move),
+        new DamageVar(9m, ValueProp.Move),
         ModCardVars.Cards(1)
     ];
 

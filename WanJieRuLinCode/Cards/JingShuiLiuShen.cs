@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 3 点[gold]墨韵[/gold]，抽 2 张牌。升级后 4 点。
+/// ★ **面** —— 获得 2 点[gold]墨韵[/gold]，抽 2 张牌。升级后 4 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class JingShuiLiuShen : WanJieRuLinCardModel

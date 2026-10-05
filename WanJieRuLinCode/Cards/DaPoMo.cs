@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 对**所有**敌人造成 20 点伤害。升级后 26 点。
+/// ★ **面** —— 对**所有**敌人造成 24 点伤害。升级后 26 点。
 /// ★ 3 费群体 —— 靠笔锋减费打出才是它的正确用法。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class DaPoMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(20m, ValueProp.Move)
+        new DamageVar(24m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

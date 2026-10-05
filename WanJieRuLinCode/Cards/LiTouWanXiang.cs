@@ -30,7 +30,7 @@ public sealed class LiTouWanXiang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerMoYun", 2),
+        ModCardVars.Int("PerMoYun", 3),
         ModCardVars.Int("Base", 14)
     ];
 

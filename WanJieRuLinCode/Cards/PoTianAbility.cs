@@ -30,7 +30,7 @@ public sealed class PoTianAbility : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerStep", 3)
+        ModCardVars.Int("PerStep", 4)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

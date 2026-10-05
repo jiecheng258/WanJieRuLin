@@ -71,6 +71,12 @@ public static class WanJieV05Tuning
     /// <summary>「点 / 线」牌效果被削的下限（不会削到 0 以下）。</summary>
     public const int MoYunPenaltyFloor = 1;
 
+    /// <summary>
+    /// ★ v0.6：墨韵每满一档，「面」牌获得的伤害/格挡加成。
+    /// 这是墨韵的**回报侧** —— 没有它，墨韵就是一个只会变重的纯减益。
+    /// </summary>
+    public const int MoYunFaceBonus = 2;
+
     /// <summary>偏激流·纯点「润笔」：每回合由点牌获得能量的上限。</summary>
     public const int RunBiEnergyCap = 2;
 

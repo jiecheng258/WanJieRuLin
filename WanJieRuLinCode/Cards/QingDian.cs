@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 5 点伤害，获得 1 点[gold]笔锋[/gold]。升级后 6 点伤害。
+/// ★ **点** —— 造成 6 点伤害，获得 1 点[gold]笔锋[/gold]。升级后 6 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class QingDian : WanJieRuLinCardModel
@@ -29,7 +29,7 @@ public sealed class QingDian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(5m, ValueProp.Move),
+        new DamageVar(6m, ValueProp.Move),
         ModCardVars.Int("Edge", 1)
     ];
 

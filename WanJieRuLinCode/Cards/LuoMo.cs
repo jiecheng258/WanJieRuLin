@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 获得 5 点格挡，获得 1 点[gold]笔锋[/gold]。升级后 7 点格挡。
+/// ★ **点** —— 获得 6 点格挡，获得 1 点[gold]笔锋[/gold]。升级后 7 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LuoMo : WanJieRuLinCardModel
@@ -29,7 +29,7 @@ public sealed class LuoMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move),
+        new BlockVar(6m, ValueProp.Move),
         ModCardVars.Int("Edge", 1)
     ];
 

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 6 点格挡，获得 2 点[gold]力道[/gold]。升级后 8 点格挡。
+/// ★ **线** —— 获得 8 点格挡，获得 2 点[gold]力道[/gold]。升级后 8 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChanSi : WanJieRuLinCardModel
@@ -29,7 +29,7 @@ public sealed class ChanSi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(6m, ValueProp.Move),
+        new BlockVar(8m, ValueProp.Move),
         ModCardVars.Int("Force", 2)
     ];
 

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 22 点格挡。升级后 28 点。
+/// ★ **面** —— 获得 26 点格挡。升级后 28 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WanHeQianYan : WanJieRuLinCardModel
@@ -29,7 +29,7 @@ public sealed class WanHeQianYan : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(22m, ValueProp.Move)
+        new BlockVar(26m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

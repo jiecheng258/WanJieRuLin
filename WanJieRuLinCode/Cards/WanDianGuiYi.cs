@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 3 点伤害，共 4 次。升级后 ★ 质变：5 次。
+/// ★ **点** —— 造成 4 点伤害，共 4 次。升级后 ★ 质变：5 次。
 /// ★ 每一段都吃[gold]力道[/gold]加成，是「点 + 线」混搭的最佳载体。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class WanDianGuiYi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(3m, ValueProp.Move),
+        new DamageVar(4m, ValueProp.Move),
         ModCardVars.Repeat(4)
     ];
 

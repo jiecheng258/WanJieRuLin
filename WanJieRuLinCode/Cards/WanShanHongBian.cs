@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 对**所有**敌人造成 24 点伤害。[消耗]
+/// ★ **面** —— 对**所有**敌人造成 29 点伤害。[消耗]
 /// **消耗 5 点墨韵**，改为 36 点。升级后 30 / 42。
 /// ★ 细水长流的群体兑现。
 /// </summary>
@@ -31,9 +31,9 @@ public sealed class WanShanHongBian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(24m, ValueProp.Move),
+        new DamageVar(29m, ValueProp.Move),
         ModCardVars.Int("MoYunCost", 5),
-        ModCardVars.Int("Bonus", 12)
+        ModCardVars.Int("Bonus", 14)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

@@ -30,7 +30,7 @@ public sealed class HaoLi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerEdge", 2)
+        ModCardVars.Int("PerEdge", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

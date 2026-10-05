@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 5 点伤害；获得等同你[gold]笔锋[/gold]层数的格挡。升级后 7 点伤害。
+/// ★ **点** —— 造成 6 点伤害；获得等同你[gold]笔锋[/gold]层数的格挡。升级后 7 点伤害。
 /// ★ 笔锋在这张牌上是「一鱼两吃」：既减费又叠甲。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class MoDianV5 : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(5m, ValueProp.Move)
+        new DamageVar(6m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

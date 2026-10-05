@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 3 点[gold]力道[/gold]，抽 2 张牌。升级后 4 点力道。
+/// ★ **线** —— 获得 2 点[gold]力道[/gold]，抽 2 张牌。升级后 4 点力道。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class YunJinChengFeng : WanJieRuLinCardModel

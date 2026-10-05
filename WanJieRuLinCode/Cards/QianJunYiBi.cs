@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 22 点伤害，获得 4 点[gold]力道[/gold]。[消耗]
+/// ★ **线** —— 造成 26 点伤害，获得 4 点[gold]力道[/gold]。[消耗]
 /// 升级后 28 点。★ 3 费终结技，要留着给关键时刻。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -30,7 +30,7 @@ public sealed class QianJunYiBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(22m, ValueProp.Move),
+        new DamageVar(26m, ValueProp.Move),
         ModCardVars.Int("Force", 4)
     ];
 

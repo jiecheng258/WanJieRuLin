@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面 · 条件牌** —— 造成 26 点伤害。[消耗]
+/// ★ **面 · 条件牌** —— 造成 31 点伤害。[消耗]
 /// **若你的手牌为空**，再对所有敌人造成 20 点伤害。升级后 32 点。
 /// ★ 套路①的终极形态：把手牌打光换一次全场重击。
 /// </summary>
@@ -31,8 +31,8 @@ public sealed class KaiTianPiDi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(26m, ValueProp.Move),
-        ModCardVars.Int("EmptyBonus", 20)
+        new DamageVar(31m, ValueProp.Move),
+        ModCardVars.Int("EmptyBonus", 24)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

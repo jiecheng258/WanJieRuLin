@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 11 点格挡。升级后 15 点。
+/// ★ **面** —— 获得 13 点格挡。升级后 15 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DaMian : WanJieRuLinCardModel
@@ -29,7 +29,7 @@ public sealed class DaMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(11m, ValueProp.Move)
+        new BlockVar(13m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;

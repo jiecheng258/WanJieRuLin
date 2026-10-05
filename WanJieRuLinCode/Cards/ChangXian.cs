@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 抽 1 张牌，获得 2 点[gold]力道[/gold]。升级后 3 点力道。
+/// ★ **线** —— 抽 1 张牌，获得 1 点[gold]力道[/gold]。升级后 3 点力道。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ChangXian : WanJieRuLinCardModel

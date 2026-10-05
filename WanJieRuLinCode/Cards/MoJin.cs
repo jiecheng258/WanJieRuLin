@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面 · 条件牌** —— **需手牌不多于 1 张** 才能打出。造成 22 点伤害。
+/// ★ **面 · 条件牌** —— **需手牌不多于 1 张** 才能打出。造成 26 点伤害。
 /// 升级后 28 点。
 /// ★ 套路①：用别的牌把手牌打空 → 这张 1 费牌就是全模组最高性价比。
 /// </summary>
@@ -31,7 +31,7 @@ public sealed class MoJin : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(22m, ValueProp.Move)
+        new DamageVar(26m, ValueProp.Move)
     ];
 
     protected override bool? PlayCondition => HandCountAtMost(1);
