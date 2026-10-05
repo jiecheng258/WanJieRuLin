@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成等同你[gold]力道[/gold] 3 倍的伤害。升级后 4 倍。
-/// ★ 线流的兑现口：力道垫到 8 点就是 24 伤。
+/// 线 —— 造成 10 点伤害。你每打出过 1 张线牌，此伤害 +3。
+/// 升级 ★ 效果升级：每张 +3 → +4。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class TieXian : WanJieRuLinCardModel
@@ -30,19 +30,18 @@ public sealed class TieXian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerForce", 4)
+        new DamageVar(10m, ValueProp.Move),
+        ModCardVars.Int("PerLine", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(MyLiDao * DynamicVars.GetIntOrDefault("PerForce", 3))
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + MyQianJun * DynamicVars.GetIntOrDefault("PerLine", 3));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["PerForce"].UpgradeValueBy(1);    }
+        DynamicVars["PerLine"].UpgradeValueBy(1);    }
 }

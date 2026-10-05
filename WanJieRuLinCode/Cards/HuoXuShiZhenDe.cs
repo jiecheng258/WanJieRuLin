@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **事件牌** —— 造成 17 点伤害，抽 1 张牌。
-/// ★ 传闻有真有假 —— 打出它抽到的那张牌，就当是「或许是真的」。
+/// 面 —— 造成 16 点伤害，给予 2 层易伤。[消耗]
+/// 传闻有真有假。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HuoXuShiZhenDe : WanJieRuLinCardModel
@@ -30,8 +30,11 @@ public sealed class HuoXuShiZhenDe : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(17m, ValueProp.Move)
+        new DamageVar(16m, ValueProp.Move),
+        ModCardVars.Int("Vulnerable", 2)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -40,7 +43,8 @@ public sealed class HuoXuShiZhenDe : WanJieRuLinCardModel
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await Draw(choiceContext, 1);
+        await ApplyTo<VulnerablePower>(choiceContext, cardPlay.Target, DynamicVars.GetIntOrDefault("Vulnerable", 2));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

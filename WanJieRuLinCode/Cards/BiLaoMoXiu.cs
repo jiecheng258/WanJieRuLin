@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 消耗所有[gold]力道[/gold]，每点获得 1 点能量。升级后额外 +1 点。
-/// ★ 力道换费用 —— 线流突然打出一波爆发的开关。
+/// 线 —— 获得 5 点临时力量。
+/// 升级 ★ 效果升级：7 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class BiLaoMoXiu : WanJieRuLinCardModel
@@ -30,20 +30,16 @@ public sealed class BiLaoMoXiu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Bonus", 0)
+        ModCardVars.Int("TempStr", 5)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var force = await ClearLiDao(choiceContext);
-        var n = force + DynamicVars.GetIntOrDefault("Bonus", 0);
-        if (n > 0)
-        {
-            await GainEnergy(n);
-        }
+        await LineHit(choiceContext);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 5));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Bonus"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(2);    }
 }

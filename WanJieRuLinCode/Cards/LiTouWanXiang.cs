@@ -15,8 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 造成「[gold]墨韵[/gold]层数 ×2 + 14」点伤害。[消耗]
-/// 升级后 ×3 + 14。★ 墨韵越厚越恐怖。
+/// 面 —— 造成 20 点伤害，获得 5 点临时力量。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级 ★ 效果升级：临时力量 5 → 7。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiTouWanXiang : WanJieRuLinCardModel
@@ -30,8 +31,8 @@ public sealed class LiTouWanXiang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerMoYun", 3),
-        ModCardVars.Int("Base", 14)
+        new DamageVar(20m, ValueProp.Move),
+        ModCardVars.Int("TempStr", 5)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
@@ -39,13 +40,15 @@ public sealed class LiTouWanXiang : WanJieRuLinCardModel
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(MyMoYun * DynamicVars.GetIntOrDefault("PerMoYun", 2) + DynamicVars.GetIntOrDefault("Base", 14))
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 5));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["PerMoYun"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(2);    }
 }

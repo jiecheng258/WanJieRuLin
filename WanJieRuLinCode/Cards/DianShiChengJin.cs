@@ -15,13 +15,13 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 获得 5 点[gold]笔锋[/gold]。升级后 6 点。
-/// ★ 一张牌直接把后面 3 费的面牌变成 0 费 —— 均衡流的发动机。
+/// 点 —— 获得 2 点能量。
+/// 升级 ★ 效果升级：3 点能量。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianShiChengJin : WanJieRuLinCardModel
 {
-    public DianShiChengJin() : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public DianShiChengJin() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -30,15 +30,16 @@ public sealed class DianShiChengJin : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Edge", 5)
+        ModCardVars.Int("Energy", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<BiFengPower>(choiceContext, DynamicVars.GetIntOrDefault("Edge", 5));
+        await PointHit(choiceContext);
+        await GainEnergy(DynamicVars.GetIntOrDefault("Energy", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Edge"].UpgradeValueBy(1);    }
+        DynamicVars["Energy"].UpgradeValueBy(1);    }
 }

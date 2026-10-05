@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 获得 3 点[gold]力道[/gold]，抽 1 张牌。升级后 4 点力道。
+/// 线 —— 抽 3 张牌，获得 2 点临时力量。
+/// 升级 ★ 效果升级：临时力量 2 → 3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class XingYunLiuShui : WanJieRuLinCardModel
@@ -29,17 +30,18 @@ public sealed class XingYunLiuShui : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 3),
-        ModCardVars.Cards(1)
+        ModCardVars.Cards(3),
+        ModCardVars.Int("TempStr", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 3));
+        await LineHit(choiceContext);
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);    }
 }

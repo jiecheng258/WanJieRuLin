@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 0 费：造成等同你[gold]笔锋[/gold] 2 倍的伤害。升级后 3 倍。
-/// ★ 笔锋既是费用又是弹药 —— 用还是留，是个真决策。
+/// 点 —— 0 费：造成 4 点伤害。你每打出过 1 张点牌，此伤害 +2。
+/// 升级 ★ 效果升级：每张 +2 → +3。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class HaoLi : WanJieRuLinCardModel
@@ -30,19 +30,18 @@ public sealed class HaoLi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerEdge", 3)
+        new DamageVar(4m, ValueProp.Move),
+        ModCardVars.Int("PerDian", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(MyBiFeng * DynamicVars.GetIntOrDefault("PerEdge", 2))
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .Execute(choiceContext);
+        await DealDamage(choiceContext, cardPlay.Target, DynamicVars.Damage.BaseValue + MyLuanDian * DynamicVars.GetIntOrDefault("PerDian", 2));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["PerEdge"].UpgradeValueBy(1);    }
+        DynamicVars["PerDian"].UpgradeValueBy(1);    }
 }

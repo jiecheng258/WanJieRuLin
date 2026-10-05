@@ -15,10 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **偏激流 · 纯点** 的支撑能力 ——
-/// 每当你打出一张「点」牌，获得 1 点能量（每回合上限 2 次）。升级后上限 3 次。
-/// ★ 让「只堆点牌」成为一条能赢的路线：点牌本身数值低，但打出它就能换能量。
-/// ★ 三张偏激流能力**互斥**，逼你选边。
+/// 能力 —— **纯点流**：每回合你打出的第一张「点」牌额外抽 1 张牌。
+/// 升级 ★ 效果升级：改为抽 2 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class RunBi : WanJieRuLinCardModel
@@ -29,7 +27,7 @@ public sealed class RunBi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Cap", 2)
+        ModCardVars.Int("Draw", 1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -37,11 +35,11 @@ public sealed class RunBi : WanJieRuLinCardModel
         var power = await ApplySelfAndGet<RunBiPower>(choiceContext, 1m);
         if (power is not null)
         {
-            power.Cap = DynamicVars.GetIntOrDefault("Cap", 2);
+            power.Amount = DynamicVars.GetIntOrDefault("Draw", 1);
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Cap"].UpgradeValueBy(1);    }
+        DynamicVars["Draw"].UpgradeValueBy(1);    }
 }

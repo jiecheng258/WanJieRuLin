@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 消耗所有[gold]笔锋[/gold]，每点抽 1 张牌。升级后额外 +1 张。
-/// ★ 笔锋用不完时的泄洪口。
+/// 点 —— 抽 2 张牌。若本回合已打出 4 张以上点牌（已触发惩罚），再抽 2 张。
+/// 升级后基础抽 3 张。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShuMiYouZhi : WanJieRuLinCardModel
@@ -30,20 +30,17 @@ public sealed class ShuMiYouZhi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Bonus", 0)
+        ModCardVars.Cards(2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var edge = await ClearBiFeng(choiceContext);
-        var n = edge + DynamicVars.GetIntOrDefault("Bonus", 0);
-        if (n > 0)
-        {
-            await Draw(choiceContext, n);
-        }
+        await PointHit(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        if (MyLuanDian >= 4) { await Draw(choiceContext, 2); }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Bonus"].UpgradeValueBy(1);    }
+        DynamicVars.Cards.UpgradeValueBy(1);    }
 }

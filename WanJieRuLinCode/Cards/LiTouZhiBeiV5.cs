@@ -15,10 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **偏激流 · 纯线** 的支撑能力 ——
-/// 每回合开始时获得 2 点[gold]力道[/gold]。升级后 3 点。
-/// ★ 让线流有一条稳定底盘：力道越厚，线牌越强。
-/// ★ 三张偏激流能力**互斥**。
+/// 能力 —— **纯线流**：每回合开始时获得 2 点临时力量。
+/// 升级 ★ 效果升级：3 点。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class LiTouZhiBeiV5 : WanJieRuLinCardModel
@@ -29,7 +27,7 @@ public sealed class LiTouZhiBeiV5 : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 2)
+        ModCardVars.Int("TempStr", 2)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -37,11 +35,11 @@ public sealed class LiTouZhiBeiV5 : WanJieRuLinCardModel
         var power = await ApplySelfAndGet<LiTouPower>(choiceContext, 1m);
         if (power is not null)
         {
-            power.Force = DynamicVars.GetIntOrDefault("Force", 2);
+            power.Force = DynamicVars.GetIntOrDefault("TempStr", 2);
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Force"].UpgradeValueBy(1);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);    }
 }

@@ -15,12 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 2 点[gold]墨韵[/gold]，抽 2 张牌。升级后 4 点。
+/// 面 —— 获得 14 点格挡，获得 3 点临时敏捷。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级 ★ 效果升级：临时敏捷 3 → 5。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class JingShuiLiuShen : WanJieRuLinCardModel
 {
-    public JingShuiLiuShen() : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public JingShuiLiuShen() : base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -29,17 +31,22 @@ public sealed class JingShuiLiuShen : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("MoYun", 3),
-        ModCardVars.Cards(2)
+        new BlockVar(14m, ValueProp.Move),
+        ModCardVars.Int("TempDex", 3)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<MoYunPower>(choiceContext, DynamicVars.GetIntOrDefault("MoYun", 3));
-        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ApplySelf<WanJieTempDexterityPower>(choiceContext, DynamicVars.GetIntOrDefault("TempDex", 3));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MoYun"].UpgradeValueBy(1);    }
+        DynamicVars["TempDex"].UpgradeValueBy(2);    }
 }

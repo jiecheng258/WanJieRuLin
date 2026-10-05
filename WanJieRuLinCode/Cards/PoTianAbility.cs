@@ -15,11 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **偏激流 · 纯面** 的支撑能力 ——
-/// [gold]墨韵[/gold]**不再削弱「点 / 线」牌**，改为每满 5 层，你的「面」牌伤害 +3。
-/// 升级后 +5。
-/// ★ 把墨韵从「双刃」变成「纯增益」——「只堆面牌」成为越打越强的路线。
-/// ★ 代价：你彻底放弃点/线，前期会很难受。三张偏激流能力**互斥**。
+/// 能力 —— **纯面流**：你的「面」牌伤害额外 +3。
+/// 升级 ★ 效果升级：+5。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class PoTianAbility : WanJieRuLinCardModel
@@ -30,7 +27,7 @@ public sealed class PoTianAbility : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerStep", 4)
+        ModCardVars.Int("Bonus", 3)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -38,11 +35,11 @@ public sealed class PoTianAbility : WanJieRuLinCardModel
         var power = await ApplySelfAndGet<PoTianPower>(choiceContext, 1m);
         if (power is not null)
         {
-            power.PerStep = DynamicVars.GetIntOrDefault("PerStep", 3);
+            power.PerStep = DynamicVars.GetIntOrDefault("Bonus", 3);
         }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["PerStep"].UpgradeValueBy(2);    }
+        DynamicVars["Bonus"].UpgradeValueBy(2);    }
 }

@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 造成 4 点伤害，共 4 次。升级后 ★ 质变：5 次。
-/// ★ 每一段都吃[gold]力道[/gold]加成，是「点 + 线」混搭的最佳载体。
+/// 点 —— 造成 3 点伤害，共 4 次。
+/// 升级 ★ 效果升级：6 次。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WanDianGuiYi : WanJieRuLinCardModel
@@ -30,12 +30,13 @@ public sealed class WanDianGuiYi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(4m, ValueProp.Move),
+        new DamageVar(3m, ValueProp.Move),
         ModCardVars.Repeat(4)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await PointHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
@@ -46,5 +47,5 @@ public sealed class WanDianGuiYi : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Repeat.UpgradeValueBy(1);    }
+        DynamicVars.Repeat.UpgradeValueBy(2);    }
 }

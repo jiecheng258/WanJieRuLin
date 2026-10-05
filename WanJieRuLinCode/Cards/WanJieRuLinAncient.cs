@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **先古牌** —— 每 3 点[gold]墨韵[/gold]，获得 1 点能量并抽 1 张牌。[消耗]
-/// [gold]保留[/gold]。★ 不直接造成伤害 —— 它把墨韵变成你继续运转的燃料。
+/// 先古 —— 抽 3 张牌，获得 3 点临时力量。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WanJieRuLinAncient : WanJieRuLinCardModel
@@ -30,25 +30,17 @@ public sealed class WanJieRuLinAncient : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerMoYun", 4)
+        ModCardVars.Cards(3),
+        ModCardVars.Int("TempStr", 3)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var mo = MyMoYun;
-        if (mo <= 0)
-        {
-            return;
-        }
-        var per = Math.Max(1, DynamicVars.GetIntOrDefault("PerMoYun", 3));
-        var n = mo / per;
-        if (n > 0)
-        {
-            await GainEnergy(n);
-            await Draw(choiceContext, n);
-        }
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 3));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()

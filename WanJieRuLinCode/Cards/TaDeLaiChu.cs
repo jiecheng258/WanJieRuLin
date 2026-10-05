@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **事件牌** —— 获得 3 点[gold]力道[/gold]。
-/// ★ 她的身世没人说得清，但她说的话总能让人多出一分力气。
+/// 线 —— 获得 8 点格挡，获得 2 点临时力量。
+/// 她的身世没人说得清，但她说的话总能让人多一分力气。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class TaDeLaiChu : WanJieRuLinCardModel
@@ -30,12 +30,17 @@ public sealed class TaDeLaiChu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Force", 3)
+        new BlockVar(8m, ValueProp.Move),
+        ModCardVars.Int("TempStr", 2)
     ];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 3));
+        await LineHit(choiceContext);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 2));
     }
 
     protected override void OnUpgrade()

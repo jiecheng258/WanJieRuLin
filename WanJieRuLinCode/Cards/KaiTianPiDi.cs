@@ -15,14 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面 · 条件牌** —— 造成 31 点伤害。[消耗]
-/// **若你的手牌为空**，再对所有敌人造成 20 点伤害。升级后 32 点。
-/// ★ 套路①的终极形态：把手牌打光换一次全场重击。
+/// 面 —— 造成 30 点伤害。若你的手牌为空，再对所有敌人造成 15 点伤害。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 38 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class KaiTianPiDi : WanJieRuLinCardModel
 {
-    public KaiTianPiDi() : base(3, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+    public KaiTianPiDi() : base(5, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
     }
 
@@ -31,8 +31,8 @@ public sealed class KaiTianPiDi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(31m, ValueProp.Move),
-        ModCardVars.Int("EmptyBonus", 24)
+        new DamageVar(30m, ValueProp.Move),
+        ModCardVars.Int("AllDamage", 15)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
@@ -44,13 +44,11 @@ public sealed class KaiTianPiDi : WanJieRuLinCardModel
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        if (HandCountAtMost(0))
-        {
-            await DealDamageToAll(choiceContext, DynamicVars.GetIntOrDefault("EmptyBonus", 20));
-        }
+        if (HandCountAtMost(0)) { await DealDamageToAll(choiceContext, DynamicVars.GetIntOrDefault("AllDamage", 15)); }
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(6m);    }
+        DynamicVars.Damage.UpgradeValueBy(8m);    }
 }

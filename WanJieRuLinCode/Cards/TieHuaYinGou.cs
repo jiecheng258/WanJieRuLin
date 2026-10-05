@@ -15,7 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **线** —— 造成 14 点伤害，获得 2 点[gold]力道[/gold]。升级后 16 点伤害。
+/// 线 —— 造成 15 点伤害，获得 8 点格挡，获得 3 点临时力量。
+/// 升级 ★ 效果升级：临时力量 3 → 5。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class TieHuaYinGou : WanJieRuLinCardModel
@@ -29,21 +30,26 @@ public sealed class TieHuaYinGou : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move),
-        ModCardVars.Int("Force", 2)
+        new DamageVar(15m, ValueProp.Move),
+        new BlockVar(8m, ValueProp.Move),
+        ModCardVars.Int("TempStr", 3)
     ];
+
+    public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await LineHit(choiceContext);
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await ApplySelf<LiDaoPower>(choiceContext, DynamicVars.GetIntOrDefault("Force", 2));
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 3));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);    }
+        DynamicVars["TempStr"].UpgradeValueBy(2);    }
 }

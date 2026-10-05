@@ -15,8 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 一次获得 6 点[gold]墨韵[/gold]，抽 1 张牌。升级后 8 点。
-/// ★ 细水长流的最快铺场牌 —— 前期摸到它就等于开了加速。
+/// 面 —— 抽 3 张牌，获得 3 点临时力量。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级 ★ 效果升级：临时力量 3 → 4。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoHai : WanJieRuLinCardModel
@@ -30,17 +31,20 @@ public sealed class MoHai : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("MoYun", 6),
-        ModCardVars.Cards(1)
+        ModCardVars.Cards(3),
+        ModCardVars.Int("TempStr", 3)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await ApplySelf<MoYunPower>(choiceContext, DynamicVars.GetIntOrDefault("MoYun", 6));
         await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        await ApplySelf<WanJieTempStrengthPower>(choiceContext, DynamicVars.GetIntOrDefault("TempStr", 3));
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MoYun"].UpgradeValueBy(2);    }
+        DynamicVars["TempStr"].UpgradeValueBy(1);    }
 }

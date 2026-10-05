@@ -15,13 +15,14 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **面** —— 获得 19 点格挡。升级后 21 点。
-/// ★ 全模组最高单次格挡。配合笔锋减费打出才划算。
+/// 面 —— 获得 20 点格挡。[消耗]
+/// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
+/// 升级后 28 点格挡。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class ShanGaoShuiChang : WanJieRuLinCardModel
 {
-    public ShanGaoShuiChang() : base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public ShanGaoShuiChang() : base(4, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -30,17 +31,20 @@ public sealed class ShanGaoShuiChang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(19m, ValueProp.Move)
+        new BlockVar(20m, ValueProp.Move)
     ];
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await GainBlock(choiceContext, DynamicVars.Block.BaseValue);
+        await ReturnFaceZeroCostCopy(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(5m);    }
+        DynamicVars.Block.UpgradeValueBy(8m);    }
 }

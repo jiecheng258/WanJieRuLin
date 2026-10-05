@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **先古牌** —— 将你的[gold]墨韵[/gold]、[gold]笔锋[/gold]、[gold]力道[/gold]**全部清零**，每清 2 层获得 1 点能量。[消耗]
-/// ★ 重置按钮：墨韵堆太高拖累了点/线时，用它换一波费用重新开始。
+/// 先古 —— 0 费：获得 2 点能量。[消耗]
+/// 代价：已计入「斑驳乱点」的计数。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class WuMingZhiShi : WanJieRuLinCardModel
@@ -25,28 +25,20 @@ public sealed class WuMingZhiShi : WanJieRuLinCardModel
     {
     }
 
+    /// <inheritdoc />
+    public override WanJieAspect Aspect => WanJieAspect.Point;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("PerTwo", 1)
+        ModCardVars.Int("Energy", 2)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var edge = await ClearBiFeng(choiceContext);
-        var force = await ClearLiDao(choiceContext);
-        var mo = MyMoYun;
-        if (mo > 0)
-        {
-            await MoYunPower.Gain(choiceContext, Owner!.Creature, -mo);
-        }
-        var total = edge + force + mo;
-        var gain = total / 2;
-        if (gain > 0)
-        {
-            await GainEnergy(gain);
-        }
+        await PointHit(choiceContext);
+        await GainEnergy(DynamicVars.GetIntOrDefault("Energy", 2));
     }
 
     protected override void OnUpgrade()

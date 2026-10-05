@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **事件牌** —— 抽 1 张牌；**若你的手牌不多于 1 张**，改为抽 3 张。
-/// ★ 「林」的身份一直是个谜 —— 你越接近答案，得到的越多。
+/// 点 —— 抽 1 张牌。若本回合已打出 2 张以上点牌，再抽 2 张。
+/// 「林」的身份一直是个谜。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class Mi : WanJieRuLinCardModel
@@ -30,18 +30,14 @@ public sealed class Mi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Cards(1),
-        ModCardVars.Int("EmptyDraw", 3)
+        ModCardVars.Cards(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var n = DynamicVars.Cards.IntValue;
-        if (HandCountAtMost(1))
-        {
-            n = DynamicVars.GetIntOrDefault("EmptyDraw", 3);
-        }
-        await Draw(choiceContext, n);
+        await PointHit(choiceContext);
+        await Draw(choiceContext, DynamicVars.Cards.IntValue);
+        if (MyLuanDian >= 2) { await Draw(choiceContext, 2); }
     }
 
     protected override void OnUpgrade()

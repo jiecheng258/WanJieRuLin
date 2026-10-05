@@ -15,8 +15,8 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// ★ **点** —— 获得 5 点格挡，再额外获得等于你[gold]笔锋[/gold] 3 倍的格挡。
-/// 升级后基础 8 点。★ 把「留着不用的笔锋」变成防御。
+/// 点 —— 获得 7 点格挡，你每打出过 1 张点牌额外 +3 格挡。
+/// 升级 ★ 效果升级：每张 +3 → +4。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class MoShou : WanJieRuLinCardModel
@@ -30,17 +30,20 @@ public sealed class MoShou : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move)
+        new BlockVar(7m, ValueProp.Move),
+        ModCardVars.Int("PerDian", 3)
     ];
 
     public override bool GainsBlock => true;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await GainBlock(choiceContext, DynamicVars.Block.BaseValue + MyBiFeng * 3m);
+        await PointHit(choiceContext);
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
+        await GainBlock(choiceContext, DynamicVars.Block.BaseValue + MyLuanDian * DynamicVars.GetIntOrDefault("PerDian", 3));
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(4m);    }
+        DynamicVars["PerDian"].UpgradeValueBy(1);    }
 }
