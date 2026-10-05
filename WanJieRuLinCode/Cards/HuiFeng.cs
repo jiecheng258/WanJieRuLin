@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 点 —— 0 费：失去 1 点生命，造成 4 点伤害。[消耗]
+/// 点 —— 0 费：失去 1 点生命，造成 4 点伤害。
 /// 升级后 6 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 抽 3 张牌，获得 3 点临时力量。[消耗]
+/// 面 —— 抽 3 张牌，获得 3 点临时力量。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级 ★ 效果升级：临时力量 3 → 4。
 /// </summary>

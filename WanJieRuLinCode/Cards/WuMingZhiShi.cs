@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 先古 —— 0 费：获得 2 点能量。[消耗]
+/// 先古 —— 0 费：获得 2 点能量。
 /// 代价：已计入「斑驳乱点」的计数。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

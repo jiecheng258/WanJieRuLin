@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 受到 4 点伤害，抽 5 张牌。[消耗]
+/// 面 —— 受到 4 点伤害，抽 5 张牌。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级后抽 6 张。
 /// </summary>

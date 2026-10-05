@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 造成 16 点伤害，给予 2 层易伤。[消耗]
+/// 面 —— 造成 16 点伤害，给予 2 层易伤。
 /// 传闻有真有假。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

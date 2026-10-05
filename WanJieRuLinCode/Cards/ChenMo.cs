@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 本回合获得 2 点[gold]临时力量[/gold]，抽 2 张牌。[消耗]
+/// 面 —— 本回合获得 2 点[gold]临时力量[/gold]，抽 2 张牌。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级 ★ 效果升级：临时力量改为 3 点。
 /// </summary>

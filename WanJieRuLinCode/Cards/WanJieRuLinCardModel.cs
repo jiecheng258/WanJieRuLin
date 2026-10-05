@@ -110,8 +110,13 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        // 造牌姿势（工程内已验证）：规范实例 → ToMutable → 设 Owner → 交给框架入堆。
-        if (Activator.CreateInstance(GetType()) is not CardModel canonical)
+        // ★ 造牌姿势（修 DuplicateModelException）：
+        //   Activator.CreateInstance(GetType()) 会**重复注册模型** → DuplicateModelException 卡住。
+        //   正确做法：ModelDb.Card<T>() 是泛型且无 Type 重载，所以用反射拿到规范实例
+        //   （走模型数据库，不会重复注册），再 ToMutable + 设 Owner + 入堆。
+        var cardMethod = typeof(ModelDb).GetMethod("Card", System.Type.EmptyTypes)?
+            .MakeGenericMethod(GetType());
+        if (cardMethod?.Invoke(null, null) is not CardModel canonical)
         {
             return;
         }

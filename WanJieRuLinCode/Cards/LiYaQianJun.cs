@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 造成 15 点伤害，获得 2 点临时力量。[消耗]
+/// 面 —— 造成 15 点伤害，获得 2 点临时力量。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级后 20 点伤害。
 /// </summary>

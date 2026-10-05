@@ -16,7 +16,7 @@ namespace WanJieRuLin.Cards;
 
 /// <summary>
 /// 线 —— **需本回合已打出 3 张以上线牌**才能打出。
-/// 造成 24 点伤害。[消耗]
+/// 造成 24 点伤害。
 /// 升级后 30 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 线 —— 造成 22 点伤害，获得 4 点临时力量。[消耗]
+/// 线 —— 造成 22 点伤害，获得 4 点临时力量。
 /// 升级后 28 点伤害。
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

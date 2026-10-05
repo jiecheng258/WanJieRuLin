@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 抽 3 张牌，获得 1 点能量。[消耗]
+/// 面 —— 抽 3 张牌，获得 1 点能量。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级后抽 4 张。
 /// </summary>

@@ -15,7 +15,7 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 面 —— 获得 14 点格挡，获得 3 点临时敏捷。[消耗]
+/// 面 —— 获得 14 点格挡，获得 3 点临时敏捷。
 /// 每场战斗首次打出时，将一张此牌的 0 费版本放入弃牌堆。
 /// 升级 ★ 效果升级：临时敏捷 3 → 5。
 /// </summary>
