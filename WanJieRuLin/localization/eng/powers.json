@@ -1,6 +1,6 @@
 {
-  "WAN_JIE_RU_LIN_POWER_BI_FENG_POWER.description": "[gold]Edge[/gold]: your next card costs {Amount} less. Cleared after playing.",
-  "WAN_JIE_RU_LIN_POWER_BI_FENG_POWER.smartDescription": "[gold]Edge[/gold]: your next card costs {Amount} less. Cleared after playing.",
+  "WAN_JIE_RU_LIN_POWER_BI_FENG_POWER.description": "[gold]Edge[/gold]: **up to 3 times per turn**, gain [blue]1[/blue] Energy each. Resets at end of turn.",
+  "WAN_JIE_RU_LIN_POWER_BI_FENG_POWER.smartDescription": "[gold]Edge[/gold]: **up to 3 times per turn**, gain [blue]1[/blue] Energy each. Resets at end of turn.",
   "WAN_JIE_RU_LIN_POWER_BI_FENG_POWER.title": "Edge",
   "WAN_JIE_RU_LIN_POWER_HUI_FENG_TRACE_POWER.description": "You played Echo Edge this turn.",
   "WAN_JIE_RU_LIN_POWER_HUI_FENG_TRACE_POWER.smartDescription": "You played Echo Edge this turn.",

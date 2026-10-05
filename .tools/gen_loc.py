@@ -26,9 +26,11 @@ def write(path, data):
 
 POWERS = {
     'BiFengPower': ('笔锋',
-        '[gold]笔锋[/gold]：你打出的下一张牌费用 −{Amount}。打出后清空。',
+        '[gold]笔锋[/gold]：**本回合最多触发 3 次**，每次获得 [blue]1[/blue] 点能量。'
+        '（回合结束清零）',
         'Edge',
-        '[gold]Edge[/gold]: your next card costs {Amount} less. Cleared after playing.'),
+        '[gold]Edge[/gold]: **up to 3 times per turn**, gain [blue]1[/blue] Energy each. '
+        'Resets at end of turn.'),
     'LiDaoPower': ('力道',
         '[gold]力道[/gold]：本回合你打出的牌伤害与格挡 +{Amount}。',
         'Force',
@@ -77,11 +79,13 @@ RELIC_EN = {
 
 CHARACTER_ZH = {
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.title': '万界如林',
+    PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.titleObject': '万界如林',
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.description':
         '「林」的身份一直是一个谜。\n有关于她的故事有很多，或许会有真的。\n她说：我来自于……',
 }
 CHARACTER_EN = {
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.title': 'WanJieRuLin',
+    PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.titleObject': 'WanJieRuLin',
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.description':
         'Nobody knows who "Lin" really is.\nThere are many stories about her. Some might be true.\nShe said: I come from...',
 }

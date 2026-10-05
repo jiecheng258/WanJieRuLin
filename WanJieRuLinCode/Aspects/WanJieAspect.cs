@@ -77,6 +77,14 @@ public static class WanJieV05Tuning
     /// </summary>
     public const int MoYunFaceBonus = 2;
 
+    /// <summary>
+    /// ★ v0.6.2：「笔锋」改为**直接产能量**（每回合最多触发该次数）。
+    ///
+    /// 原本的「减费」需要钩住原版的费用计算，而那个虚方法是
+    /// `private protected` —— 模组无法重写。改走产能量（工程内已验证的路径）。
+    /// </summary>
+    public const int BiFengTriggerCap = 3;
+
     /// <summary>偏激流·纯点「润笔」：每回合由点牌获得能量的上限。</summary>
     public const int RunBiEnergyCap = 2;
 

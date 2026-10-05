@@ -69,7 +69,17 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     // v0.5 辅助方法（供生成的卡牌调用）
     // ------------------------------------------------------------------
 
-    /// <summary>获得笔锋（点牌的核心产出）。</summary>
+    /// <summary>
+    /// 获得笔锋（点牌的核心产出）。
+    ///
+    /// ★ v0.6.2 起，「笔锋」= **本回合最多触发 3 次，每次获得 1 点能量**。
+    /// 原因：原本的「减费」需要重写原版的费用计算方法，而它是 `private protected`，
+    /// 模组无法重写（两次尝试都以 CS0115 失败）。改走产能量 ——
+    /// `PlayerCmd.GainEnergy` 是工程里已验证的稳定路径。
+    ///
+    /// <see cref="BiFengPower"/> 现在只充当「本回合已触发几次」的计数器
+    /// （继承 WanJieTurnScopedPower，回合结束自动清零）。
+    /// </summary>
     protected async Task GainBiFeng(PlayerChoiceContext ctx, int amount)
     {
         if (Owner is not { } p || amount <= 0)
@@ -77,33 +87,20 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, amount, p.Creature, this);
-
-        // ★ 笔锋到手后，立刻把减费挂到手牌上（这样卡面的费用数字会实时变化）。
-        ApplyBiFengToHand(Math.Max(0, BiFengPower.Of(p.Creature)));
-    }
-
-    /// <summary>
-    /// 把「笔锋层数」作为减费挂到手牌里所有**本来要花费用**的牌上。
-    ///
-    /// 用原版 <c>CardEnergyCost.AddUntilPlayed</c>：这张牌便宜 N 费，直到它被打出。
-    /// 打出第一张后由 <see cref="BiFengPower"/> 给其余手牌撤掉（见该类的
-    /// <c>ClearBiFengFromHand</c>），从而保证只有「下一张」享受减费。
-    /// </summary>
-    protected void ApplyBiFengToHand(int edge)
-    {
-        if (Owner is not { } p || edge <= 0)
+        var used = BiFengPower.Of(p.Creature);
+        var cap = WanJieV05Tuning.BiFengTriggerCap;
+        if (used >= cap)
         {
             return;
         }
 
-        foreach (var c in CardPile.GetCards(p, [PileType.Hand]))
+        var gain = Math.Min(amount, cap - used);
+        for (var n = 0; n < gain; n++)
         {
-            if (c.EnergyCost.GetResolved() > 0)
-            {
-                c.EnergyCost.AddUntilPlayed(-edge, true);
-            }
+            await GainEnergy(1);
         }
+
+        await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, gain, p.Creature, this);
     }
 
     /// <summary>撤掉手牌上的笔锋减费（笔锋被消耗后调用）。</summary>
