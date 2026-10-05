@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -64,10 +63,28 @@ public sealed class BiFengPower : WanJieTurnScopedPower
             return;
         }
 
+        // 笔锋只服务「下一张牌」—— 立刻把其余手牌的费用恢复原样。
+        if (Owner?.Player is { } player)
+        {
+            Cards.WanJieRuLinCardModel.ClearBiFengFromHand(player, Math.Max(0, Amount));
+        }
+
         _consumed = true;
         await PowerCmd.Remove(this);
     }
 
+    /// <summary>
+    /// ★ 笔锋的减费就在这里实现。
+    ///
+    /// 为什么放在 Power 而不是卡牌：费用修改的钩子是
+    /// <c>PowerModel.TryModifyEnergyCostInCombat(card, originalCost, out modifiedCost)</c>,
+    /// 原版的 CorruptionPower / FreeAttackPower / TangledPower 都是重写它。
+    /// 卡牌侧那套 ICardEnergyCostContributor 属于 RitsuLib 的**能力（Capability）系统**，
+    /// 必须在模型上显式 AddCapability 才会被调用 —— 只「实现接口」不生效
+    /// （这就是之前笔锋没有减费的根因）。
+    ///
+    /// 返回 true 表示「我改了这个费用」，框架才会采用 modifiedCost。
+    /// </summary>
     /// <summary>取某生物当前的笔锋层数（没有该能力时为 0）。</summary>
     public static int Of(Creature? creature)
     {

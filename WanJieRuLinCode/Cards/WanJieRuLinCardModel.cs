@@ -26,7 +26,6 @@ namespace WanJieRuLin.Cards;
 /// </summary>
 public abstract class WanJieRuLinCardModel : ModCardTemplate,
     ICardPlayStateContributor,
-    ICardEnergyCostContributor,
     IWanJieAspectCard
 {
     protected WanJieRuLinCardModel(
@@ -73,9 +72,51 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     /// <summary>获得笔锋（点牌的核心产出）。</summary>
     protected async Task GainBiFeng(PlayerChoiceContext ctx, int amount)
     {
-        if (Owner is { } p && amount > 0)
+        if (Owner is not { } p || amount <= 0)
         {
-            await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, amount, p.Creature, this);
+            return;
+        }
+
+        await PowerCmd.Apply<BiFengPower>(ctx, p.Creature, amount, p.Creature, this);
+
+        // ★ 笔锋到手后，立刻把减费挂到手牌上（这样卡面的费用数字会实时变化）。
+        ApplyBiFengToHand(Math.Max(0, BiFengPower.Of(p.Creature)));
+    }
+
+    /// <summary>
+    /// 把「笔锋层数」作为减费挂到手牌里所有**本来要花费用**的牌上。
+    ///
+    /// 用原版 <c>CardEnergyCost.AddUntilPlayed</c>：这张牌便宜 N 费，直到它被打出。
+    /// 打出第一张后由 <see cref="BiFengPower"/> 给其余手牌撤掉（见该类的
+    /// <c>ClearBiFengFromHand</c>），从而保证只有「下一张」享受减费。
+    /// </summary>
+    protected void ApplyBiFengToHand(int edge)
+    {
+        if (Owner is not { } p || edge <= 0)
+        {
+            return;
+        }
+
+        foreach (var c in CardPile.GetCards(p, [PileType.Hand]))
+        {
+            if (c.EnergyCost.GetResolved() > 0)
+            {
+                c.EnergyCost.AddUntilPlayed(-edge, true);
+            }
+        }
+    }
+
+    /// <summary>撤掉手牌上的笔锋减费（笔锋被消耗后调用）。</summary>
+    public static void ClearBiFengFromHand(MegaCrit.Sts2.Core.Entities.Players.Player p, int edge)
+    {
+        if (edge <= 0)
+        {
+            return;
+        }
+
+        foreach (var c in CardPile.GetCards(p, [PileType.Hand]))
+        {
+            c.EnergyCost.AddUntilPlayed(edge, false);
         }
     }
 
@@ -124,19 +165,6 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     /// （卡面显示 / 可打出判定 / 实际支付），所以只要返回扣减后的值，
     /// 减费就会同时体现在视觉与结算上。
     /// </summary>
-    int ICardEnergyCostContributor.ModifyEnergyCost(
-        CardModel card, int currentCost, CostModifiers modifiers)
-    {
-        // 只处理自己；笔锋是本回合的一次性减费，打出后由 BiFengPower 自行清空。
-        if (!ReferenceEquals(card, this) || currentCost <= 0 || Owner is null)
-        {
-            return currentCost;
-        }
-
-        var edge = BiFengPower.Of(Owner.Creature);
-        return edge <= 0 ? currentCost : Math.Max(0, currentCost - edge);
-    }
-
     // ------------------------------------------------------------------
     // 可打出性：子类只需实现 PlayCondition，返回 false 即灰掉这张牌。
     //
