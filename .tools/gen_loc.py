@@ -112,13 +112,21 @@ POWERS = {
 RELIC_ZH = {
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title': '未完成的自画像',
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description':
-        '每回合开始时获得 1 点[gold]笔锋[/gold]。\n每当你打出一张「面」牌，获得 1 点[gold]墨韵[/gold]。',
+        '每回合你打出的**第 1 张牌**获得强化（且只有这一张）：\n【点】额外获得 2 点能量。\n【线】额外获得 2 点临时力量与 2 点临时敏捷。\n【面】该牌造成的伤害与格挡**翻倍**。',
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.title': '未完成的自画像 · 全',
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.description':
+        '每回合【点】【线】【面】**各**第 1 张获得强化：\n【点】额外获得 2 点能量。\n【线】额外获得 2 点临时力量与 2 点临时敏捷。\n【面】该牌造成的伤害与格挡**翻倍**。',
 }
+
 RELIC_EN = {
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title': 'Unfinished Self-Portrait',
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description':
-        'At the start of each turn, gain 1 [gold]Edge[/gold].\nWhenever you play a Face card, gain 1 [gold]Ink[/gold].',
+        'The **first card** you play each turn is empowered (only that one):\n[Point] gain 2 extra Energy.\n[Line] gain 2 extra Temp Strength and Temp Dexterity.\n[Face] that card deals **double** damage and Block.',
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.title': 'Unfinished Self-Portrait, Complete',
+    PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.description':
+        'Each turn, the first [Point], [Line] and [Face] card are all empowered:\n[Point] gain 2 extra Energy.\n[Line] gain 2 extra Temp Strength and Temp Dexterity.\n[Face] that card deals **double** damage and Block.',
 }
+
 
 CHARACTER_ZH = {
     PFX + 'CHARACTER_WAN_JIE_RU_LIN_CHARACTER.title': '万界如林',

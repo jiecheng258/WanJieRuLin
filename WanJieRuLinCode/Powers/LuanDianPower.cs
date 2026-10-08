@@ -110,6 +110,14 @@ public sealed class LuanDianPower : WanJieTurnScopedPower
                     break;
             }
         }
+
+        // ★ v0.7.5 加强（用户 #4）：「超过安全值之后，打出到第三张起开始扣除血量上限」。
+        //   即：本回合第 6 张及以后每张「点」牌，额外 −1 最大生命（永久，不随回合恢复）。
+        //   这是「点」真正的硬代价 —— 前 5 张只是本回合的临时减益，第 6 张开始伤及根本。
+        if (over >= 3)
+        {
+            await CreatureCmd.LoseMaxHp(ctx, player.Creature, over - 2, true);
+        }
     }
 
     /// <summary>原版诅咒卡（轮换塞入弃牌堆）。</summary>

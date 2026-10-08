@@ -1,4 +1,6 @@
 {
-  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description": "每回合开始时获得 1 点[gold]笔锋[/gold]。\n每当你打出一张「面」牌，获得 1 点[gold]墨韵[/gold]。",
-  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title": "未完成的自画像"
+  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description": "每回合你打出的**第 1 张牌**获得强化（且只有这一张）：\n【点】额外获得 2 点能量。\n【线】额外获得 2 点临时力量与 2 点临时敏捷。\n【面】该牌造成的伤害与格挡**翻倍**。",
+  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title": "未完成的自画像",
+  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.description": "每回合【点】【线】【面】**各**第 1 张获得强化：\n【点】额外获得 2 点能量。\n【线】额外获得 2 点临时力量与 2 点临时敏捷。\n【面】该牌造成的伤害与格挡**翻倍**。",
+  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.title": "未完成的自画像 · 全"
 }

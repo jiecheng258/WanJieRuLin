@@ -14,75 +14,68 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Relics;
 
 /// <summary>
-/// 未完成的自画像 —— **起始遗物**（v0.7 重做）。
+/// 未完成的自画像 —— **起始遗物**（v0.7.5 重做）。
 ///
-/// 每回合各一次，三类牌首次打出时分别强化：
-/// - **点**：额外获得 [blue]1[/blue] 点能量
-/// - **线**：额外获得 [blue]1[/blue] 点临时力量，并抽 [blue]1[/blue] 张牌
-/// - **面**：该牌伤害与格挡 [blue]+5[/blue]（当场生效）
+/// 效果：**每回合你打出的第 1 张牌**，按其归属获得强化，且**只有这一张**：
+/// - 该牌是【点】→ 额外获得 [blue]2[/blue] 点能量
+/// - 该牌是【线】→ 额外获得 [blue]2[/blue] 点临时力量与 [blue]2[/blue] 点临时敏捷
+/// - 该牌是【面】→ 该牌造成的伤害与格挡**翻倍**
 ///
-/// ★ 设计意图：它是一张「教学卡」——
-///   逼玩家每回合把三类都碰一次，才能拿满三份奖励；
-///   同时又直接演示了三条线各自的定位（点=费用、线=数值与手牌、面=爆发）。
-///   强度给得克制（各一次），不会喧宾夺主。
+/// 升级版（<see cref="WeiWangChengDeZiHuaXiangQuan"/>）：三类**各**可触发一次。
 ///
-/// ★ 实现要点：
-///   - 点/线走 <c>AfterCardPlayed</c>（该钩子带 PlayerChoiceContext，可以施法）
-///   - 面必须在牌**生效之前**加成 → 用 <c>BeforeCardPlayed</c> 打标记，
-///     再由本遗物的 <c>ModifyDamageAdditive</c> / <c>ModifyBlockAdditive</c> 加上去。
-///     （<c>BeforeCardPlayed(CardPlay)</c> 没有 context，不能在里面 await 施法）
+/// ★ 设计意图：把「本回合的第一手」变成一个明确的决策点 ——
+///   玩家要自己判断「这一手用点、线还是面来起手最赚」，
+///   而不是无脑铺牌。翻倍给在第 1 张上，收益大但只能用一次，决策感强。
 /// </summary>
 [RegisterRelic(typeof(WanJieRuLinRelicPool))]
 [RegisterCharacterStarterRelic(typeof(WanJieRuLinCharacter))]
-public sealed class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
+public class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
 {
-    /// <summary>「面」牌首次打出时的伤害/格挡加成。</summary>
-    public const int FaceBonus = 10;
+    /// <summary>「点」牌第 1 张额外获得的能量。</summary>
+    public const int PointEnergy = 2;
 
-    // 本回合三类是否已经触发过
-    private bool _pointUsed;
-    private bool _lineUsed;
-    private bool _faceUsed;
+    /// <summary>「线」牌第 1 张额外获得的临时力量/敏捷。</summary>
+    public const int LineTempStat = 2;
 
-    // 「面」加成：BeforeCardPlayed 打标记 → 本遗物的伤害/格挡钩子据此加成
-    private bool _faceBonusPending;
+    // 本回合是否已经用过「第 1 张牌」的强化
+    protected bool Used;
+
+    // 「面」翻倍：BeforeCardPlayed 打标记 → 由本遗物的伤害/格挡钩子翻倍
+    protected bool FaceDoubling;
 
     public override RelicRarity Rarity => RelicRarity.Starter;
+
+    /// <summary>升级版覆盖为 true，表示点/线/面三类各自可触发一次。</summary>
+    protected virtual bool PerAspect => false;
 
     public override Task AfterPlayerTurnStart(
         PlayerChoiceContext choiceContext, Player player)
     {
-        if (player != Owner)
+        if (player == Owner)
         {
-            return Task.CompletedTask;
+            Used = false;
+            FaceDoubling = false;
         }
 
-        _pointUsed = false;
-        _lineUsed = false;
-        _faceUsed = false;
-        _faceBonusPending = false;
         return Task.CompletedTask;
     }
 
-    /// <summary>
-    /// 牌打出**之前**：若是本回合第一张「面」牌，打上待加成标记。
-    /// </summary>
     public override Task BeforeCardPlayed(CardPlay cardPlay)
     {
-        if (Owner is null || _faceUsed)
+        if (Owner is null || Used)
         {
             return Task.CompletedTask;
         }
 
         if (WanJieAspectQuery.Of(cardPlay.Card) == WanJieAspect.Face)
         {
-            _faceBonusPending = true;
+            FaceDoubling = true;
         }
 
         return Task.CompletedTask;
     }
 
-    /// <summary>「面」牌的伤害加成（只在待加成标记为真时生效）。</summary>
+    /// <summary>「面」牌翻倍：返回 amount，即把伤害翻一倍。</summary>
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
@@ -91,20 +84,15 @@ public sealed class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
         CardModel? cardSource,
         CardPlay? cardPlay)
     {
-        if (!_faceBonusPending || cardSource is null || cardPlay is null)
+        if (!FaceDoubling || cardSource is null || dealer != Owner?.Creature)
         {
             return 0m;
         }
 
-        if (dealer != Owner?.Creature)
-        {
-            return 0m;
-        }
-
-        return WanJieAspectQuery.IsFace(cardSource) ? FaceBonus : 0m;
+        return WanJieAspectQuery.IsFace(cardSource) ? amount : 0m;
     }
 
-    /// <summary>「面」牌的格挡加成。</summary>
+    /// <summary>「面」牌格挡翻倍。</summary>
     public override decimal ModifyBlockAdditive(
         Creature? target,
         decimal block,
@@ -112,12 +100,12 @@ public sealed class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
         CardModel? cardSource,
         CardPlay? cardPlay)
     {
-        if (!_faceBonusPending || cardSource is null || target != Owner?.Creature)
+        if (!FaceDoubling || cardSource is null || target != Owner?.Creature)
         {
             return 0m;
         }
 
-        return WanJieAspectQuery.IsFace(cardSource) ? FaceBonus : 0m;
+        return WanJieAspectQuery.IsFace(cardSource) ? block : 0m;
     }
 
     public override async Task AfterCardPlayed(
@@ -128,26 +116,41 @@ public sealed class WeiWangChengDeZiHuaXiang : WanJieRuLinRelic
             return;
         }
 
-        switch (WanJieAspectQuery.Of(cardPlay.Card))
+        var aspect = WanJieAspectQuery.Of(cardPlay.Card);
+
+        if (Used)
         {
-            case WanJieAspect.Point when !_pointUsed:
-                _pointUsed = true;
+            // 已经用过：只需把「面」的翻倍标记收掉（避免影响后续牌）。
+            FaceDoubling = false;
+            return;
+        }
+
+        switch (aspect)
+        {
+            case WanJieAspect.Point:
+                Used = true;
                 Flash();
-                await PlayerCmd.GainEnergy(2, player);
+                await PlayerCmd.GainEnergy(PointEnergy, player);
                 break;
 
-            case WanJieAspect.Line when !_lineUsed:
-                _lineUsed = true;
+            case WanJieAspect.Line:
+                Used = true;
                 Flash();
                 await PowerCmd.Apply<WanJieTempStrengthPower>(
-                    choiceContext, player.Creature, 2, player.Creature, null);
-                await CardPileCmd.Draw(choiceContext, 2, player);
+                    choiceContext, player.Creature, LineTempStat, player.Creature, null);
+                await PowerCmd.Apply<WanJieTempDexterityPower>(
+                    choiceContext, player.Creature, LineTempStat, player.Creature, null);
                 break;
 
-            case WanJieAspect.Face when !_faceUsed:
-                _faceUsed = true;
-                _faceBonusPending = false;
+            case WanJieAspect.Face:
+                Used = true;
                 Flash();
+                FaceDoubling = false;
+                break;
+
+            default:
+                // 不属于点线面（打击/防御/能力/先古/事件）→ 不消耗这次机会
+                FaceDoubling = false;
                 break;
         }
     }

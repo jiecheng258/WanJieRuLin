@@ -110,39 +110,71 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        // ★ 造牌姿势（官方入口，一步做完三件事）：
-        //   RunState.CreateCard(canonical, player) 内部：
-        //     ① ToMutable() 拿可变实例
-        //     ② AddCard(card, owner) → 设 Owner **并登记进 RunState 的 _allCards**
-        //     ③ AfterCreated() 收尾钩子
-        //
-        //   之前手动 ToMutable + 设 Owner，漏了「登记进 RunState」这一步 →
-        //   报 "must be added to a CombatState before adding it to this pile"，
-        //   并导致回合循环死亡（软锁）。这是先古选项踩过的同一个坑。
-        //
-        //   注意：Player.RunState 静态类型是 IRunState（接口上没有 CreateCard），
-        //   所以要 `is RunState runState` 取具体类型。
+        // ★ 造牌姿势（v0.7.5 重写）：
+        //   ① 用「安全反射」拿 ModelDb.Card<T>() —— 直接 GetMethod(name, Type.EmptyTypes)
+        //      在有重载时会抛 AmbiguousMatchException（而不是返回 null），
+        //      一旦抛出就会让整个 OnPlay 中断 → **所有面牌看起来完全没效果**（实机 bug）。
+        //      改为先枚举所有 Card 重载、挑出「无参泛型」那一个。
+        //   ② RunState.CreateCard(canonical, player)：一步做 ToMutable + 设 Owner + 登记 RunState
+        //      （漏登记会报 "must be added to a CombatState" → 软锁）。
+        //   ③ 入堆用 AddGeneratedCardToCombat —— 工程内已验证的「战斗中造牌入堆」入口
+        //      （BeiLeiMao 曾用它把手牌造进 Hand 并长期稳定运行）。
         if (p.RunState is not MegaCrit.Sts2.Core.Runs.RunState runState)
         {
             return;
         }
 
-        // ModelDb 全是泛型（Card<T>()），基类拿不到具体类型 → 反射调泛型拿规范实例。
-        var cardMethod = typeof(ModelDb).GetMethod("Card", System.Type.EmptyTypes)?
-            .MakeGenericMethod(GetType());
-        if (cardMethod?.Invoke(null, null) is not CardModel canonical)
+        if (CardLookup is null)
         {
             return;
         }
 
-        var created = runState.CreateCard(canonical, p);
+        CardModel? canonical;
+        try
+        {
+            canonical = CardLookup.MakeGenericMethod(GetType()).Invoke(null, null) as CardModel;
+        }
+        catch (Exception)
+        {
+            // 造牌失败不应连累这张牌本身的其它效果。
+            return;
+        }
 
-        // ★ 0 费版本 —— SetCustomBaseCost 直接改「基础费用」（永久、不受洗牌影响）。
-        created.EnergyCost.SetCustomBaseCost(0);
+        if (canonical is null)
+        {
+            return;
+        }
 
-        await CardPileCmd.Add(
-            created, PileType.Discard, CardPilePosition.Random, null, false);
+        CardModel created;
+        try
+        {
+            created = runState.CreateCard(canonical, p);
+
+            // 0 费版本：SetCustomBaseCost 直接改「基础费用」（永久、不受洗牌影响）。
+            created.EnergyCost.SetCustomBaseCost(0);
+
+            await CardPileCmd.AddGeneratedCardToCombat(
+                created, PileType.Discard, p, CardPilePosition.Random);
+        }
+        catch (Exception)
+        {
+            return;
+        }
     }
+
+    /// <summary>
+    /// ModelDb 上「无参泛型 Card&lt;T&gt;()」的 <see cref="MethodInfo"/>。
+    ///
+    /// ★ 必须这样拿：`GetMethod("Card", Type.EmptyTypes)` 在存在重载时抛
+    /// <see cref="System.Reflection.AmbiguousMatchException"/>，会让整张面牌的
+    /// 打出流程中断（实机表现为「面牌完全没效果」）。
+    /// </summary>
+    private static readonly System.Reflection.MethodInfo? CardLookup =
+        typeof(ModelDb)
+            .GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+            .FirstOrDefault(m => m.Name == "Card"
+                                 && m.IsGenericMethodDefinition
+                                 && m.GetParameters().Length == 0);
 
 
 
