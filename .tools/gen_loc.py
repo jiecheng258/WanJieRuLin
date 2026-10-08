@@ -118,6 +118,7 @@ RELIC_ZH = {
         '每回合【点】【线】【面】**各**第 1 张获得强化：\n【点】额外获得 2 点能量。\n【线】额外获得 2 点临时力量与 2 点临时敏捷。\n【面】该牌造成的伤害与格挡**翻倍**。',
 }
 
+
 RELIC_EN = {
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title': 'Unfinished Self-Portrait',
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description':
@@ -126,6 +127,7 @@ RELIC_EN = {
     PFX + 'RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.description':
         'Each turn, the first [Point], [Line] and [Face] card are all empowered:\n[Point] gain 2 extra Energy.\n[Line] gain 2 extra Temp Strength and Temp Dexterity.\n[Face] that card deals **double** damage and Block.',
 }
+
 
 
 CHARACTER_ZH = {
