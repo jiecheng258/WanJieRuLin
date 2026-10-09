@@ -2,6 +2,11 @@
 r"""v0.5 卡牌文案（自动生成，可用 gen_cards_v05.py 的 doc 重跑同步）。"""
 
 ZH = {
+    'BiZouLongShe': '能力 —— **纯点流**：你每打出一张「点」牌，获得 1 点能量。',
+    'RuMuSanFen': '能力 —— **纯线流**：你打出的「线」牌额外 +1 临时力量 +1 临时敏捷。',
+    'PoMoChengHua': '能力 —— **纯面流**：你的「面」牌额外造成 3 点伤害。',
+    'BiDuanYiLian': '能力 —— **通用**：每打出 1 张牌，抽 1 张（每回合上限 3 次）。',
+    'DaMianLiTou': '能力 —— **纯面流**：你的「面」牌回流额外 +1 次（每场每张可回流 2 次）。',
     'DaJi': '造成 {Damage:diff()} 点伤害。',
     'FangYu': '获得 {Block:diff()} 点格挡。',
     'QiBi': '点 —— 造成 {Damage:diff()} 点伤害。 若你本回合已打出过「点」牌，此牌伤害改为 14 点。',
@@ -95,6 +100,11 @@ ZH = {
 }
 
 EN = {
+    'BiZouLongShe': 'Ability - **Point build**: Whenever you play a Point card, gain 1 Energy.',
+    'RuMuSanFen': 'Ability - **Line build**: Your Line cards grant +1 extra Temp Strength and Temp Dexterity.',
+    'PoMoChengHua': 'Ability - **Face build**: Your Face cards deal +3 extra damage.',
+    'BiDuanYiLian': 'Ability - **Universal**: Each card you play draws 1 (up to 3 per turn).',
+    'DaMianLiTou': 'Ability - **Face build**: Your Face cards return 1 extra time (up to 2 per combat).',
     'DaJi': 'Deal {Damage:diff()} damage.',
     'FangYu': 'Gain {Block:diff()} Block.',
     'QiBi': '点 —— Deal {Damage:diff()} damage. If you this turn已打出过「点」牌, 此牌damage改为 14 点.',
@@ -188,6 +198,11 @@ EN = {
 }
 
 TITLES_ZH = {
+    'BiZouLongShe': '笔走龙蛇',
+    'RuMuSanFen': '入木三分',
+    'PoMoChengHua': '泼墨成画',
+    'BiDuanYiLian': '笔断意连',
+    'DaMianLiTou': '大面·力透',
     'DaJi': '打击',
     'FangYu': '防御',
     'QiBi': '起笔',
@@ -281,6 +296,11 @@ TITLES_ZH = {
 }
 
 TITLES_EN = {
+    'BiZouLongShe': '笔走龙蛇',
+    'RuMuSanFen': '入木三分',
+    'PoMoChengHua': '泼墨成画',
+    'BiDuanYiLian': '笔断意连',
+    'DaMianLiTou': '大面·力透',
     'DaJi': '打击',
     'FangYu': '防御',
     'QiBi': '起笔',
