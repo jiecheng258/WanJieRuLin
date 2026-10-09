@@ -17,6 +17,7 @@ namespace WanJieRuLin.Cards;
 /// <summary>
 /// 能力 —— **纯点流**：你每打出一张「点」牌，获得 1 点能量。
 /// 鼓励以点牌起手快速铺场。
+/// 升级 ★ 效果升级：每张点牌 +2 能量。
 /// 
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -26,15 +27,21 @@ public sealed class BiZouLongShe : WanJieRuLinCardModel
     {
     }
 
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        ModCardVars.Int("EnergyGain", 1)
+    ];
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var power = await ApplySelfAndGet<BiZouLongShePower>(choiceContext, 1m);
         if (power is not null)
         {
+            power.EnergyGain = DynamicVars.GetIntOrDefault("EnergyGain", 1);
         }
     }
 
     protected override void OnUpgrade()
     {
-    }
+        DynamicVars["EnergyGain"].UpgradeValueBy(1);    }
 }

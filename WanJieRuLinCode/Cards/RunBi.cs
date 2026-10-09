@@ -35,7 +35,7 @@ public sealed class RunBi : WanJieRuLinCardModel
         var power = await ApplySelfAndGet<RunBiPower>(choiceContext, 1m);
         if (power is not null)
         {
-            power.Amount = DynamicVars.GetIntOrDefault("Draw", 1);
+            power.Draw = DynamicVars.GetIntOrDefault("Draw", 1);
         }
     }
 
