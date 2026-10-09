@@ -27,10 +27,10 @@ def write(path, data):
 POWERS = {
     'LuanDianPower': ('斑驳乱点',
         '[gold]斑驳乱点[/gold]：本回合已打出 {Amount} 张「点」牌。'
-        '超过 3 张后，每多 1 张依次：力量 −2 / 敏捷 −2 / 虚弱 2 / 易伤 2 / 塞入 1 张诅咒。回合结束清空。',
+        '前 3 张无代价。第 4 张起，每多 1 张依次：临时力量 −2 / 临时敏捷 −2 / 虚弱 2 / 易伤 2 / 塞入 1 张诅咒。第 6 张起，每多打 1 张额外 −1 最大生命（永久）。回合结束时临时负面清空，最大生命不恢复。',
         'Mottled Dots',
         '[gold]Mottled Dots[/gold]: Point cards played this turn. '
-        'Past 3, each extra one adds a penalty: -2 Str / -2 Dex / 2 Weak / 2 Vulnerable / a curse. Clears at end of turn.'),
+        'First 3 are free. Past 3, each extra adds: -2 Temp Str / -2 Temp Dex / 2 Weak / 2 Vulnerable / a curse. From the 6th onward, each extra also -1 Max HP (permanent). Temporary penalties clear at end of turn; Max HP does not.'),
     'QianJunPower': ('千钧一线',
         '[gold]千钧一线[/gold]：本回合已打出 {Amount} 张「线」牌。每张线牌额外 +1 临时力量/敏捷并抽 1 张。',
         'A Thread of Life',
