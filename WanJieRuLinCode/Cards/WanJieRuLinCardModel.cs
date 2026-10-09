@@ -110,16 +110,17 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        // ★ 造牌姿势（v0.7.5 重写）：
+        // ★ 造牌姿势（v0.7.6 修正）：
         //   ① 用「安全反射」拿 ModelDb.Card<T>() —— 直接 GetMethod(name, Type.EmptyTypes)
         //      在有重载时会抛 AmbiguousMatchException（而不是返回 null），
-        //      一旦抛出就会让整个 OnPlay 中断 → **所有面牌看起来完全没效果**（实机 bug）。
+        //      一旦抛出就会让整个 OnPlay 中断 → 所有面牌看起来完全没效果（实机 bug）。
         //      改为先枚举所有 Card 重载、挑出「无参泛型」那一个。
-        //   ② RunState.CreateCard(canonical, player)：一步做 ToMutable + 设 Owner + 登记 RunState
-        //      （漏登记会报 "must be added to a CombatState" → 软锁）。
-        //   ③ 入堆用 AddGeneratedCardToCombat —— 工程内已验证的「战斗中造牌入堆」入口
-        //      （BeiLeiMao 曾用它把手牌造进 Hand 并长期稳定运行）。
-        if (p.RunState is not MegaCrit.Sts2.Core.Runs.RunState runState)
+        //   ② 造牌入口用 **CombatState.CreateCard(canonical, player)**，不是 RunState！
+        //      —— RunState.CreateCard 只登记进 RunState，入堆时会报
+        //      "must be added to a CombatState before adding it to this pile"（软锁）。
+        //      战斗内造牌的正确入口是 CombatState.CreateCard（登记进 CombatState）。
+        //   ③ 入堆用 AddGeneratedCardToCombat —— 工程内已验证的「战斗中造牌入堆」入口。
+        if (CombatState is not MegaCrit.Sts2.Core.Combat.CombatState combat)
         {
             return;
         }
@@ -145,10 +146,9 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
             return;
         }
 
-        CardModel created;
         try
         {
-            created = runState.CreateCard(canonical, p);
+            var created = combat.CreateCard(canonical, p);
 
             // 0 费版本：SetCustomBaseCost 直接改「基础费用」（永久、不受洗牌影响）。
             created.EnergyCost.SetCustomBaseCost(0);

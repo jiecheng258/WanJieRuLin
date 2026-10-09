@@ -138,22 +138,27 @@ public sealed class LuanDianPower : WanJieTurnScopedPower
     /// <summary>
     /// 把一张原版诅咒卡放进弃牌堆。
     ///
-    /// ★ 造牌姿势（沿用工程里已验证的写法）：
-    ///   规范实例 → ToMutable() → 设 Owner → 交给 AddGeneratedCardToCombat。
-    ///   三者缺一不可：不 ToMutable 会抛 CanonicalModelException；
-    ///   手工克隆会踩「牌没有堆」的 NullReferenceException。
+    /// ★ 造牌姿势（v0.7.6 修正）：
+    ///   用 CombatState.CreateCard(canonical, player) —— 战斗内造牌的正确入口，
+    ///   一步做 ToMutable + 设 Owner + 登记 CombatState。
+    ///   之前用 Activator.CreateInstance + ToMutable，漏登记 CombatState，
+    ///   入堆时报 "must be added to a CombatState"（软锁）。
     /// </summary>
     private static async Task AddCurseToDiscard(
         PlayerChoiceContext ctx, Player player, int index)
     {
+        if (player.Creature.CombatState is not MegaCrit.Sts2.Core.Combat.CombatState combat)
+        {
+            return;
+        }
+
         var type = CurseCycle[Math.Abs(index) % CurseCycle.Length];
         if (Activator.CreateInstance(type) is not CardModel canonical)
         {
             return;
         }
 
-        var created = canonical.ToMutable();
-        created.Owner = player;
+        var created = combat.CreateCard(canonical, player);
 
         await CardPileCmd.AddGeneratedCardToCombat(
             created, PileType.Discard, player, CardPilePosition.Random);
