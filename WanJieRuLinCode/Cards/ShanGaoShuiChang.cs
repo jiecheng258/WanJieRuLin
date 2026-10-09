@@ -31,7 +31,7 @@ public sealed class ShanGaoShuiChang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(26m, ValueProp.Move)
+        new BlockVar(46m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

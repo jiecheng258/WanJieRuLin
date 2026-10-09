@@ -31,6 +31,7 @@ public sealed class KuangCao : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
+        new DamageVar(40m, ValueProp.Move),
         ModCardVars.Cards(5),
         ModCardVars.Int("BloodCost", 4)
     ];

@@ -31,7 +31,7 @@ public sealed class ManFu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(16m, ValueProp.Move),
+        new DamageVar(28m, ValueProp.Move),
         new BlockVar(9m, ValueProp.Move)
     ];
 

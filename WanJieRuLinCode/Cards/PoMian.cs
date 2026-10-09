@@ -31,7 +31,7 @@ public sealed class PoMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(18m, ValueProp.Move),
+        new DamageVar(30m, ValueProp.Move),
         ModCardVars.Int("Vulnerable", 1)
     ];
 

@@ -25,6 +25,27 @@ def write(path, data):
 
 
 POWERS = {
+    'BiZouLongShePower': ('笔走龙蛇',
+        '[gold]笔走龙蛇[/gold]：每回合开始时额外获得 1 点能量。',
+        'Dragon-Snake Brush',
+        '[gold]Dragon-Snake Brush[/gold]: Gain 1 extra Energy at the start of each turn.'),
+    'RuMuSanFenPower': ('入木三分',
+        '[gold]入木三分[/gold]：你打出的「线」牌额外 +1 临时力量 +1 临时敏捷。',
+        'Deep In The Wood',
+        '[gold]Deep In The Wood[/gold]: Your Line cards grant +1 extra Temp Strength and Temp Dexterity.'),
+    'PoMoChengHuaPower': ('泼墨成画',
+        '[gold]泼墨成画[/gold]：你的「面」牌额外造成 3 点伤害。',
+        'Ink Into Art',
+        '[gold]Ink Into Art[/gold]: Your Face cards deal +3 extra damage.'),
+    'BiDuanYiLianPower': ('笔断意连',
+        '[gold]笔断意连[/gold]：每打出 1 张牌，抽 1 张（每回合上限 3 次）。',
+        'Broken Yet Connected',
+        '[gold]Broken Yet Connected[/gold]: Each card you play draws 1 (up to 3 per turn).'),
+    'DaMianLiTouPower': ('大面·力透',
+        '[gold]大面·力透[/gold]：你的「面」牌回流额外 +1 次（每场每张可回流 2 次）。',
+        'Great Face, Deep Strength',
+        '[gold]Great Face, Deep Strength[/gold]: Your Face cards return 1 extra time (up to 2 per combat).'),
+
     'LuanDianPower': ('斑驳乱点',
         '[gold]斑驳乱点[/gold]：本回合已打出 {Amount} 张「点」牌。'
         '前 3 张无代价。第 4 张起，每多 1 张依次：临时力量 −2 / 临时敏捷 −2 / 虚弱 2 / 易伤 2 / 塞入 1 张诅咒。第 6 张起，每多打 1 张额外 −1 最大生命（永久）。回合结束时临时负面清空，最大生命不恢复。',

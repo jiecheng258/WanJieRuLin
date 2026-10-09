@@ -31,7 +31,7 @@ public sealed class DaPoMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(26m, ValueProp.Move)
+        new DamageVar(44m, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];

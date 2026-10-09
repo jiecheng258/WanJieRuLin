@@ -31,7 +31,7 @@ public sealed class LiTouWanXiang : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(25m, ValueProp.Move),
+        new DamageVar(42m, ValueProp.Move),
         ModCardVars.Int("TempStr", 5)
     ];
 

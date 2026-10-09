@@ -31,6 +31,7 @@ public sealed class ChenMo : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
+        new DamageVar(30m, ValueProp.Move),
         ModCardVars.Int("Strength", 2),
         ModCardVars.Cards(2)
     ];

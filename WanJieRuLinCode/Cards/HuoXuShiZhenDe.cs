@@ -30,7 +30,7 @@ public sealed class HuoXuShiZhenDe : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(16m, ValueProp.Move),
+        new DamageVar(26m, ValueProp.Move),
         ModCardVars.Int("Vulnerable", 2)
     ];
 

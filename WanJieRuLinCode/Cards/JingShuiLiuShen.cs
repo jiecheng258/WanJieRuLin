@@ -31,7 +31,7 @@ public sealed class JingShuiLiuShen : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(18m, ValueProp.Move),
+        new BlockVar(34m, ValueProp.Move),
         ModCardVars.Int("TempDex", 3)
     ];
 

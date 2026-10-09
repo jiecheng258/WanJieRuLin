@@ -21,7 +21,7 @@ namespace WanJieRuLin.Cards;
 [RegisterCard(typeof(WanJieRuLinCardPool))]
 public sealed class DianZhui : WanJieRuLinCardModel
 {
-    public DianZhui() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public DianZhui() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
     }
 
@@ -30,7 +30,7 @@ public sealed class DianZhui : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(5m, ValueProp.Move),
+        new DamageVar(4m, ValueProp.Move),
         ModCardVars.Cards(1)
     ];
 

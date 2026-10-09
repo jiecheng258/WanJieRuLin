@@ -31,6 +31,7 @@ public sealed class MoMian : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
+        new DamageVar(30m, ValueProp.Move),
         ModCardVars.Cards(3)
     ];
 
