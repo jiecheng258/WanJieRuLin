@@ -65,6 +65,12 @@ public sealed class LuanDianPower : WanJieTurnScopedPower
         await PowerCmd.Apply<LuanDianPower>(
             ctx, player.Creature, 1, player.Creature, null);
 
+        // ★ v0.8.3：「点」牌自带被动能量回馈 —— 每打出一张点牌，无条件 +1 能量。
+        //   这是点流的核心经济：点牌数值偏低（0–1 费），用回能量补偿，点牌 = 燃料。
+        //   代价由本机制下方的「乱点」负面买单（第 4 张起临时减益、第 6 张起扣最大生命）。
+        //   「笔走龙蛇」能力会把这里的基础回馈从 1 强化到 2（见 BiZouLongShePower）。
+        await PlayerCmd.GainEnergy(1, player);
+
         var over = next - SafeThreshold;
         if (over <= 0)
         {

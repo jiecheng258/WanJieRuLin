@@ -12,25 +12,21 @@ using WanJieRuLin.Aspects;
 namespace WanJieRuLin.Powers;
 
 /// <summary>
-/// 笔走龙蛇 —— ★ **纯点流**的能量引擎（v0.8.2 规范化）。
+/// 笔走龙蛇 —— ★ **纯点流**的强化能力（v0.8.3 起，改为「强化」而非「本体」）。
 ///
-/// 效果：你每打出一张「点」牌，获得 {EnergyGain} 点能量。
+/// 效果：你每打出一张「点」牌，额外获得 {EnergyGain} 点能量。
 ///
-/// 设计意图（点流派的核心经济模型）：
-///   点牌本身数值偏低（0–1 费、伤害低于同费线牌），
-///   用「每张点牌回 1 能量」补偿 —— 点牌 = 燃料，
-///   让「只堆点牌」成为一条能持续出牌的滚雪球路线。
+/// 与「点牌自带回馈」的关系：
+///   - 点牌**本身**就自带「每张 +1 能量」（见 LuanDianPower.OnPointCardPlayed，无条件回馈）
+///   - 本能力是**强化**：在自带 +1 的基础上，每张再额外 +{EnergyGain}
+///   - 所以拥有本能力时，每张点牌实际回 (1 + EnergyGain) 点能量
 ///
-/// 触发时机：AfterCardPlayed（牌结算完成后）。
-///   打出一张点牌 → 结算其伤害/抽牌 → 再回 1 能量。
-///   因为是「打出后」结算，所以本牌自己消耗的能量不会立即回补，
-///   下几张点牌才能享受到返还，形成「越点越顺」的节奏。
+/// 设计意图：点流不再依赖「先打出能力牌」才能启动 —— 点牌天生就是燃料，
+/// 能力牌只是把燃料效率翻倍。这降低了点流的启动门槛，同时保留了「能力牌
+/// 强化」的构筑深度。
 ///
-/// 收益规则：
-///   - 每张点牌固定回 {EnergyGain} 点（不随点牌费用变化）
-///   - 无每回合上限（点牌本身数值低，靠量取胜）
-///   - 与「乱点」的负面并行：点得越多能量越多，但第 6 张起扣最大生命
-///     → 这是点流的「甜与痛」——能量引擎的代价由乱点机制买单。
+/// 触发时机：AfterCardPlayed（牌结算完成后），只对「点」牌生效。
+/// 收益规则：每张点牌额外 +{EnergyGain}（无每回合上限；代价仍由「乱点」买单）。
 /// </summary>
 [RegisterPower]
 public sealed class BiZouLongShePower : ModPowerTemplate
@@ -42,13 +38,13 @@ public sealed class BiZouLongShePower : ModPowerTemplate
         IconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png",
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png");
 
-    /// <summary>每打出一张「点」牌获得的能量。</summary>
+    /// <summary>每张点牌在基础 +1 之上额外回的能量。</summary>
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Int("EnergyGain", 1)
     ];
 
-    /// <summary>每张点牌回的能量数（可配置，便于后续平衡或升级）。</summary>
+    /// <summary>每张点牌额外回的能量数（可配置，便于平衡/升级）。</summary>
     public int EnergyGain { get; set; } = 1;
 
     public override async Task AfterCardPlayed(

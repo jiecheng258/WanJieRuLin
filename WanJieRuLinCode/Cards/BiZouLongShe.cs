@@ -15,9 +15,9 @@ using WanJieRuLin.Powers;
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 能力 —— **纯点流**：你每打出一张「点」牌，获得 1 点能量。
-/// 鼓励以点牌起手快速铺场。
-/// 升级 ★ 效果升级：每张点牌 +2 能量。
+/// 能力 —— **纯点流**：你每打出一张「点」牌，额外获得 1 点能量（点牌本身已自带 +1）。
+/// 拥有后每张点牌共回 2 点能量。
+/// 升级 ★ 效果升级：额外回 2 点（共 3）。
 /// 
 /// </summary>
 [RegisterCard(typeof(WanJieRuLinCardPool))]

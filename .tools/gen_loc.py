@@ -26,9 +26,9 @@ def write(path, data):
 
 POWERS = {
     'BiZouLongShePower': ('笔走龙蛇',
-        '[gold]笔走龙蛇[/gold]：每回合开始时额外获得 1 点能量。',
+        '[gold]笔走龙蛇[/gold]：你每打出一张「点」牌，额外获得 1 点能量（点牌本身已自带 +1）。',
         'Dragon-Snake Brush',
-        '[gold]Dragon-Snake Brush[/gold]: Gain 1 extra Energy at the start of each turn.'),
+        '[gold]Dragon-Snake Brush[/gold]: Your Point cards grant +1 extra Energy (on top of the built-in +1).'),
     'RuMuSanFenPower': ('入木三分',
         '[gold]入木三分[/gold]：你打出的「线」牌额外 +1 临时力量 +1 临时敏捷。',
         'Deep In The Wood',
@@ -47,10 +47,10 @@ POWERS = {
         '[gold]Great Face, Deep Strength[/gold]: Your Face cards return 1 extra time (up to 2 per combat).'),
 
     'LuanDianPower': ('斑驳乱点',
-        '[gold]斑驳乱点[/gold]：本回合已打出 {Amount} 张「点」牌。'
+        '[gold]斑驳乱点[/gold]：本回合已打出 {Amount} 张「点」牌，每张回 1 点能量。'
         '前 3 张无代价。第 4 张起，每多 1 张依次：临时力量 −2 / 临时敏捷 −2 / 虚弱 2 / 易伤 2 / 塞入 1 张诅咒。第 6 张起，每多打 1 张额外 −1 最大生命（永久）。回合结束时临时负面清空，最大生命不恢复。',
         'Mottled Dots',
-        '[gold]Mottled Dots[/gold]: Point cards played this turn. '
+        '[gold]Mottled Dots[/gold]: Point cards played this turn; each refunds 1 Energy. '
         'First 3 are free. Past 3, each extra adds: -2 Temp Str / -2 Temp Dex / 2 Weak / 2 Vulnerable / a curse. From the 6th onward, each extra also -1 Max HP (permanent). Temporary penalties clear at end of turn; Max HP does not.'),
     'QianJunPower': ('千钧一线',
         '[gold]千钧一线[/gold]：本回合已打出 {Amount} 张「线」牌。每张线牌额外 +1 临时力量/敏捷并抽 1 张。',
