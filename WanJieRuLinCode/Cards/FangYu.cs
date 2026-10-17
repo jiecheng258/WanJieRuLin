@@ -8,15 +8,14 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
-using WanJieRuLin.Aspects;
 using WanJieRuLin.Characters;
 using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 获得 6 点格挡。升级后 8 点。
-/// ★ 与原版同档，不属于点线面。
+/// 防御 —— 获得 5 点格挡。升级后 8 点。
+/// ★ 与原版防御同构，不属于点线面。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -28,7 +27,7 @@ public sealed class FangYu : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(6m, ValueProp.Move)
+        new BlockVar(5m, ValueProp.Move)
     ];
 
     public override bool GainsBlock => true;
@@ -40,5 +39,6 @@ public sealed class FangYu : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);    }
+        DynamicVars.Block.UpgradeValueBy(3m);
+    }
 }

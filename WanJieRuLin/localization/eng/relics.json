@@ -1,6 +1,6 @@
 {
-  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.description": "The **first card** you play each turn is empowered (only that one):\n[Point] gain 2 extra Energy.\n[Line] gain 2 extra Temp Strength and Temp Dexterity.\n[Face] that card deals **double** damage and Block.",
-  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG.title": "Unfinished Self-Portrait",
-  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.description": "Each turn, the first [Point], [Line] and [Face] card are all empowered:\n[Point] gain 2 extra Energy.\n[Line] gain 2 extra Temp Strength and Temp Dexterity.\n[Face] that card deals **double** damage and Block.",
-  "WAN_JIE_RU_LIN_RELIC_WEI_WANG_CHENG_DE_ZI_HUA_XIANG_QUAN.title": "Unfinished Self-Portrait, Complete"
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.description": "At the start of each combat, gain 1 Ghost Qi.",
+  "WAN_JIE_RU_LIN_RELIC_GUI_MO.title": "Ghost Ink",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.description": "At the start of each combat, gain 2 Ghost Qi.",
+  "WAN_JIE_RU_LIN_RELIC_JIN_SI_GUI_MO.title": "Gold-Thread Ghost Ink"
 }

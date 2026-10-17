@@ -8,15 +8,14 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
-using WanJieRuLin.Aspects;
 using WanJieRuLin.Characters;
 using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
 
 /// <summary>
-/// 造成 8 点伤害。升级后 9 点。
-/// ★ 与原版同档，不属于点线面。
+/// 打击 —— 造成 6 点伤害。升级后 9 点。
+/// ★ 与原版打击同构，不属于点线面。
 /// </summary>
 [RegisterCharacterStarterCard(typeof(WanJieRuLinCharacter), 4)]
 [RegisterCard(typeof(WanJieRuLinCardPool))]
@@ -28,7 +27,7 @@ public sealed class DaJi : WanJieRuLinCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8m, ValueProp.Move)
+        new DamageVar(6m, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -42,5 +41,6 @@ public sealed class DaJi : WanJieRuLinCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);    }
+        DynamicVars.Damage.UpgradeValueBy(3m);
+    }
 }

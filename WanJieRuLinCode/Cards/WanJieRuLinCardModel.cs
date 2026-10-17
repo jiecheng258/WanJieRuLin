@@ -1,6 +1,7 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -8,9 +9,9 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
+using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Models.Capabilities;
 using STS2RitsuLib.Scaffolding.Content;
-using WanJieRuLin.Aspects;
 using WanJieRuLin.Powers;
 
 namespace WanJieRuLin.Cards;
@@ -20,13 +21,12 @@ namespace WanJieRuLin.Cards;
 ///
 /// 作用：
 /// - 统一把卡图指到 res://WanJieRuLin/images/cards/{类名}.png。
-/// - 承载「点 · 线 · 面」框架：子类重写 <see cref="Aspect"/> 声明归属。
-/// - 实现 <see cref="ICardEnergyCostContributor"/>，把「笔锋」变成实际减费。
-/// - 通过 <see cref="ICardPlayStateContributor"/> 支持「力道 ≥5 才可打出」这类条件。
+/// - 承载鬼气（次要资源）的读写快捷方法。
+/// - 通过 <see cref="ICardPlayStateContributor"/> 支持「本回合已打作祟」这类条件。
+/// - 提供伤害 / 格挡 / 抽牌 / 施加能力 / 能量 等通用效果助手。
 /// </summary>
 public abstract class WanJieRuLinCardModel : ModCardTemplate,
-    ICardPlayStateContributor,
-    IWanJieAspectCard
+    ICardPlayStateContributor
 {
     protected WanJieRuLinCardModel(
         int energyCost,
@@ -41,144 +41,6 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     public override CardAssetProfile AssetProfile => new(
         PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
-    // ========================================================================
-    // v0.5 「点 · 线 · 面」框架
-    //
-    // 所有攻击牌与技能牌都必须在子类里重写 Aspect 声明归属（点/线/面）；
-    // 能力牌与打击/防御等基础牌保持默认的 None。
-    // ========================================================================
-
-    /// <summary>
-    /// 本牌的笔法归属。子类重写：<c>public override WanJieAspect Aspect =&gt; WanJieAspect.Point;</c>
-    /// </summary>
-    public virtual WanJieAspect Aspect => WanJieAspect.None;
-
-    /// <summary>本牌的归属（供框架内部与审计使用）。</summary>
-    public WanJieAspect AspectValue => Aspect;
-
-
-    // ------------------------------------------------------------------
-    // v0.5 辅助方法（供生成的卡牌调用）
-    // ------------------------------------------------------------------
-
-    // ========================================================================
-    // v0.7 三机制入口（点 / 线 / 面）
-    // ========================================================================
-
-    /// <summary>本回合已打出几张「点」牌（= 乱点层数）。</summary>
-    protected int MyLuanDian => Owner is { } p ? LuanDianPower.Of(p.Creature) : 0;
-
-    /// <summary>本回合已打出几张「线」牌。</summary>
-    protected int MyQianJun => Owner is { } p ? QianJunPower.Of(p.Creature) : 0;
-
-    /// <summary>本回合是否已打出不少于 n 张「线」牌（用于「一线天」这类条件牌）。</summary>
-    protected bool QianJunAtLeast(int n) => MyQianJun >= n;
-
-    /// <summary>
-    /// 「点」牌打出时的统一入口：累积乱点；超过 3 层自动吃罚（力量/敏捷/虚弱/易伤/诅咒）。
-    /// 所有点牌都应在 OnPlay 里调用它。
-    /// </summary>
-    protected async Task PointHit(PlayerChoiceContext ctx)
-    {
-        if (Owner is { } p)
-        {
-            await LuanDianPower.OnPointCardPlayed(ctx, p);
-        }
-    }
-
-    /// <summary>
-    /// 「线」牌打出时的统一入口：+1 临时力量、+1 临时敏捷、额外抽 1 张。
-    /// 所有线牌都应在 OnPlay 里调用它。
-    /// </summary>
-    protected async Task LineHit(PlayerChoiceContext ctx)
-    {
-        if (Owner is { } p)
-        {
-            await QianJunPower.OnLineCardPlayed(ctx, p);
-        }
-    }
-
-    /// <summary>
-    /// ★ 「去年今日此门中」—— 面牌回流：
-    /// 把**本牌的 0 费版本**放进弃牌堆。**每张面牌每场战斗只生效一次**。
-    /// 所有面牌都应在 OnPlay 末尾调用它。
-    /// </summary>
-    protected async Task ReturnFaceZeroCostCopy(PlayerChoiceContext ctx)
-    {
-        if (Owner is not { } p || !WanJieFaceReturn.TryClaim(p, GetType()))
-        {
-            return;
-        }
-
-        // ★ 造牌姿势（v0.7.6 修正）：
-        //   ① 用「安全反射」拿 ModelDb.Card<T>() —— 直接 GetMethod(name, Type.EmptyTypes)
-        //      在有重载时会抛 AmbiguousMatchException（而不是返回 null），
-        //      一旦抛出就会让整个 OnPlay 中断 → 所有面牌看起来完全没效果（实机 bug）。
-        //      改为先枚举所有 Card 重载、挑出「无参泛型」那一个。
-        //   ② 造牌入口用 **CombatState.CreateCard(canonical, player)**，不是 RunState！
-        //      —— RunState.CreateCard 只登记进 RunState，入堆时会报
-        //      "must be added to a CombatState before adding it to this pile"（软锁）。
-        //      战斗内造牌的正确入口是 CombatState.CreateCard（登记进 CombatState）。
-        //   ③ 入堆用 AddGeneratedCardToCombat —— 工程内已验证的「战斗中造牌入堆」入口。
-        if (CombatState is not MegaCrit.Sts2.Core.Combat.CombatState combat)
-        {
-            return;
-        }
-
-        if (CardLookup is null)
-        {
-            return;
-        }
-
-        CardModel? canonical;
-        try
-        {
-            canonical = CardLookup.MakeGenericMethod(GetType()).Invoke(null, null) as CardModel;
-        }
-        catch (Exception)
-        {
-            // 造牌失败不应连累这张牌本身的其它效果。
-            return;
-        }
-
-        if (canonical is null)
-        {
-            return;
-        }
-
-        try
-        {
-            var created = combat.CreateCard(canonical, p);
-
-            // 0 费版本：SetCustomBaseCost 直接改「基础费用」（永久、不受洗牌影响）。
-            created.EnergyCost.SetCustomBaseCost(0);
-
-            await CardPileCmd.AddGeneratedCardToCombat(
-                created, PileType.Discard, p, CardPilePosition.Random);
-        }
-        catch (Exception)
-        {
-            return;
-        }
-    }
-
-    /// <summary>
-    /// ModelDb 上「无参泛型 Card&lt;T&gt;()」的 <see cref="MethodInfo"/>。
-    ///
-    /// ★ 必须这样拿：`GetMethod("Card", Type.EmptyTypes)` 在存在重载时抛
-    /// <see cref="System.Reflection.AmbiguousMatchException"/>，会让整张面牌的
-    /// 打出流程中断（实机表现为「面牌完全没效果」）。
-    /// </summary>
-    private static readonly System.Reflection.MethodInfo? CardLookup =
-        typeof(ModelDb)
-            .GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
-            .FirstOrDefault(m => m.Name == "Card"
-                                 && m.IsGenericMethodDefinition
-                                 && m.GetParameters().Length == 0);
-
-
-
-
 
 
     /// <summary>手牌是否不多于 n 张（用于「墨尽」这类条件牌）。</summary>
@@ -191,6 +53,28 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
 
         return CardPile.GetCards(p, [PileType.Hand]).Count() <= n;
     }
+
+    // ------------------------------------------------------------------
+    // v0.9 作祟联动探测
+    //
+    // 大量牌需要「本回合已打过作祟」「本回合已获得鬼气」这类条件。
+    // 用两个回合限定的标记能力（ZuoSuiPlayedThisTurnPower /
+    // GhostQiGainedThisTurnPower）记录，回合结束自动清除。
+    // ------------------------------------------------------------------
+
+    /// <summary>本回合是否已打过「作祟」。</summary>
+    protected bool ZuoSuiPlayedThisTurn =>
+        Owner is { } p
+        && p.Creature.GetPowerAmount<ZuoSuiPlayedThisTurnPower>() > 0;
+
+    /// <summary>本回合是否已获得过鬼气。</summary>
+    protected bool GhostQiGainedThisTurn =>
+        Owner is { } p
+        && p.Creature.GetPowerAmount<GhostQiGainedThisTurnPower>() > 0;
+
+    /// <summary>本回合已打出的牌数（含本张打出之前的计数，用于「已打 2 张以上」条件）。</summary>
+    protected int CardsPlayedThisTurn =>
+        Owner is { } p ? p.Creature.GetPowerAmount<CardsPlayedThisTurnPower>() : 0;
 
     /// <summary>
     /// ★ 笔锋减费。
@@ -225,27 +109,79 @@ public abstract class WanJieRuLinCardModel : ModCardTemplate,
     // 通用效果助手：让每张牌的实现保持短小、可读。
     // ------------------------------------------------------------------
 
+    /// <summary>鬼气费用数值变量的名字（对应卡面占位符 {GhostQiCost:...}）。</summary>
+    public const string GhostQiCostVarName = "GhostQiCost";
+
+    /// <summary>鬼气获得量变量的默认名字（对应卡面占位符 {GhostQiGain}）。</summary>
+    protected const string GhostQiGainVar = "GhostQiGain";
+
+    /// <summary>给这张牌挂上「耗费鬼气 N」的固定费用。</summary>
+    protected void SetGhostQiCost(int amount)
+    {
+        this.SecondaryCosts().Set(ModResources.GhostQiId, amount);
+    }
+
+    /// <summary>给这张牌挂上「耗费全部鬼气」的 X 费用。</summary>
+    protected void SetGhostQiCostX(int multiplier = 1)
+    {
+        this.SecondaryCosts().Set(ModResources.GhostQiId, SecondaryResourceCost.X(multiplier));
+    }
+
+    /// <summary>读取本张牌的 X 鬼气效果数值。</summary>
+    protected int GhostQiXValue(CardPlay cardPlay)
+    {
+        var ledger = cardPlay.SecondaryResources();
+
+        var value = ledger.Value(ModResources.GhostQiId);
+        if (value > 0)
+        {
+            return value;
+        }
+
+        return ledger.Spent(ModResources.GhostQiId);
+    }
+
+    /// <summary>本张牌的鬼气费用是否为 X 型。</summary>
+    protected bool GhostQiCostIsX(CardPlay cardPlay) =>
+        cardPlay.SecondaryResources().CostsX(ModResources.GhostQiId);
+
+    /// <summary>本张牌实际消耗的鬼气量。</summary>
+    protected int GhostQiSpent(CardPlay cardPlay) =>
+        cardPlay.SecondaryResources().Spent(ModResources.GhostQiId);
+
+    /// <summary>构造一个「获得 N 点鬼气」的数值变量（用于卡面显示与提示）。</summary>
+    protected static DynamicVar GhostQiGainVarOf(int amount) =>
+        ModCardVars.Int(GhostQiGainVar, amount).WithSharedTooltip("WAN_JIE_RU_LIN_GHOST_QI");
+
+    /// <summary>构造一个绑定鬼气资源的「费用」数值变量，用于在卡面文本里显示费用。</summary>
+    protected static DynamicVar GhostQiCostVarOf(int amount) =>
+        SecondaryResourceVars.ForLocal(
+            GhostQiCostVarName, Entry.ModId, ModResources.GhostQiLocalId, amount);
+
     /// <summary>当前鬼气。</summary>
+    protected int MyGhostQi => Owner is { } p ? GhostQi.Get(p) : 0;
 
-    /// <summary>墨匀：鬼气落在均衡区间（3–7）。</summary>
+    /// <summary>给自己加鬼气，并打上「本回合已获得鬼气」标记（供条件牌探测）。</summary>
+    protected async Task GainGhostQi(int amount)
+    {
+        if (Owner is not { } p || amount <= 0)
+        {
+            return;
+        }
 
-    /// <summary>鬼气不高于 n。</summary>
+        await GhostQi.Gain(p, amount);
 
-    /// <summary>鬼气不低于 n。</summary>
-
-    /// <summary>鬼气恰好为 n。</summary>
-
-    // 设为 public，方便能力（如 HalfInkPower）复用同一套阈值，避免两处写死漂移。
-
-    /// <summary>给自己加鬼气。</summary>
+        if (p.Creature is { } c)
+        {
+            await PowerCmd.Apply<GhostQiGainedThisTurnPower>(
+                new HookPlayerChoiceContext(this, p.NetId, c.CombatState, GameActionType.Combat),
+                c, 1m, c, this);
+        }
+    }
 
     /// <summary>给自己扣鬼气（不视为"支付费用"，用于卡牌副作用）。</summary>
-
-    /// <summary>失去全部鬼气，返回实际失去量。</summary>
-
-    /// <summary>把鬼气直接设为某个值。</summary>
-
-    /// <summary>已知要失去的量，直接扣（用于「失去所有鬼气」后按量结算）。</summary>
+    protected Task LoseGhostQi(int amount) =>
+        Owner is { } p ? GhostQi.Lose(p, amount) : Task.CompletedTask;
 
     // ---- 伤害助手 ----
 

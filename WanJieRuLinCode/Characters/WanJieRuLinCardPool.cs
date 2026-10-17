@@ -21,63 +21,46 @@ public sealed class WanJieRuLinCardPool : TypeListCardPoolModel
     /// </summary>
     public static readonly Type[] SkillCardTypes =
     [
-
         // ---- Basic ----
         typeof(Cards.FangYu),   // 防御
-        typeof(Cards.YunBi),   // 运笔
+        typeof(Cards.ZuoSui),   // 作祟
 
         // ---- Common ----
-        typeof(Cards.BiZhi),   // 笔直
-        typeof(Cards.ChenMo),   // 沉墨
-        typeof(Cards.DaMian),   // 大面
-        typeof(Cards.DianPo),   // 点破
-        typeof(Cards.DianRan),   // 点染
-        typeof(Cards.GouXian),   // 勾线
-        typeof(Cards.LuoDian),   // 落点
-        typeof(Cards.MoMian),   // 磨面
-        typeof(Cards.ShuBi),   // 数笔
-        typeof(Cards.ShuXian),   // 竖线
+        typeof(Cards.MoDun),    // 墨盾
+        typeof(Cards.JuQi),     // 聚气
+        typeof(Cards.HuiMo),    // 回墨
+        typeof(Cards.ChengXi),  // 澄息
+        typeof(Cards.YinQi),    // 引气
+        typeof(Cards.GuiBi),    // 鬼壁
+        typeof(Cards.MoYun),    // 墨涌
+        typeof(Cards.MoYi),     // 墨移
 
         // ---- Uncommon ----
-        typeof(Cards.BiFengYiZhuan),   // 笔锋一转
-        typeof(Cards.ChanSi),   // 缠丝
-        typeof(Cards.DianJing),   // 点睛
-        typeof(Cards.DianShi),   // 点石
-        typeof(Cards.DianYin),   // 点引
-        typeof(Cards.JuanZhou),   // 卷轴
-        typeof(Cards.KuangCao),   // 狂草
-        typeof(Cards.LiDaoHuiLiu),   // 力道回流
-        typeof(Cards.LiTouZhiBei),   // 力透纸背
-        typeof(Cards.LuoMo),   // 落墨
-        typeof(Cards.ManZhiYunYan),   // 满纸云烟
-        typeof(Cards.MoYunTianChengV5),   // 墨韵天成
-        typeof(Cards.ShuSan),   // 疏散
-        typeof(Cards.WanHeQianYan),   // 万壑千岩
-        typeof(Cards.YunJinChengFeng),   // 运斤成风
-        typeof(Cards.ZongHeng),   // 纵横
+        typeof(Cards.YinBi),    // 隐壁
+        typeof(Cards.MoQi),     // 墨气
+        typeof(Cards.HuiHun),   // 回魂
+        typeof(Cards.NingMo),   // 凝墨
+        typeof(Cards.TuoYing),  // 脱影
+        typeof(Cards.AnXiang),  // 暗香
+        typeof(Cards.MoHua),    // 墨花
+        typeof(Cards.XunFeng),  // 巡风
+        typeof(Cards.MingJing), // 明镜
+        typeof(Cards.JieYin),   // 借阴
+        typeof(Cards.GuiZhao),  // 鬼爪
+        typeof(Cards.MoWu),     // 墨舞
+        typeof(Cards.HuiMoLian),// 回墨链
 
         // ---- Rare ----
-        typeof(Cards.BiLaoMoXiu),   // 笔老墨秀
-        typeof(Cards.ChangJuan),   // 长卷
-        typeof(Cards.DianJingZhiBi),   // 点睛之笔
-        typeof(Cards.DianShiChengJin),   // 点石成金
-        typeof(Cards.DianXianChengMian),   // 点线成面
-        typeof(Cards.JingShuiLiuShen),   // 静水流深
-        typeof(Cards.MoHai),   // 墨海
-        typeof(Cards.MoShou),   // 墨守
-        typeof(Cards.ShanGaoShuiChang),   // 山高水长
-        typeof(Cards.ShuMiYouZhi),   // 疏密有致
-        typeof(Cards.XingYunLiuShui),   // 行云流水
-        typeof(Cards.XuZhi),   // 续纸
-        typeof(Cards.ZhongFeng),   // 中锋
-
-        // ---- Ancient ----
-        typeof(Cards.WanJieRuLinAncient),   // 万界如林
-        typeof(Cards.WuMingZhiShi),   // 无名之始
-
-        // ---- Event ----
-        typeof(Cards.Mi),   // 谜
-        typeof(Cards.TaDeLaiChu),   // 她的来处
+        typeof(Cards.WanJieBi), // 万界壁
+        typeof(Cards.XuShen),   // 虚神
+        typeof(Cards.MoYuan),   // 墨渊
+        typeof(Cards.LingXi),   // 灵犀
+        typeof(Cards.HuiTian),  // 回天
+        typeof(Cards.MoWuJue),  // 墨舞·绝
+        typeof(Cards.WanNian),  // 万年
+        typeof(Cards.LingXu),   // 灵虚
+        typeof(Cards.MoSheng),  // 墨生
+        typeof(Cards.ZuoSuiYin),// 作祟引
     ];
 
     /// <summary>随机挑一张技能牌的类型；卡池为空时返回 null。</summary>

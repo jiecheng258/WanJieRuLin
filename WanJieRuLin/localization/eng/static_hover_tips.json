@@ -1,8 +1,4 @@
 {
-  "WAN_JIE_RU_LIN_FACE_DESC": "Expensive, high-value cards. Produce [gold]Ink[/gold] (accumulates across turns).",
-  "WAN_JIE_RU_LIN_FACE_TITLE": "Face",
-  "WAN_JIE_RU_LIN_LINE_DESC": "Balanced cards. Produce [gold]Force[/gold], boosting the cards you play this turn.",
-  "WAN_JIE_RU_LIN_LINE_TITLE": "Line",
-  "WAN_JIE_RU_LIN_POINT_DESC": "Cheap, low-value cards. Produce [gold]Edge[/gold], making your next card cheaper.",
-  "WAN_JIE_RU_LIN_POINT_TITLE": "Point"
+  "WAN_JIE_RU_LIN_GHOST_QI_DESC": "This mod's special energy. Gained in combat via cards and powers, spent only by \"Haunt\".",
+  "WAN_JIE_RU_LIN_GHOST_QI_TITLE": "Ghost Qi"
 }

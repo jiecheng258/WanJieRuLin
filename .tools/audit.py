@@ -204,10 +204,15 @@ if os.path.exists(anc_file):
 else:
     print('  !! 未找到 Ancients/WanJieRuLinAncientOptions.cs')
 
-# 古旧尖牙超越映射（绘 -> 墨染江山）
-hui = io.open(os.path.join(CODE, 'Cards', 'Hui.cs'), encoding='utf-8').read()
-mm = re.search(r'RegisterArchaicToothTranscendence\(typeof\((\w+)\)\)', hui)
-print('  古旧尖牙超越映射: %s' % ('Hui -> %s' % mm.group(1) if mm else '!! 未配置'))
+# 古旧尖牙超越映射（绘 -> 墨染江山）—— v0.9 已废弃「绘」，改用「作祟」作为起始牌，
+# 先古卡改为 4 张（鬼墨真言/先古之兆/墨域/万界来朝），经先古之民选项获取，不再走古旧尖牙超越。
+hui_path = os.path.join(CODE, 'Cards', 'Hui.cs')
+if os.path.exists(hui_path):
+    hui = io.open(hui_path, encoding='utf-8').read()
+    mm = re.search(r'RegisterArchaicToothTranscendence\(typeof\((\w+)\)\)', hui)
+    print('  古旧尖牙超越映射: %s' % ('Hui -> %s' % mm.group(1) if mm else '!! 未配置'))
+else:
+    print('  古旧尖牙超越映射: 无（v0.9 先古卡改经先古之民选项获取）')
 
 print()
 print('=' * 72)
