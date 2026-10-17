@@ -19,7 +19,7 @@ import shutil
 import hashlib
 import zipfile
 
-VERSION = "v0.8.3"
+VERSION = "v0.9.0"
 
 REPO = r"C:\Users\wangx\Documents\Default Project\WanJieRuLin"
 GAME_MODS = r"C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods"
@@ -82,7 +82,7 @@ def archive_to_dist(install_zip):
     import shutil
     import subprocess
     import tempfile
-    GIT = r'C:\Users\wangx\.workbuddy\binaries\PortableGit\versions\1.2.0\cmd\git.exe'
+    GIT = r'C:\Users\wangx\.workbuddy\binaries\PortableGit\versions\1.3.0\cmd\git.exe'
     WORK = r'C:\Users\wangx\WorkBuddy\_scratch\sts2-mod\dist-archive'
     URL = 'git@github.com:jiecheng258/WanJieRuLin.git'
     env = dict(os.environ)

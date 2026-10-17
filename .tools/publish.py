@@ -24,7 +24,7 @@ SSH 能推分支和 tag，但推不了 release 附件 → 用分支达到同样�
 """
 import io, os, re, shutil, subprocess, sys, time
 
-GIT = r'C:\Users\wangx\.workbuddy\binaries\PortableGit\versions\1.2.0\cmd\git.exe'
+GIT = r'C:\Users\wangx\.workbuddy\binaries\PortableGit\versions\1.3.0\cmd\git.exe'
 DIST = r'C:\Users\wangx\Desktop\WanJieRuLin-dist'
 TMP = r'C:\Users\wangx\WorkBuddy\_scratch\sts2-mod\_publish_repo'
 REMOTE = 'git@github.com:jiecheng258/WanJieRuLin.git'
